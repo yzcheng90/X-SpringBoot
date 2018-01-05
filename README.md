@@ -1,5 +1,8 @@
 **项目说明** 
-- X-SpringBoot是一个轻量级的Java快速开发平台，能快速开发项目并交付【接私活利器】
+- X-SpringBoot 是一个轻量级的Java快速开发平台，能快速开发项目并交付【接私活利器】
+
+- 专为X-SpringBoot 量身定制接口代码生成工具https://github.com/yzcheng90/x_springboot-inteface-generatorper
+
 <br> 
  
 
@@ -70,5 +73,6 @@ X-SpringBoot
 - 项目访问路径：http://localhost:8080/x_springboot
 - 账号密码：admin/admin
 - Swagger路径：http://localhost:8080/x_springboot/swagger/index.html
+- 本人QQ 913624256
 
 
