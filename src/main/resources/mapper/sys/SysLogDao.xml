@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.suke.czx.modules.sys.dao.SysLogDao">
+
+	<select id="queryObject" resultType="com.suke.czx.modules.sys.entity.SysLogEntity">
+		select * from sys_log where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.suke.czx.modules.sys.entity.SysLogEntity">
+		select * from sys_log 
+		<where>
+			<if test="key != null and key.trim() != ''">
+				`username` like concat('%',#{key},'%') or `operation` like concat('%',#{key},'%')
+			</if>
+		</where>
+		order by id desc 
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from sys_log 
+		<where>
+			<if test="key != null and key.trim() != ''">
+				`username` like concat('%',#{key},'%') or `operation` like concat('%',#{key},'%')
+			</if>
+		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.suke.czx.modules.sys.entity.SysLogEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_log
+		(
+			`username`, 
+			`operation`, 
+			`method`, 
+			`params`,
+			`time`,
+			`ip`, 
+			`create_date`
+		)
+		values
+		(
+			#{username}, 
+			#{operation}, 
+			#{method}, 
+			#{params}, 
+			#{time},
+			#{ip},
+			#{createDate}
+		)
+	</insert>
+	
+	<delete id="delete">
+		delete from sys_log where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from sys_log where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

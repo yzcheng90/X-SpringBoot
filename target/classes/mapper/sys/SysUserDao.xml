@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.suke.czx.modules.sys.dao.SysUserDao">
+	<select id="queryObject" resultType="com.suke.czx.modules.sys.entity.SysUserEntity">
+		select * from sys_user where user_id = #{value}
+	</select>
+	
+	<select id="queryList" resultType="com.suke.czx.modules.sys.entity.SysUserEntity">
+		select * from sys_user 
+		<where>
+			<if test="createUserId != null">
+				and `create_user_id` = #{createUserId} 
+			</if>
+			<if test="username != null and username.trim() != ''">
+				and `username` like concat('%',#{username},'%') 
+			</if>
+		</where>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by user_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="queryTotal" resultType="int">
+		select count(*) from sys_user
+		<where>
+			<if test="createUserId != null">
+				and `create_user_id` = #{createUserId} 
+			</if>
+			<if test="username != null and username.trim() != ''">
+				and `username` like concat('%',#{username},'%') 
+			</if>
+		</where>
+	</select>
+	
+	<!-- 查询用户的所有权限 -->
+	<select id="queryAllPerms" resultType="string">
+		select m.perms from sys_user_role ur 
+			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
+			LEFT JOIN sys_menu m on rm.menu_id = m.menu_id 
+		where ur.user_id = #{userId}
+	</select>
+	
+	<!-- 查询用户的所有菜单ID --> 
+	<select id="queryAllMenuId" resultType="long">
+		select distinct rm.menu_id from sys_user_role ur 
+			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
+		where ur.user_id = #{userId}
+	</select>
+	
+	<select id="queryByUserName" resultType="com.suke.czx.modules.sys.entity.SysUserEntity">
+		select * from sys_user where username = #{username}
+	</select>
+	
+	<insert id="save" parameterType="com.suke.czx.modules.sys.entity.SysUserEntity" useGeneratedKeys="true" keyProperty="userId">
+		insert into sys_user
+		(
+			`user_id`, 
+			`username`, 
+			`password`,
+			`salt`,
+			`email`, 
+			`mobile`, 
+			`status`, 
+			`create_user_id`,
+			`create_time`
+		)
+		values
+		(
+			#{userId}, 
+			#{username}, 
+			#{password},
+			#{salt},
+			#{email}, 
+			#{mobile}, 
+			#{status}, 
+			#{createUserId},
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.suke.czx.modules.sys.entity.SysUserEntity">
+		update sys_user 
+		<set> 
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+		</set>
+		where user_id = #{userId} 
+		<if test="createUserId != null">
+			and `create_user_id` = #{createUserId} 
+		</if>
+	</update>
+	
+	<update id="updatePassword" parameterType="map">
+		update sys_user set `password` = #{newPassword} 
+			where user_id = #{userId} and password = #{password}
+	</update>
+	
+	<delete id="deleteBatch">
+		delete from sys_user where user_id in 
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+		;
+		delete from sys_user_role where user_id in 
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+</mapper>

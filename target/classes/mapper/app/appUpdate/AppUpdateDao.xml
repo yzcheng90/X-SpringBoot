@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="appUpdate.AppUpdateDao">
+
+	<select id="queryObject" resultType="java.util.HashMap">
+		select * from tb_app_update where appid = #{value}
+	</select>
+
+	<select id="queryList" resultType="java.util.HashMap">
+		select * from tb_app_update
+	</select>
+	 
+	<insert id="save" parameterType="java.util.HashMap">
+		insert into tb_app_update
+		(
+			`appid`, 
+			`update_content`, 
+			`version_code`, 
+			`version_name`, 
+			`url`, 
+			`app_file_name`, 
+			`md5`, 
+			`size`, 
+			`is_force`, 
+			`is_ignorable`, 
+			`is_silent`, 
+			`upload_time`
+		)
+		values
+		(
+			#{appid}, 
+			#{updateContent}, 
+			#{versionCode}, 
+			#{versionName}, 
+			#{url}, 
+			#{appFileName}, 
+			#{md5}, 
+			#{size}, 
+			#{isForce}, 
+			#{isIgnorable}, 
+			#{isSilent}, 
+			#{uploadTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="java.util.HashMap">
+		update tb_app_update 
+		<set>
+			<if test="updateContent != null">`update_content` = #{updateContent}, </if>
+			<if test="versionCode != null">`version_code` = #{versionCode}, </if>
+			<if test="versionName != null">`version_name` = #{versionName}, </if>
+			<if test="url != null">`url` = #{url}, </if>
+			<if test="appFileName != null">`app_file_name` = #{appFileName}, </if>
+			<if test="md5 != null">`md5` = #{md5}, </if>
+			<if test="size != null">`size` = #{size}, </if>
+			<if test="isForce != null">`is_force` = #{isForce}, </if>
+			<if test="isIgnorable != null">`is_ignorable` = #{isIgnorable}, </if>
+			<if test="isSilent != null">`is_silent` = #{isSilent}, </if>
+			<if test="uploadTime != null">`upload_time` = #{uploadTime}</if>
+		</set>
+		where appid = #{appid}
+	</update>
+	
+	<delete id="delete">
+		delete from tb_app_update where appid = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from tb_app_update where appid in 
+		<foreach item="appid" collection="array" open="(" separator="," close=")">
+			#{appid}
+		</foreach>
+	</delete>
+
+</mapper>

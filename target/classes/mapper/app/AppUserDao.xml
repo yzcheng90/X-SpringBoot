@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="api.AppUserDao">
+
+	<select id="queryObject" resultType="java.util.HashMap">
+		select * from tb_user where user_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="java.util.HashMap">
+		select * from tb_user
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by user_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from tb_user 
+	</select>
+
+	<select id="queryByMobile" resultType="java.util.HashMap">
+		select * from tb_user where mobile = #{value}
+	</select>
+	 
+	<insert id="save" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="userId">
+		insert into tb_user
+		(
+			`username`, 
+			`mobile`, 
+			`password`, 
+			`create_time`
+		)
+		values
+		(
+			#{username}, 
+			#{mobile}, 
+			#{password}, 
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="java.util.HashMap">
+		update tb_user 
+		<set>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+	
+	<delete id="delete">
+		delete from tb_user where user_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from tb_user where user_id in 
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+</mapper>
