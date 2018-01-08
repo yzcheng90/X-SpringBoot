@@ -1,7 +1,9 @@
 **项目说明** 
 - X-SpringBoot 是一个轻量级的Java快速开发平台，能快速开发项目并交付【接私活利器】
 
-- 专为X-SpringBoot 量身定制接口代码生成工具https://github.com/yzcheng90/x_springboot-inteface-generatorper
+- 专为X-SpringBoot 量身定制《接口》代码生成工具https://github.com/yzcheng90/x_springboot-inteface-generatorper
+
+- 专为X-SpringBoot 量身定制《后台管理》代码生成工具https://github.com/yzcheng90/x_springboot-generator
 
 <br> 
  
