@@ -67,6 +67,7 @@ X-SpringBoot
 
 ![image](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20180108172123_1.png)
 ![image](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20180108172123_2.png)
+![image](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20180108172123_3.png)
 
  **本地部署**
 - 下载源码
