@@ -72,23 +72,23 @@ X-SpringBoot
 <h3>数据返回加解密工具类 <a href="https://github.com/yzcheng90/X-SpringBoot/blob/master/src/main/java/com/suke/czx/common/utils/CDESCrypt.java">CDESCrypt.java</a></h3>
 
 ---
-> __ 接口controller类示例 __
+> 接口controller类示例 
 >
 ```javascript
 
-	@ApiOperation(value="列表", notes="列表")  //swagger2的接口显示
-    @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "token", required = true,dataType = "string", paramType = "query", defaultValue = "")})
-	@PostMapping("/appUpdate/list")
-	public AppBaseResult list(@RequestBody AppBaseResult appBaseResult)throws Exception{ //使用AppBaseResult类接口转过来的封装参数
-        logger.info("AppUpdateController 列表",appBaseResult.decryptData());
-        HashMap<String,Object> params = new Gson().fromJson(appBaseResult.decryptData(),HashMap.class); //解密后反序列化为MAP
-		//查询列表数据
-        Query query = new Query(params);
-        query.isPaging(true);　//开启拦截器分页，不需要多写一条SQL去查询条数
-		List<HashMap<String,Object>> appUpdateList = appUpdateService.queryList(query);
-		PageUtils pageUtil = new PageUtils(appUpdateList, query.getTotle(), query.getLimit(), query.getPage());
-        return AppBaseResult.success().setEncryptData(pageUtil); //数据加密返回
-	}
+@ApiOperation(value="列表", notes="列表")  //swagger2的接口显示
+@ApiImplicitParams({@ApiImplicitParam(name = "token", value = "token", required = true,dataType = "string", paramType = "query", defaultValue = "")})
+@PostMapping("/appUpdate/list")
+public AppBaseResult list(@RequestBody AppBaseResult appBaseResult)throws Exception{ //使用AppBaseResult类接口转过来的封装参数
+    logger.info("AppUpdateController 列表",appBaseResult.decryptData());
+    HashMap<String,Object> params = new Gson().fromJson(appBaseResult.decryptData(),HashMap.class); //解密后反序列化为MAP
+	//查询列表数据
+    Query query = new Query(params);
+	query.isPaging(true);　//开启拦截器分页，不需要多写一条SQL去查询条数
+	List<HashMap<String,Object>> appUpdateList = appUpdateService.queryList(query);
+	PageUtils pageUtil = new PageUtils(appUpdateList, query.getTotle(), query.getLimit(), query.getPage());
+    return AppBaseResult.success().setEncryptData(pageUtil); //数据加密返回
+}
 
 
 ```
@@ -97,13 +97,13 @@ X-SpringBoot
 >
 ```javascript
 
-	{
-		"code": 200,
-		"message": "请求成功",
-		"data": "[{\"id\":\"20171130104836867615\",\"name\":\"吕经理\",\"phone\":\"13888888888\",\"car\":\"湘A12345\",\"address\":\"A栋\",\"tplanarrivaltime\":\"2017-11-30 10:45:46\",\"sintervieweename\":\"张小曼\",\"iintervieweephone\":\"15625448521\",\"tcreatetime\":\"2017-11-30 10:48:36\",\"suserid\":\"test01\",\"susername\":\"章涛宁\",\"svisitorintend\":\"\",\"tplanleavetime\":\"2017-12-21 09:49:09\",\"saccessibleid\":\"20171221949935675\",\"tentertime\":\"2017-12-21 09:49:09\"}]",
-		"version": "1.0",
-		"mobile": ""
-	}
+{
+	"code": 200,
+	"message": "请求成功",
+	"data": "[{\"id\":\"20171130104836867615\",\"name\":\"吕经理\",\"phone\":\"13888888888\",\"car\":\"湘A12345\",\"address\":\"A栋\",\"tplanarrivaltime\":\"2017-11-30 10:45:46\",\"sintervieweename\":\"张小曼\",\"iintervieweephone\":\"15625448521\",\"tcreatetime\":\"2017-11-30 10:48:36\",\"suserid\":\"test01\",\"susername\":\"章涛宁\",\"svisitorintend\":\"\",\"tplanleavetime\":\"2017-12-21 09:49:09\",\"saccessibleid\":\"20171221949935675\",\"tentertime\":\"2017-12-21 09:49:09\"}]",
+	"version": "1.0",
+	"mobile": ""
+}
 
 ```
 ---
@@ -111,13 +111,13 @@ X-SpringBoot
 >
 ```javascript
 
-	{
-	    "code": 200,
-	    "message": "请求成功",
-	    "data": "BJ5EH8YbByGQ8ZyxAB8WEWUlj1rpZbvOSVzScAPyKk5B8WMw8NhjfrZeLROzgsM/ag2RJr33B9ZfS5xEJd5ORHig/NLmIAt2LcElMuUA1FwIPn3BOJu4CAohwtZEX4rSYRGSVv5LEpyXJNTqlZ/R5OeDTyTYdE9aAD1D3++LmspFq7Us8r33+6rc6PkTqnHGBI6rSCL1yugP0mdMIRPgrguMknbE9TloDPP1AuncomTYiRs4jfwv6kRVk9uWbSgFjjGFChGwtyHnVrSttxRNi0o9YS51NwoL2ZK8/0kNlnHxHImwWLq2394sOf9Jy4X0XcUdjuJalSPyRMxyHhglWmFwMYnIEc3dOYdB/snMc0ESXdXvzyxlpT/IwB5T4QdcmBmQIsMyEIr2ZKDR6fO/KUH+QvQJT2oSYNz+0gr4IqgBYzhIOPmE/f0tzhI/fHyMNOoH+2WRxL4gYgi3nzYZBudK8Hb0U/ddGc8gasreTWnW2Z3BrO2T9uK+0LWdR9Uq/6QccqlPmUJlMdRuaVyKcPz65LQn/f9qlASnKNbkVK+LmJi/JeP5lkBdK089l9vRX3y5YRWwuGrfJcc9VjvSp89vNhTAFtnEN9ChqG2iuiJgUhsEZtFluDoeycC8eBoncFpWXK4cnD2BZZIJPowEOs37u8HvHPOjaeqkctU1OVA=",
-	    "version": "1.0",
-	    "mobile": ""
-	}
+{
+    "code": 200,
+    "message": "请求成功",
+    "data": "BJ5EH8YbByGQ8ZyxAB8WEWUlj1rpZbvOSVzScAPyKk5B8WMw8NhjfrZeLROzgsM/ag2RJr33B9ZfS5xEJd5ORHig/NLmIAt2LcElMuUA1FwIPn3BOJu4CAohwtZEX4rSYRGSVv5LEpyXJNTqlZ/R5OeDTyTYdE9aAD1D3++LmspFq7Us8r33+6rc6PkTqnHGBI6rSCL1yugP0mdMIRPgrguMknbE9TloDPP1AuncomTYiRs4jfwv6kRVk9uWbSgFjjGFChGwtyHnVrSttxRNi0o9YS51NwoL2ZK8/0kNlnHxHImwWLq2394sOf9Jy4X0XcUdjuJalSPyRMxyHhglWmFwMYnIEc3dOYdB/snMc0ESXdXvzyxlpT/IwB5T4QdcmBmQIsMyEIr2ZKDR6fO/KUH+QvQJT2oSYNz+0gr4IqgBYzhIOPmE/f0tzhI/fHyMNOoH+2WRxL4gYgi3nzYZBudK8Hb0U/ddGc8gasreTWnW2Z3BrO2T9uK+0LWdR9Uq/6QccqlPmUJlMdRuaVyKcPz65LQn/f9qlASnKNbkVK+LmJi/JeP5lkBdK089l9vRX3y5YRWwuGrfJcc9VjvSp89vNhTAFtnEN9ChqG2iuiJgUhsEZtFluDoeycC8eBoncFpWXK4cnD2BZZIJPowEOs37u8HvHPOjaeqkctU1OVA=",
+    "version": "1.0",
+    "mobile": ""
+}
 
 ```
 
