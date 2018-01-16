@@ -66,11 +66,13 @@ X-SpringBoot
 <br> 
 
 ![image](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/AppBaseResult_img.png)
-<h2>统一接口请求和返回工具类 <a href="https://github.com/yzcheng90/X-SpringBoot/blob/master/src/main/java/com/suke/czx/common/utils/AppBaseResult.java">AppBaseResult.java</a></h2>
-<h2>数据返回加解密工具类 <a href="https://github.com/yzcheng90/X-SpringBoot/blob/master/src/main/java/com/suke/czx/common/utils/CDESCrypt.java">CDESCrypt.java</a></h2>
-
-<h2>接口controller类示例</h2>
-<code>
+<br>
+<h3>统一接口请求和返回工具类 <a href="https://github.com/yzcheng90/X-SpringBoot/blob/master/src/main/java/com/suke/czx/common/utils/AppBaseResult.java">AppBaseResult.java</a></h3>
+<br>
+<h3>数据返回加解密工具类 <a href="https://github.com/yzcheng90/X-SpringBoot/blob/master/src/main/java/com/suke/czx/common/utils/CDESCrypt.java">CDESCrypt.java</a></h3>
+<br>
+<h3>接口controller类示例</h3>
+```
 	@ApiOperation(value="列表", notes="列表")  //swagger2的接口显示
     @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "token", required = true,dataType = "string", paramType = "query", defaultValue = "")})
 	@PostMapping("/appUpdate/list")
@@ -85,12 +87,13 @@ X-SpringBoot
         return AppBaseResult.success().setEncryptData(pageUtil); //数据加密返回
 	}
 
-</code>
+```
 
 
+<br>
+<h3>接口数据『未加密』返回</h3>
+```
 
-<h2>接口数据『未加密』返回</h2>
-<code>
 	{
 		"code": 200,
 		"message": "请求成功",
@@ -98,10 +101,13 @@ X-SpringBoot
 		"version": "1.0",
 		"mobile": ""
 	}
-</code>
 
-<h2>接口数据『加密』返回</h2>
-<code>
+```
+
+<br>
+<h3>接口数据『加密』返回</h3>
+```
+
 	{
 	    "code": 200,
 	    "message": "请求成功",
@@ -109,9 +115,10 @@ X-SpringBoot
 	    "version": "1.0",
 	    "mobile": ""
 	}
-</code>
 
+```
 
+<br>
 ![image](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20180108172123_1.png)
 ![image](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20180108172123_2.png)
 ![image](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20180108172123_3.png)
