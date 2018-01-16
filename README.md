@@ -93,7 +93,7 @@ public AppBaseResult list(@RequestBody AppBaseResult appBaseResult)throws Except
 
 ```
 ---
-> __ 接口数据『未加密』返回 __
+>接口数据『未加密』返回
 >
 ```javascript
 
@@ -107,7 +107,7 @@ public AppBaseResult list(@RequestBody AppBaseResult appBaseResult)throws Except
 
 ```
 ---
-> __ 接口数据『加密』返回 __
+>接口数据『加密』返回
 >
 ```javascript
 
@@ -121,7 +121,9 @@ public AppBaseResult list(@RequestBody AppBaseResult appBaseResult)throws Except
 
 ```
 
-<br>
+---
+>系统示例图
+
 ![image](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20180108172123_1.png)
 ![image](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20180108172123_2.png)
 ![image](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20180108172123_3.png)
@@ -135,6 +137,6 @@ public AppBaseResult list(@RequestBody AppBaseResult appBaseResult)throws Except
 - 项目访问路径：http://localhost:8080/x_springboot
 - 账号密码：admin/admin
 - Swagger路径：http://localhost:8080/x_springboot/swagger/index.html
-- 本人QQ 913624256
+- 本人QQ：913624256
 
 
