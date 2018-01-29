@@ -138,5 +138,6 @@ public AppBaseResult list(@RequestBody AppBaseResult appBaseResult)throws Except
 - 账号密码：admin/admin
 - Swagger路径：http://localhost:8080/x_springboot/swagger/index.html
 - 本人QQ：913624256
+如果喜欢，记得star fork 谢谢您的关注 x_springboot会持续维护
 
 
