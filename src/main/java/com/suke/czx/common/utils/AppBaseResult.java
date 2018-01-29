@@ -88,7 +88,7 @@ public class AppBaseResult<T> implements Serializable {
 		if(!Tools.isEmpty(data)){
 			try {
 				mData = CDESCrypt.decryptString(data, KEY);
-				mData=data;
+				//mData=data;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -100,8 +100,8 @@ public class AppBaseResult<T> implements Serializable {
 		String mData = null;
 		if(!Tools.isEmpty(this.data)){
 			try {
-//				mData = CDESCrypt.decryptString(this.data, KEY);
-				mData=this.data;
+				mData = CDESCrypt.decryptString(this.data, KEY);
+				//mData=this.data;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -113,8 +113,8 @@ public class AppBaseResult<T> implements Serializable {
 		String mData = new Gson().toJson(t);
 		try {
 			if(!Tools.isEmpty(mData)){
-//				this.data = CDESCrypt.encryptString(mData, KEY);
-				this.data=mData;
+				this.data = CDESCrypt.encryptString(mData, KEY);
+				//this.data=mData;
 			}else{
 				this.data = mData;
 			}

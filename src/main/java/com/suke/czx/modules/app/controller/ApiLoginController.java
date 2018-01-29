@@ -56,15 +56,12 @@ public class ApiLoginController {
         }
 
         //用户登录
-        Object userId = appUserService.queryByMobile(pd);
+        HashMap<String,Object> user = appUserService.queryByMobile(pd);
         //生成token
-        String token = jwtUtils.generateToken(userId);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("token", token);
-        map.put("expire", jwtUtils.getExpire());
-
-        return AppBaseResult.success().setEncryptData(map);
+        String token = jwtUtils.generateToken(user.get("user_id"));
+        user.put("token", token);
+        user.put("expire", jwtUtils.getExpire());
+        return AppBaseResult.success().setEncryptData(user);
     }
 
 }

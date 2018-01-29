@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: com.zaxxer:HikariCP-java6:2.3.13">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/zaxxer/HikariCP-java6/2.3.13/HikariCP-java6-2.3.13.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/zaxxer/HikariCP-java6/2.3.13/HikariCP-java6-2.3.13.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/com/zaxxer/HikariCP-java6/2.3.13/HikariCP-java6-2.3.13-javadoc.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/zaxxer/HikariCP-java6/2.3.13/HikariCP-java6-2.3.13-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/zaxxer/HikariCP-java6/2.3.13/HikariCP-java6-2.3.13-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/zaxxer/HikariCP-java6/2.3.13/HikariCP-java6-2.3.13-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

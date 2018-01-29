@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: com.jhlabs:filters:2.0.235">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/jhlabs/filters/2.0.235/filters-2.0.235.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/jhlabs/filters/2.0.235/filters-2.0.235.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/com/jhlabs/filters/2.0.235/filters-2.0.235-javadoc.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/jhlabs/filters/2.0.235/filters-2.0.235-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/jhlabs/filters/2.0.235/filters-2.0.235-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/jhlabs/filters/2.0.235/filters-2.0.235-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

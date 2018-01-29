@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: com.aliyun.oss:aliyun-sdk-oss:2.5.0">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/aliyun/oss/aliyun-sdk-oss/2.5.0/aliyun-sdk-oss-2.5.0.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/aliyun/oss/aliyun-sdk-oss/2.5.0/aliyun-sdk-oss-2.5.0.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/com/aliyun/oss/aliyun-sdk-oss/2.5.0/aliyun-sdk-oss-2.5.0-javadoc.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/aliyun/oss/aliyun-sdk-oss/2.5.0/aliyun-sdk-oss-2.5.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/aliyun/oss/aliyun-sdk-oss/2.5.0/aliyun-sdk-oss-2.5.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/aliyun/oss/aliyun-sdk-oss/2.5.0/aliyun-sdk-oss-2.5.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

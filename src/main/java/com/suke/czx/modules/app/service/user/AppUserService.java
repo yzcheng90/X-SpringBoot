@@ -3,6 +3,7 @@ package com.suke.czx.modules.app.service.user;
 import com.suke.czx.common.exception.RRException;
 import com.suke.czx.common.validator.Assert;
 import com.suke.czx.modules.app.service.ServiceSupport;
+import com.suke.czx.modules.user.entity.UserEntity;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import java.util.Date;
@@ -20,7 +21,7 @@ public class AppUserService extends ServiceSupport {
      * @return
      * @throws Exception
      */
-    public Object queryByMobile(HashMap<String,Object> param) throws Exception {
+    public HashMap<String,Object> queryByMobile(HashMap<String,Object> param) throws Exception {
         String mobile = param.get("mobile").toString();
         String password = param.get("password").toString();
         HashMap<String,Object> user = findForObject("api.AppUserDao.queryByMobile", mobile);
@@ -31,7 +32,7 @@ public class AppUserService extends ServiceSupport {
         if(!user.get("password").equals(userpassword)){
             throw new RRException("密码错误");
         }
-        return user.get("user_id");
+        return user;
     }
 
     /**
