@@ -1,5 +1,5 @@
 **项目说明** 
-- X-SpringBoot 是一个轻量级的Java快速开发平台，用于快速构建中小型API、RESTful API项目，该项目已经有过多个真实项目的实践，稳定、简单、快速，使我们摆脱那些重复劳动，能快速开发项目并交付【接私活利器】
+- X-SpringBoot 是一个轻量级的Java快速开发平台，基于各大开源项目组合而来，用于快速构建中小型API、RESTful API项目，该项目已经有过多个真实项目的实践，稳定、简单、快速，使我们摆脱那些重复劳动。
 
 - 专为X-SpringBoot 量身定制《接口》代码生成工具https://github.com/yzcheng90/x_springboot-inteface-generatorper
 
