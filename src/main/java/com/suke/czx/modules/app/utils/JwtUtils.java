@@ -16,7 +16,7 @@ import java.util.Date;
  * @email object_czx@163.com
  * @date 2017/9/21 22:21
  */
-@ConfigurationProperties(prefix = "renren.jwt")
+@ConfigurationProperties(prefix = "jwtconfig.jwt")
 @Component
 public class JwtUtils {
     private Logger logger = LoggerFactory.getLogger(getClass());

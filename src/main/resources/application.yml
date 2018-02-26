@@ -41,7 +41,7 @@ mybatis:
     mapperLocations: classpath:mapper/**/*.xml
     configLocation: classpath:mybatis.xml
 
-renren:
+jwtconfig:
     # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】
     jwt:
         # 加密秘钥

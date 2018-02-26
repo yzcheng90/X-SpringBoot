@@ -9,7 +9,7 @@ spring:
                 password: andy1994418
             second:  #数据源2
                 url: jdbc:mysql://192.168.0.201:3306/x_springboot?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
-                username: renren
+                username: root
                 password: 123456
             initial-size: 10
             max-active: 100

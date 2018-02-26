@@ -236,7 +236,7 @@
 						<command>pkill -f ${pack-name}</command>
 						<command>rm -f ${service-path}/x_springboot.log</command>
 						<!-- Restart jar package，write result into x_springboot.log -->
-						<command><![CDATA[nohup java -jar ${service-path}/${pack-name} --spring.profiles.active=test > ${service-path}/renren.log 2>&1 & ]]></command>
+						<command><![CDATA[nohup java -jar ${service-path}/${pack-name} --spring.profiles.active=test > ${service-path}/x-springboot.log 2>&1 & ]]></command>
 						<command><![CDATA[netstat -nptl]]></command>
 						<command><![CDATA[ps -ef | grep java | grep -v grep]]></command>
 					</commands>
