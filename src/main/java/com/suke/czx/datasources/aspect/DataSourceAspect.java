@@ -6,6 +6,7 @@ import com.suke.czx.datasources.annotation.DataSource;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
@@ -31,8 +32,8 @@ public class DataSourceAspect implements Ordered {
 
     }
 
-    @Around("dataSourcePointCut()")
-    public Object around(ProceedingJoinPoint point) throws Throwable {
+    @Before("dataSourcePointCut()")
+    public Object before(ProceedingJoinPoint point) throws Throwable {
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
 
