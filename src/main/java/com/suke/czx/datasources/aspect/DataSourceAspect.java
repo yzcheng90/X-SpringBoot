@@ -3,11 +3,9 @@ package com.suke.czx.datasources.aspect;
 import com.suke.czx.datasources.DataSourceNames;
 import com.suke.czx.datasources.DynamicDataSource;
 import com.suke.czx.datasources.annotation.DataSource;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +31,7 @@ public class DataSourceAspect implements Ordered {
     }
 
     @Before("dataSourcePointCut()")
-    public Object before(ProceedingJoinPoint point) throws Throwable {
+    public void around(JoinPoint point) throws Throwable {
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
 
@@ -45,13 +43,11 @@ public class DataSourceAspect implements Ordered {
             DynamicDataSource.setDataSource(ds.name());
             logger.debug("set datasource is " + ds.name());
         }
+    }
 
-        try {
-            return point.proceed();
-        } finally {
-            DynamicDataSource.clearDataSource();
-            logger.debug("clean datasource");
-        }
+    @After("dataSourcePointCut()")
+    public void after(){
+        DynamicDataSource.clearDataSource();
     }
 
     @Override
