@@ -13,15 +13,18 @@ import org.springframework.stereotype.Service;
  * @date 2017/9/16 23:10
  */
 @Service
-public class DataSourceTestService {
+public class DataSourceTestService implements DataSourceTestInterface{
+
     @Autowired
     private UserService userService;
 
+    @Override
     public UserEntity queryObject(Long userId){
         return userService.queryObject(userId);
     }
 
     @DataSource(name = DataSourceNames.SECOND)
+    @Override
     public UserEntity queryObject2(Long userId){
         return userService.queryObject(userId);
     }
