@@ -9,6 +9,8 @@
 
 - 专为X-SpringBoot 量身定制《安卓快速开发框架》https://github.com/yzcheng90/x-android
 
+- 专为x-android 量身定制代码生成工具 https://github.com/yzcheng90/x-android-generator  （生成出来可能包名有问题。改改也能用 ）
+
 <br> 
  
 
@@ -134,11 +136,39 @@ public AppBaseResult list(@RequestBody AppBaseResult appBaseResult)throws Except
 ![image](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20180108172123_2.png)
 ![image](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20180108172123_3.png)
 
+
+
+** 常见问题 **
+
+1、 数据库连接不上（mysql 5.7）
+
+```
+	1) 看看application.yml 配置文件中 spring.profiles.active: dev  当前配置的是dev ,就修改application-dev.yml 中的数据库连接IP用户密码
+	2) 如果改完了还是不行，看看你mysql版本8.0以上 须要修改pom.xml中的 mysql-connector-java 的版本
+
+```
+2、 加解密问题
+```
+	1) Demo中 Contorller请求响应参数类 AppBaseResult 是对请求和响应的参数进行加密处理，如果不须要可以在该类中的 decryptData 、decryptData、setEncryptData 这三个方法中加解密的地方注释
+	2）Demo中的加解密算法目前只有java 版本没有其他语言版  可以自行替换其他多语言算法
+	3）如果须要用到swagger API 须要把 1)中的三个方法中加解密的地方注释。swagger API 中参数传值 第一层为json格式 参数须要传成json然后toString 放到 data 字段中
+		如下：
+
+		{
+			"code": 200,
+			"message": "请求成功",
+			"data": "[{\"id\":\"20171130104836867615\",\"name\":\"吕经理\"}]",
+			"version": "1.0",
+			"mobile": ""
+		} 
+```
+
+
  **本地部署**
 - 下载源码
 - 创建数据库x_springboot，数据库编码为UTF-8
 - 执行doc/db.sql文件，初始化数据
-- 修改application-dev.yml，更新MySQL账号和密码
+- 修改application-test.yml，更新MySQL账号和密码
 - Eclipse、IDEA运行Application.java，则可启动项目
 - 项目访问路径：http://localhost:8080/x_springboot
 - 账号密码：admin/admin
