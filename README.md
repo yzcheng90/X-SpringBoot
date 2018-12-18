@@ -159,7 +159,7 @@ public AppBaseResult list(@RequestBody AppBaseResult appBaseResult)throws Except
  {
 	"code": 200,
 	"message": "请求成功",
-	"data": "[{\"id\":\"20171130104836867615\",\"name\":\"吕经理\"}]",
+	"data": "{\"id\":\"20171130104836867615\",\"name\":\"吕经理\"}",
 	"version": "1.0",
 	"mobile": ""
  } 
