@@ -143,24 +143,26 @@ public AppBaseResult list(@RequestBody AppBaseResult appBaseResult)throws Except
 1、 数据库连接不上（mysql 5.7）
 
 ```
-	1) 看看application.yml 配置文件中 spring.profiles.active: dev  当前配置的是dev ,就修改application-dev.yml 中的数据库连接IP用户密码
+	1) 看看application.yml 配置文件中 spring.profiles.active: dev  
+	   当前配置的是dev ,就修改application-dev.yml 中的数据库连接IP用户密码
 	2) 如果改完了还是不行，看看你mysql版本8.0以上 须要修改pom.xml中的 mysql-connector-java 的版本
 
 ```
 2、 加解密问题
 ```
-	1) Demo中 Contorller请求响应参数类 AppBaseResult 是对请求和响应的参数进行加密处理，如果不须要可以在该类中的 decryptData 、decryptData、setEncryptData 这三个方法中加解密的地方注释
+	1) Demo中 Contorller请求响应参数类 AppBaseResult 是对请求和响应的参数进行加密处理，
+	   如果不须要可以在该类中的 decryptData 、decryptData、setEncryptData 这三个方法中加解密的地方注释
 	2）Demo中的加解密算法目前只有java 版本没有其他语言版  可以自行替换其他多语言算法
-	3）如果须要用到swagger API 须要把 1)中的三个方法中加解密的地方注释。swagger API 中参数传值 第一层为json格式 参数须要传成json然后toString 放到 data 字段中
-		如下：
-
-		{
-			"code": 200,
-			"message": "请求成功",
-			"data": "[{\"id\":\"20171130104836867615\",\"name\":\"吕经理\"}]",
-			"version": "1.0",
-			"mobile": ""
-		} 
+	3）如果须要用到swagger API 须要把 1)中的三个方法中加解密的地方注释。swagger API 中参数传值。
+	   第一层为json格式 参数须要传成json然后toString 放到 data 字段中
+	 如下：
+	 {
+		"code": 200,
+		"message": "请求成功",
+		"data": "[{\"id\":\"20171130104836867615\",\"name\":\"吕经理\"}]",
+		"version": "1.0",
+		"mobile": ""
+	 } 
 ```
 
 
