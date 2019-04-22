@@ -1,11 +1,10 @@
 package com.suke.czx.common.aspect;
 
 import com.google.gson.Gson;
-import com.suke.czx.common.annotation.SysLog;
 import com.suke.czx.common.utils.HttpContextUtils;
 import com.suke.czx.common.utils.IPUtils;
-import com.suke.czx.modules.sys.entity.SysLogEntity;
-import com.suke.czx.modules.sys.entity.SysUserEntity;
+import com.suke.czx.modules.sys.entity.SysLog;
+import com.suke.czx.modules.sys.entity.SysUser;
 import com.suke.czx.modules.sys.service.SysLogService;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -57,8 +56,8 @@ public class SysLogAspect {
 		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 		Method method = signature.getMethod();
 
-		SysLogEntity sysLog = new SysLogEntity();
-		SysLog syslog = method.getAnnotation(SysLog.class);
+		SysLog sysLog = new SysLog();
+		com.suke.czx.common.annotation.SysLog syslog = method.getAnnotation(com.suke.czx.common.annotation.SysLog.class);
 		if(syslog != null){
 			//注解上的描述
 			sysLog.setOperation(syslog.value());
@@ -84,7 +83,7 @@ public class SysLogAspect {
 		sysLog.setIp(IPUtils.getIpAddr(request));
 
 		//用户名
-		String username = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getUsername();
+		String username = ((SysUser) SecurityUtils.getSubject().getPrincipal()).getUsername();
 		sysLog.setUsername(username);
 
 		sysLog.setTime(time);

@@ -1,13 +1,15 @@
 package com.suke.czx.modules.sys.service.impl;
 
-import com.suke.czx.modules.sys.dao.SysRoleMenuDao;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.suke.czx.modules.sys.mapper.SysRoleMenuMapper;
+import com.suke.czx.modules.sys.entity.SysRoleMenu;
 import com.suke.czx.modules.sys.service.SysRoleMenuService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,16 +22,17 @@ import org.springframework.transaction.annotation.Transactional;
  * @email object_czx@163.com
  * @date 2016年9月18日 上午9:44:35
  */
-@Service("sysRoleMenuService")
-public class SysRoleMenuServiceImpl implements SysRoleMenuService {
-	@Autowired
-	private SysRoleMenuDao sysRoleMenuDao;
+@Service
+@AllArgsConstructor
+public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper,SysRoleMenu> implements SysRoleMenuService {
+
+	private final SysRoleMenuMapper sysRoleMenuMapper;
 
 	@Override
 	@Transactional
 	public void saveOrUpdate(Long roleId, List<Long> menuIdList) {
 		//先删除角色与菜单关系
-		sysRoleMenuDao.delete(roleId);
+		sysRoleMenuMapper.deleteById(roleId);
 
 		if(menuIdList.size() == 0){
 			return ;
@@ -39,12 +42,12 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("roleId", roleId);
 		map.put("menuIdList", menuIdList);
-		sysRoleMenuDao.save(map);
+		sysRoleMenuMapper.saveUserMenu(map);
 	}
 
 	@Override
 	public List<Long> queryMenuIdList(Long roleId) {
-		return sysRoleMenuDao.queryMenuIdList(roleId);
+		return sysRoleMenuMapper.queryMenuIdList(roleId);
 	}
 
 }

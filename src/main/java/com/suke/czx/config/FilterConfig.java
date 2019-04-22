@@ -1,6 +1,7 @@
 package com.suke.czx.config;
 
 import com.suke.czx.common.xss.XssFilter;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,4 +41,5 @@ public class FilterConfig {
         registration.setOrder(Integer.MAX_VALUE);
         return registration;
     }
+
 }

@@ -1,82 +1,57 @@
 package com.suke.czx.modules.sys.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.gson.Gson;
 import com.suke.czx.common.exception.RRException;
-import com.suke.czx.modules.sys.dao.SysConfigDao;
-import com.suke.czx.modules.sys.entity.SysConfigEntity;
-import com.suke.czx.modules.sys.redis.SysConfigRedis;
+import com.suke.czx.modules.sys.mapper.SysConfigMapper;
+import com.suke.czx.modules.sys.entity.SysConfig;
 import com.suke.czx.modules.sys.service.SysConfigService;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
+@Service
+@AllArgsConstructor
+public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper,SysConfig> implements SysConfigService {
 
-@Service("sysConfigService")
-public class SysConfigServiceImpl implements SysConfigService {
-	@Autowired
-	private SysConfigDao sysConfigDao;
-	@Autowired
-	private SysConfigRedis sysConfigRedis;
+	private final SysConfigMapper sysConfigMapper;
 	
 	@Override
 	@Transactional
-	public void save(SysConfigEntity config) {
-		sysConfigDao.save(config);
-		sysConfigRedis.saveOrUpdate(config);
+	public boolean save(SysConfig config) {
+		sysConfigMapper.insert(config);
+		return true;
 	}
 
-	@Override
 	@Transactional
-	public void update(SysConfigEntity config) {
-		sysConfigDao.update(config);
-		sysConfigRedis.saveOrUpdate(config);
+	public void update(SysConfig config) {
+		sysConfigMapper.updateById(config);
 	}
 
 	@Override
 	@Transactional
 	public void updateValueByKey(String key, String value) {
-		sysConfigDao.updateValueByKey(key, value);
-		sysConfigRedis.delete(key);
+		UpdateWrapper<SysConfig> wrapper = new UpdateWrapper<>();
+		wrapper.eq("config_key",key)
+				.eq("config_value",value);
+		baseMapper.update(SysConfig.builder().configKey(key).configValue(value).build(),wrapper);
 	}
 
-	@Override
 	@Transactional
 	public void deleteBatch(Long[] ids) {
 		for(Long id : ids){
-			SysConfigEntity config = queryObject(id);
-			sysConfigRedis.delete(config.getKey());
+			SysConfig config = baseMapper.selectById(id);
 		}
-
-		sysConfigDao.deleteBatch(ids);
-	}
-
-	@Override
-	public List<SysConfigEntity> queryList(Map<String, Object> map) {
-		return sysConfigDao.queryList(map);
-	}
-
-	@Override
-	public int queryTotal(Map<String, Object> map) {
-		return sysConfigDao.queryTotal(map);
-	}
-
-	@Override
-	public SysConfigEntity queryObject(Long id) {
-		return sysConfigDao.queryObject(id);
+		sysConfigMapper.deleteById(ids);
 	}
 
 	@Override
 	public String getValue(String key) {
-		SysConfigEntity config = sysConfigRedis.get(key);
-		if(config == null){
-			config = sysConfigDao.queryByKey(key);
-			sysConfigRedis.saveOrUpdate(config);
-		}
-
-		return config == null ? null : config.getValue();
+		SysConfig config = baseMapper.selectOne(Wrappers.<SysConfig>query().lambda().eq(SysConfig::getConfigKey,key));
+		return config == null ? null : config.getConfigValue();
 	}
 	
 	@Override

@@ -1,7 +1,7 @@
 package com.suke.czx.modules.sys.service;
 
-import com.suke.czx.modules.sys.entity.SysUserTokenEntity;
-import com.suke.czx.modules.sys.entity.SysUserEntity;
+import com.suke.czx.modules.sys.entity.SysUserToken;
+import com.suke.czx.modules.sys.entity.SysUser;
 
 import java.util.Set;
 
@@ -17,11 +17,11 @@ public interface ShiroService {
      */
     Set<String> getUserPermissions(long userId);
 
-    SysUserTokenEntity queryByToken(String token);
+    SysUserToken queryByToken(String token);
 
     /**
      * 根据用户ID，查询用户
      * @param userId
      */
-    SysUserEntity queryUser(Long userId);
+    SysUser queryUser(Long userId);
 }

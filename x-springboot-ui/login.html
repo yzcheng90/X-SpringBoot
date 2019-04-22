@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>X-SpringBoot快速开发平台</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="css/all-skins.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body class="hold-transition login-page skin-black-light">
+<div id="canvascontainer" ref='can'></div>
+<div class="login-box" id="app" v-cloak>
+  <div class="login-logo">
+    <b>X-SpringBoot</b>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+      <p class="login-box-msg">管理员登录</p>
+      <div v-if="error" class="alert alert-danger alert-dismissible">
+        <h4 style="margin-bottom: 0px;"><i class="fa fa-exclamation-circle"></i> {{errorMsg}}</h4>
+      </div>
+      <div class="form-group has-feedback">
+          <input type="text" class="form-control" v-model="username" placeholder="账号">
+          <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+          <input type="password" class="form-control" v-model="password" placeholder="密码">
+          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+          <input type="text" class="form-control" v-model="captcha" @keyup.enter="login" placeholder="验证码">
+          <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+          <img alt="如果看不清楚，请单击图片刷新！" class="pointer" :src="src" @click="refreshCode">
+          &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" @click="refreshCode">点击刷新</a>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="checkbox icheck">
+          </div>
+        </div>
+        <!-- /.col -->
+        <div class="col-xs-14">
+          <button type="button" class="btn btn-default btn-block btn-flat" @click="login">登录</button>
+        </div>
+        <!-- /.col -->
+      </div>
+    <!-- /.social-auth-links -->
+
+  </div>
+  <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+<script src="libs/jquery.min.js"></script>
+<script src="plugins/jqgrid/jquery.jqGrid.min.js"></script>
+<script src="libs/vue.min.js"></script>
+<script src="libs/bootstrap.min.js"></script>
+<script src="libs/app.js"></script>
+<script src="libs/three.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript">
+
+    var SEPARATION = 100, AMOUNTX = 50, AMOUNTY = 50;
+    var container;
+    var camera, scene, renderer;
+    var particles, particle, count = 0;
+    var mouseX = 0, mouseY = 0;
+    var windowHalfX = window.innerWidth / 2;
+    var windowHalfY = window.innerHeight / 2;
+
+    var randomStr = Math.floor(Math.random()*999999999);
+
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            username: '',
+            password: '',
+            captcha: '',
+            error: false,
+            errorMsg: '',
+            src: baseURL + "/sys/code/"+randomStr
+        },
+        beforeCreate: function(){
+            if(self != top){
+                top.location.href = self.location.href;
+            }
+        },
+        mounted() {
+            container = document.createElement('div');
+            $("#canvascontainer").append(container);
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+            camera.position.z = 1000;
+            scene = new THREE.Scene();
+            particles = new Array();
+            var PI2 = Math.PI * 2;
+            var material = new THREE.ParticleCanvasMaterial({
+                color: 0xB4C8D2,
+                program: function (context) {
+                    context.beginPath();
+                    context.arc(0, 0, 1, 0, PI2, true);
+                    context.fill();
+                }
+            });
+            var i = 0;
+            for (var ix = 0; ix < AMOUNTX; ix++) {
+                for (var iy = 0; iy < AMOUNTY; iy++) {
+                    particle = particles[i++] = new THREE.Particle(material);
+                    particle.position.x = ix * SEPARATION - ((AMOUNTX * SEPARATION) / 2);
+                    particle.position.z = iy * SEPARATION - ((AMOUNTY * SEPARATION) / 2);
+                    scene.add(particle);
+                }
+            }
+            renderer = new THREE.CanvasRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+            document.addEventListener('mousemove', onDocumentMouseMove, false);
+            //
+            window.addEventListener('resize', onWindowResize, false);
+            animate();
+        },
+        methods: {
+            refreshCode: function(){
+                randomStr = Math.floor(Math.random()*999999999);
+                this.src = baseURL + "/sys/code/" + randomStr;
+            },
+            login: function () {
+                var data = "username="+vm.username+"&password="+vm.password+"&captcha="+vm.captcha+"&randomStr="+randomStr;
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "sys/login",
+                    data: data,
+                    dataType: "json",
+                    success: function(r){
+                        if(r.code == 0){//登录成功
+                            parent.location.href ='index.html';
+                        }else{
+                            vm.error = true;
+                            vm.errorMsg = r.msg;
+                            vm.refreshCode();
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+
+
+    // animate();
+    function init() {
+
+    }
+
+    function onWindowResize() {
+        windowHalfX = window.innerWidth / 2;
+        windowHalfY = window.innerHeight / 2;
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    //
+    function onDocumentMouseMove(event) {
+        mouseX = event.clientX - windowHalfX;
+        mouseY = event.clientY - windowHalfY;
+    }
+
+    function onDocumentTouchStart(event) {
+        if (event.touches.length === 1) {
+            event.preventDefault();
+            mouseX = event.touches[0].pageX - windowHalfX;
+            mouseY = event.touches[0].pageY - windowHalfY;
+        }
+    }
+
+    function onDocumentTouchMove(event) {
+        if (event.touches.length === 1) {
+            event.preventDefault();
+            mouseX = event.touches[0].pageX - windowHalfX;
+            mouseY = event.touches[0].pageY - windowHalfY;
+        }
+    }
+
+    //
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+    }
+
+    function render() {
+        camera.position.x += (mouseX - camera.position.x) * .05;
+        camera.position.y += (-mouseY - camera.position.y) * .05;
+        camera.lookAt(scene.position);
+        var i = 0;
+        for (var ix = 0; ix < AMOUNTX; ix++) {
+            for (var iy = 0; iy < AMOUNTY; iy++) {
+                particle = particles[i++];
+                particle.position.y = (Math.sin((ix + count) * 0.3) * 50) + (Math.sin((iy + count) * 0.5) * 50);
+                particle.scale.x = particle.scale.y = (Math.sin((ix + count) * 0.3) + 1) * 2 + (Math.sin((iy + count) * 0.5) + 1) * 2;
+            }
+        }
+        renderer.render(scene, camera);
+        count += 0.1;
+    }
+
+</script>
+
+
+<style rel="stylesheet/scss" lang="scss">
+    .tips {
+        font-size: 14px;
+        color: #fff;
+        margin-bottom: 5px;
+    }
+
+    .login-page {
+        background-color: #929aab;
+    }
+    .login-box-body {
+        background-color: #a1a8b5;
+    }
+    .svg-container {
+        padding: 6px 5px 6px 15px;
+        color: #889aa4;
+    }
+
+    #canvascontainer{
+        z-index: -10000;
+        position: absolute;
+    }
+
+</style>
+</body>
+</html>

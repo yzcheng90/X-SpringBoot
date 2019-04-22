@@ -1,9 +1,9 @@
 package com.suke.czx.modules.sys.service;
 
-import com.suke.czx.modules.sys.entity.SysLogEntity;
-
-import java.util.List;
-import java.util.Map;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.suke.czx.modules.sys.entity.SysLog;
 
 /**
  * 系统日志
@@ -12,17 +12,6 @@ import java.util.Map;
  * @email object_czx@163.com
  * @date 2017-03-08 10:40:56
  */
-public interface SysLogService {
-	
-	SysLogEntity queryObject(Long id);
-	
-	List<SysLogEntity> queryList(Map<String, Object> map);
-	
-	int queryTotal(Map<String, Object> map);
-	
-	void save(SysLogEntity sysLog);
+public interface SysLogService extends IService<SysLog> {
 
-	void delete(Long id);
-	
-	void deleteBatch(Long[] ids);
 }

@@ -2,54 +2,42 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>x_springboot</groupId>
-	<artifactId>x_springboot</artifactId>
-	<version>1.0.0</version>
+	<groupId>x-springboot</groupId>
+	<artifactId>x-springboot</artifactId>
+	<version>2.0.0</version>
 	<packaging>jar</packaging>
-	<description>x_springboot</description>
+	<description>x-springboot</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.6.RELEASE</version>
+		<version>2.1.3.RELEASE</version>
 	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<mybatis.spring.boot.version>1.3.0</mybatis.spring.boot.version>
-		<mysql.version>5.1.38</mysql.version>
-		<druid.version>1.1.3</druid.version>
-		<quartz.version>2.3.0</quartz.version>
-		<commons.lang.version>2.6</commons.lang.version>
-		<commons.fileupload.version>1.3.3</commons.fileupload.version>
-		<commons.io.version>2.5</commons.io.version>
-		<commons.codec.version>1.10</commons.codec.version>
-		<commons.configuration.version>1.10</commons.configuration.version>
-		<shiro.version>1.3.2</shiro.version>
-		<jwt.version>0.7.0</jwt.version>
+		<mybatis-plus.version>3.1.0</mybatis-plus.version>
+		<mysql.version>8.0.15</mysql.version>
+
+		<minio.version>6.0.2</minio.version>
+
+		<swagger.version>2.9.2</swagger.version>
+
+		<shiro.version>1.4.0</shiro.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<qiniu.version>[7.2.0, 7.2.99]</qiniu.version>
 		<aliyun.oss.version>2.5.0</aliyun.oss.version>
 		<qcloud.cos.version>4.4</qcloud.cos.version>
 
-		<!--wagon plugin 配置-->
-		<service-path>/work/x_springboot</service-path>
-		<pack-name>${artifactId}-${version}.jar</pack-name>
-		<remote-addr>192.168.1.10:22</remote-addr>
-		<remote-username>root</remote-username>
-		<remote-passwd>123456</remote-passwd>
-		<!--webmagic 配置-->
-		<us.codecraft.version>0.7.3</us.codecraft.version>
+		<hutool.version>4.4.5</hutool.version>
+		<commons.fileupload.version>1.3.1</commons.fileupload.version>
+		<commons.io.version>2.5</commons.io.version>
+
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -57,10 +45,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -76,37 +60,27 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<!--mybatis plus extension,包含了mybatis plus core-->
 		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>${mybatis.spring.boot.version}</version>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-extension</artifactId>
+			<version>${mybatis-plus.version}</version>
 		</dependency>
+		<!--mybatis-->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<version>${mybatis-plus.version}</version>
+		</dependency>
+		<!--mysql-->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid-spring-boot-starter</artifactId>
-			<version>${druid.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<version>${quartz.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.mchange</groupId>
-					<artifactId>c3p0</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>${commons.lang.version}</version>
-		</dependency>
+
+		<!--commons 相关-->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
@@ -117,16 +91,26 @@
 			<artifactId>commons-io</artifactId>
 			<version>${commons.io.version}</version>
 		</dependency>
+
+		<!-- 监控端点-->
 		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>${commons.codec.version}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+		<!--minio文件系统-->
 		<dependency>
-			<groupId>commons-configuration</groupId>
-			<artifactId>commons-configuration</artifactId>
-			<version>${commons.configuration.version}</version>
+			<groupId>io.minio</groupId>
+			<artifactId>minio</artifactId>
+			<version>${minio.version}</version>
 		</dependency>
+
+		<!--hutool-->
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+			<version>${hutool.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
@@ -138,15 +122,12 @@
 			<version>${shiro.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>${jwt.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>com.github.axet</groupId>
 			<artifactId>kaptcha</artifactId>
 			<version>${kaptcha.version}</version>
 		</dependency>
+
+		<!--oss 相关-->
 		<dependency>
 			<groupId>com.qiniu</groupId>
 			<artifactId>qiniu-java-sdk</artifactId>
@@ -169,79 +150,34 @@
 			</exclusions>
 		</dependency>
 
+		<!--Lombok-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!--swagger 依赖-->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
-			<version>2.6.1</version>
+			<version>${swagger.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.6.1</version>
-		</dependency>
-
-		<!--webmagic !!!-->
-		<dependency>
-			<groupId>us.codecraft</groupId>
-			<artifactId>webmagic-core</artifactId>
-			<version>${us.codecraft.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>us.codecraft</groupId>
-			<artifactId>webmagic-extension</artifactId>
-			<version>${us.codecraft.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-log4j12</artifactId>
-				</exclusion>
-			</exclusions>
+			<version>${swagger.version}</version>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<finalName>${artifactId}</finalName>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh</artifactId>
-				<version>2.8</version>
-			</extension>
-		</extensions>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<fork>true</fork>
-				</configuration>
-			</plugin>
-			<!-- 跳过单元测试 -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<skipTests>true</skipTests>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>wagon-maven-plugin</artifactId>
-				<version>1.0</version>
-				<configuration>
-					<fromFile>target/${pack-name}</fromFile>
-					<url><![CDATA[scp://${remote-username}:${remote-passwd}@${remote-addr}${service-path}]]></url>
-					<commands>
-						<!-- Kill Old Process -->
-						<command>pkill -f ${pack-name}</command>
-						<command>rm -f ${service-path}/x_springboot.log</command>
-						<!-- Restart jar package，write result into x_springboot.log -->
-						<command><![CDATA[nohup java -jar ${service-path}/${pack-name} --spring.profiles.active=test > ${service-path}/x-springboot.log 2>&1 & ]]></command>
-						<command><![CDATA[netstat -nptl]]></command>
-						<command><![CDATA[ps -ef | grep java | grep -v grep]]></command>
-					</commands>
-					<!-- 运行命令 mvn clean package wagon:upload-single wagon:sshexec-->
-					<displayCommandOutputs>true</displayCommandOutputs>
 				</configuration>
 			</plugin>
 

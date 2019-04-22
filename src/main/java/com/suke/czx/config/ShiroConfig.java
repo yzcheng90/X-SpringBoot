@@ -1,7 +1,7 @@
 package com.suke.czx.config;
 
-import com.suke.czx.modules.sys.oauth2.OAuth2Filter;
-import com.suke.czx.modules.sys.oauth2.OAuth2Realm;
+import com.suke.czx.authentication.OAuth2Filter;
+import com.suke.czx.authentication.OAuth2Realm;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -50,25 +50,23 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
 
+        shiroFilter.setLoginUrl("/sys/unauthorized");
+        shiroFilter.setUnauthorizedUrl("/sys/unauthorized");
+
         //oauth过滤
         Map<String, Filter> filters = new HashMap<>();
         filters.put("oauth2", new OAuth2Filter());
         shiroFilter.setFilters(filters);
 
         Map<String, String> filterMap = new LinkedHashMap<>();
-        filterMap.put("/webjars/**", "anon");
-        filterMap.put("/druid/**", "anon");
-        filterMap.put("/app/**", "anon");
-        filterMap.put("/sys/login", "anon");
-        filterMap.put("/**/*.css", "anon");
-        filterMap.put("/**/*.js", "anon");
-        filterMap.put("/**/*.html", "anon");
+        filterMap.put("/actuator/**", "anon");
+        filterMap.put("/app/**", "anon");  //APP 模块开放 后面通过拦截器管理
+        filterMap.put("/sys/login", "anon"); //用户密码登录
+        filterMap.put("/sys/unauthorized", "anon"); //未认证
+        filterMap.put("/sys/code/**", "anon"); //验证码
+        filterMap.put("/mobile/code/**", "anon"); //短信验证码
+        filterMap.put("/mobile/login/**", "anon"); //手机短信登录
         filterMap.put("/v2/**", "anon");
-        filterMap.put("/fonts/**", "anon");
-        filterMap.put("/plugins/**", "anon");
-        filterMap.put("/swagger/**", "anon");
-        filterMap.put("/favicon.ico", "anon");
-        filterMap.put("/captcha.jpg", "anon");
         filterMap.put("/", "anon");
         filterMap.put("/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);

@@ -1,5 +1,8 @@
 package com.suke.czx.modules.sys.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.suke.czx.modules.sys.entity.SysUserRole;
+
 import java.util.List;
 
 
@@ -9,16 +12,8 @@ import java.util.List;
  * 
  * @author czx
  * @email object_czx@163.com
- * @date 2016年9月18日 上午9:43:24
+ * @date 2019年4月17日
  */
-public interface SysUserRoleService {
-	
-	void saveOrUpdate(Long userId, List<Long> roleIdList);
-	
-	/**
-	 * 根据用户ID，获取角色ID列表
-	 */
-	List<Long> queryRoleIdList(Long userId);
-	
-	void delete(Long userId);
+public interface SysUserRoleService extends IService<SysUserRole> {
+
 }

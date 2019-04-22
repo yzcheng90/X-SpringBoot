@@ -1,9 +1,9 @@
 package com.suke.czx.modules.sys.service;
 
-import com.suke.czx.modules.sys.entity.SysRoleEntity;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.suke.czx.modules.sys.entity.SysRole;
 
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -13,22 +13,13 @@ import java.util.Map;
  * @email object_czx@163.com
  * @date 2016年9月18日 上午9:42:52
  */
-public interface SysRoleService {
-	
-	SysRoleEntity queryObject(Long roleId);
-	
-	List<SysRoleEntity> queryList(Map<String, Object> map);
-	
-	int queryTotal(Map<String, Object> map);
-	
-	void save(SysRoleEntity role);
-	
-	void update(SysRoleEntity role);
-	
-	void deleteBatch(Long[] roleIds);
+public interface SysRoleService extends IService<SysRole> {
 	
 	/**
 	 * 查询用户创建的角色ID列表
 	 */
 	List<Long> queryRoleIdList(Long createUserId);
+
+	void deleteBath(Long[] ids);
+
 }

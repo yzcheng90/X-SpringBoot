@@ -8,8 +8,14 @@ package com.suke.czx.common.utils;
  * @date 2016年11月15日 下午1:23:52
  */
 public class Constant {
+
+    public static final String NUMBER_CODE_KEY = "x_springboot:number:code:";
+    public static final String MOBILE_CODE_KEY = "x_springboot:mobile:code:";
+
 	/** 超级管理员ID */
 	public static final int SUPER_ADMIN = 1;
+
+	public static final int CODE_SIZE = 4;
 
 	/**
 	 * 菜单类型
@@ -86,7 +92,11 @@ public class Constant {
         /**
          * 腾讯云
          */
-        QCLOUD(3);
+        QCLOUD(3),
+        /**
+         * minio
+         */
+        MINIO(4);
 
         private int value;
 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.suke.czx.modules.sys.mapper.SysMenuMapper">
+	
+	<select id="queryNotButtonList" resultType="com.suke.czx.modules.sys.entity.SysMenu">
+		select * from sys_menu where type != 2 order by order_num asc 
+	</select>
+
+	
+	<!-- 查询用户的权限列表 --> 
+	<select id="queryUserList" resultType="com.suke.czx.modules.sys.entity.SysMenu">
+		select distinct m.*,(select p.name from sys_menu p where p.menu_id = m.parent_id) as parentName
+			from sys_user_role ur 
+			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
+			LEFT JOIN sys_menu m on rm.menu_id = m.menu_id 
+		where ur.user_id = #{userId} order by m.order_num asc
+	</select>
+
+	<!-- 查询用户的所有菜单ID -->
+	<select id="queryAllMenuId" resultType="long">
+		select distinct rm.menu_id from sys_user_role ur
+			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
+		where ur.user_id = #{userId}
+	</select>
+	
+</mapper>

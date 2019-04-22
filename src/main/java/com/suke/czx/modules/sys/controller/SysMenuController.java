@@ -1,21 +1,21 @@
 package com.suke.czx.modules.sys.controller;
 
 import com.suke.czx.common.annotation.SysLog;
+import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.exception.RRException;
 import com.suke.czx.common.utils.Constant.MenuType;
 import com.suke.czx.common.utils.R;
-import com.suke.czx.modules.sys.entity.SysMenuEntity;
+import com.suke.czx.modules.sys.entity.SysMenu;
 import com.suke.czx.modules.sys.service.ShiroService;
 import com.suke.czx.modules.sys.service.SysMenuService;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -26,20 +26,20 @@ import java.util.Set;
  * @email object_czx@163.com
  * @date 2016年10月27日 下午9:58:15
  */
+
 @RestController
 @RequestMapping("/sys/menu")
+@AllArgsConstructor
 public class SysMenuController extends AbstractController {
-	@Autowired
-	private SysMenuService sysMenuService;
-	@Autowired
-	private ShiroService shiroService;
+	private final SysMenuService sysMenuService;
+	private final ShiroService shiroService;
 
 	/**
 	 * 导航菜单
 	 */
 	@RequestMapping("/nav")
 	public R nav(){
-		List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(getUserId());
+		List<SysMenu> menuList = sysMenuService.getUserMenuList(getUserId());
 		Set<String> permissions = shiroService.getUserPermissions(getUserId());
 		return R.ok().put("menuList", menuList).put("permissions", permissions);
 	}
@@ -49,8 +49,8 @@ public class SysMenuController extends AbstractController {
 	 */
 	@RequestMapping("/list")
 	@RequiresPermissions("sys:menu:list")
-	public List<SysMenuEntity> list(){
-		List<SysMenuEntity> menuList = sysMenuService.queryList(new HashMap<String, Object>());
+	public List<SysMenu> list(){
+		List<SysMenu> menuList = sysMenuService.list();
 
 		return menuList;
 	}
@@ -62,10 +62,10 @@ public class SysMenuController extends AbstractController {
 	@RequiresPermissions("sys:menu:select")
 	public R select(){
 		//查询列表数据
-		List<SysMenuEntity> menuList = sysMenuService.queryNotButtonList();
+		List<SysMenu> menuList = sysMenuService.queryNotButtonList();
 		
 		//添加顶级菜单
-		SysMenuEntity root = new SysMenuEntity();
+		SysMenu root = new SysMenu();
 		root.setMenuId(0L);
 		root.setName("一级菜单");
 		root.setParentId(-1L);
@@ -81,7 +81,7 @@ public class SysMenuController extends AbstractController {
 	@RequestMapping("/info/{menuId}")
 	@RequiresPermissions("sys:menu:info")
 	public R info(@PathVariable("menuId") Long menuId){
-		SysMenuEntity menu = sysMenuService.queryObject(menuId);
+		SysMenu menu = sysMenuService.getById(menuId);
 		return R.ok().put("menu", menu);
 	}
 	
@@ -91,7 +91,7 @@ public class SysMenuController extends AbstractController {
 	@SysLog("保存菜单")
 	@RequestMapping("/save")
 	@RequiresPermissions("sys:menu:save")
-	public R save(@RequestBody SysMenuEntity menu){
+	public R save(@RequestBody SysMenu menu){
 		//数据校验
 		verifyForm(menu);
 		
@@ -106,11 +106,11 @@ public class SysMenuController extends AbstractController {
 	@SysLog("修改菜单")
 	@RequestMapping("/update")
 	@RequiresPermissions("sys:menu:update")
-	public R update(@RequestBody SysMenuEntity menu){
+	public R update(@RequestBody SysMenu menu){
 		//数据校验
 		verifyForm(menu);
 				
-		sysMenuService.update(menu);
+		sysMenuService.updateById(menu);
 		
 		return R.ok();
 	}
@@ -123,12 +123,12 @@ public class SysMenuController extends AbstractController {
 	@RequiresPermissions("sys:menu:delete")
 	public R delete(long menuId){
 		//判断是否有子菜单或按钮
-		List<SysMenuEntity> menuList = sysMenuService.queryListParentId(menuId);
+		List<SysMenu> menuList = sysMenuService.queryListParentId(menuId);
 		if(menuList.size() > 0){
 			return R.error("请先删除子菜单或按钮");
 		}
 
-		sysMenuService.deleteBatch(new Long[]{menuId});
+		sysMenuService.removeById(menuId);
 		
 		return R.ok();
 	}
@@ -136,7 +136,7 @@ public class SysMenuController extends AbstractController {
 	/**
 	 * 验证参数是否正确
 	 */
-	private void verifyForm(SysMenuEntity menu){
+	private void verifyForm(SysMenu menu){
 		if(StringUtils.isBlank(menu.getName())){
 			throw new RRException("菜单名称不能为空");
 		}
@@ -155,7 +155,7 @@ public class SysMenuController extends AbstractController {
 		//上级菜单类型
 		int parentType = MenuType.CATALOG.getValue();
 		if(menu.getParentId() != 0){
-			SysMenuEntity parentMenu = sysMenuService.queryObject(menu.getParentId());
+			SysMenu parentMenu = sysMenuService.getById(menu.getParentId());
 			parentType = parentMenu.getType();
 		}
 		

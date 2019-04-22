@@ -1,27 +1,30 @@
 package com.suke.czx.modules.sys.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.suke.czx.common.utils.Constant;
-import com.suke.czx.modules.sys.dao.SysMenuDao;
-import com.suke.czx.modules.sys.dao.SysUserDao;
-import com.suke.czx.modules.sys.dao.SysUserTokenDao;
-import com.suke.czx.modules.sys.entity.SysMenuEntity;
-import com.suke.czx.modules.sys.entity.SysUserTokenEntity;
+import com.suke.czx.modules.sys.mapper.SysUserMapper;
+import com.suke.czx.modules.sys.mapper.SysUserTokenMapper;
+import com.suke.czx.modules.sys.entity.SysMenu;
+import com.suke.czx.modules.sys.entity.SysUser;
+import com.suke.czx.modules.sys.entity.SysUserToken;
 import com.suke.czx.modules.sys.service.ShiroService;
-import com.suke.czx.modules.sys.entity.SysUserEntity;
+import com.suke.czx.modules.sys.service.SysMenuService;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+
+@Lazy
 @Service
+@AllArgsConstructor
 public class ShiroServiceImpl implements ShiroService {
-    @Autowired
-    private SysMenuDao sysMenuDao;
-    @Autowired
-    private SysUserDao sysUserDao;
-    @Autowired
-    private SysUserTokenDao sysUserTokenDao;
+
+    private final SysMenuService sysMenuService;
+    private final SysUserMapper sysUserMapper;
+    private final SysUserTokenMapper sysUserTokenMapper;
 
     @Override
     public Set<String> getUserPermissions(long userId) {
@@ -29,13 +32,13 @@ public class ShiroServiceImpl implements ShiroService {
 
         //系统管理员，拥有最高权限
         if(userId == Constant.SUPER_ADMIN){
-            List<SysMenuEntity> menuList = sysMenuDao.queryList(new HashMap<>());
+            List<SysMenu> menuList = sysMenuService.list();
             permsList = new ArrayList<>(menuList.size());
-            for(SysMenuEntity menu : menuList){
+            for(SysMenu menu : menuList){
                 permsList.add(menu.getPerms());
             }
         }else{
-            permsList = sysUserDao.queryAllPerms(userId);
+            permsList = sysUserMapper.queryAllPerms(userId);
         }
         //用户权限列表
         Set<String> permsSet = new HashSet<>();
@@ -49,12 +52,14 @@ public class ShiroServiceImpl implements ShiroService {
     }
 
     @Override
-    public SysUserTokenEntity queryByToken(String token) {
-        return sysUserTokenDao.queryByToken(token);
+    public SysUserToken queryByToken(String token) {
+        QueryWrapper<SysUserToken> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("token",token);
+        return sysUserTokenMapper.selectOne(queryWrapper);
     }
 
     @Override
-    public SysUserEntity queryUser(Long userId) {
-        return sysUserDao.queryObject(userId);
+    public SysUser queryUser(Long userId) {
+        return sysUserMapper.selectById(userId);
     }
 }

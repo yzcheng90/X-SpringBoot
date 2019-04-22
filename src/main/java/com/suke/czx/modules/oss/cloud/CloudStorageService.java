@@ -1,10 +1,8 @@
 package com.suke.czx.modules.oss.cloud;
 
-import com.suke.czx.common.utils.DateUtils;
+import cn.hutool.core.date.DateUtil;
 import org.apache.commons.lang.StringUtils;
-
 import java.io.InputStream;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -17,6 +15,13 @@ public abstract class CloudStorageService {
     /** 云存储配置信息 */
     CloudStorageConfig config;
 
+    public String newFileName(){
+        return  UUID.randomUUID().toString().replaceAll("-", "");
+    }
+    public String newFileName(String suffix){
+        return  UUID.randomUUID().toString().replaceAll("-", "") + "." + suffix;
+    }
+
     /**
      * 文件路径
      * @param prefix 前缀
@@ -24,10 +29,9 @@ public abstract class CloudStorageService {
      * @return 返回上传路径
      */
     public String getPath(String prefix, String suffix) {
-        //生成uuid
-        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+
         //文件路径
-        String path = DateUtils.format(new Date(), "yyyyMMdd") + "/" + uuid;
+        String path = DateUtil.today() + "/" + newFileName();
 
         if(StringUtils.isNotBlank(prefix)){
             path = prefix + "/" + path;
