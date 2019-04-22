@@ -94,7 +94,10 @@ X-SpringBoot
      3、启动nginx 访问 localhost
  ```
 
-
+**系统截图**
+![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20190419153826.jpg)
+![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20190422163826.jpg)
+![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20190422163331.jpg)
 
 **常见问题**
 
