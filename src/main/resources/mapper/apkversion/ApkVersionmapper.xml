@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.suke.czx.modules.apkversion.mapper.ApkVersionMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.suke.czx.modules.apkversion.entity.ApkVersion" id="ApkVersionMap">
+        <result property="id" column="id"/>
+        <result property="appName" column="app_name"/>
+        <result property="updateContent" column="update_content"/>
+        <result property="versionCode" column="version_code"/>
+        <result property="versionName" column="version_name"/>
+        <result property="packageName" column="package_name"/>
+        <result property="downloadUrl" column="download_url"/>
+        <result property="appName" column="app_name"/>
+        <result property="md5Value" column="md5_value"/>
+        <result property="fileSize" column="file_size"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="isForce" column="is_force"/>
+        <result property="isIgnorable" column="is_ignorable"/>
+        <result property="isSilent" column="is_silent"/>
+    </resultMap>
+
+</mapper>

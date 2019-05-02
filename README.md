@@ -1,4 +1,10 @@
-**目前版本更新到V2.0** 
+<h1> X-SpringBoot </h1>
+
+![Image text](https://img.shields.io/badge/x--springboot-v2.1-green.svg)
+![Image text](https://img.shields.io/badge/springboot-2.1.3RELEASE-green.svg)
+![Image text](https://img.shields.io/badge/MyBatis%20Plus-3.1.0-green.svg)
+
+[更新日志](https://github.com/yzcheng90/X-SpringBoot/tree/master/doc/updateLog.md) | [项目地址](https://github.com/yzcheng90)
 
 **项目说明** 
 - X-SpringBoot 是一个轻量级的Java快速开发平台，基于各大开源项目组合而来，用于快速构建中小型API、RESTful API项目，该项目已经有过多个真实项目的实践，稳定、简单、快速，使我们摆脱那些重复劳动。
@@ -31,7 +37,10 @@
 **项目结构** 
 ```
 X-SpringBoot
-├─doc  项目SQL语句
+├─doc  
+│  ├─db.sql 项目SQL语句
+│  ├─nginx.confi nginx 配置文件
+│  ├─updateLog 更新日志
 │
 ├─authentication 权限认证
 ├─common 公共模块
@@ -50,6 +59,8 @@ X-SpringBoot
 │  ├─app API接口模块(APP调用)
 │  ├─oss 文件服务模块
 │  └─sys 权限模块
+│  └─apkversion APK 版本管理
+│  └─gen 代码生成
 │ 
 ├─Application 项目启动类
 ├─Swagger2 swagger2类

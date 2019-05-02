@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>x-springboot</groupId>
 	<artifactId>x-springboot</artifactId>
-	<version>2.0.0</version>
+	<version>2.1.0</version>
 	<packaging>jar</packaging>
 	<description>x-springboot</description>
 
@@ -22,7 +22,7 @@
 		<mysql.version>8.0.15</mysql.version>
 
 		<minio.version>6.0.2</minio.version>
-
+		<velocity.version>1.7</velocity.version>
 		<swagger.version>2.9.2</swagger.version>
 
 		<shiro.version>1.4.0</shiro.version>
@@ -34,6 +34,7 @@
 		<hutool.version>4.4.5</hutool.version>
 		<commons.fileupload.version>1.3.3</commons.fileupload.version>
 		<commons.io.version>2.5</commons.io.version>
+		<commons.configuration.version>1.10</commons.configuration.version>
 
 	</properties>
 
@@ -61,6 +62,13 @@
 			<optional>true</optional>
 		</dependency>
 
+        <!--apk 解析-->
+		<dependency>
+			<groupId>net.dongliu</groupId>
+			<artifactId>apk-parser</artifactId>
+			<version>2.6.5</version>
+		</dependency>
+
 		<!--mybatis plus extension,包含了mybatis plus core-->
 		<dependency>
 			<groupId>com.baomidou</groupId>
@@ -80,6 +88,13 @@
 			<version>${mysql.version}</version>
 		</dependency>
 
+		<!--代码生成模板引擎-->
+		<dependency>
+			<artifactId>velocity</artifactId>
+			<groupId>org.apache.velocity</groupId>
+			<version>${velocity.version}</version>
+		</dependency>
+
 		<!--commons 相关-->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
@@ -90,6 +105,11 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${commons.io.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>${commons.configuration.version}</version>
 		</dependency>
 
 		<!-- 监控端点-->

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.suke.czx.modules.gen.mapper.SysGenMapper">
+	<select id="queryTableList" resultType="com.suke.czx.modules.gen.entity.InfoRmationSchema">
+		select * from (
+			select table_name tableName, engine, table_comment tableComment, create_time createTime from
+			information_schema.tables
+			where table_schema = (select database())
+		) t
+		<where>
+			${ew.sqlSegment}
+		</where>
+	</select>
+	
+	<select id="queryColumns" resultType="com.suke.czx.modules.gen.entity.ColumnEntity">
+		select * from (
+			select column_name columnName, data_type dataType, column_comment columnComment, column_key columnKey, extra,table_name tableName
+			from information_schema.columns
+			where table_schema = (select database())
+		) t
+		<where>
+			${ew.sqlSegment}
+		</where>
+	</select>
+</mapper>

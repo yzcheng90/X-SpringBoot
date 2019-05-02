@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>APK版本管理</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link rel="stylesheet" href="../../css/bootstrap.min.css">
+<link rel="stylesheet" href="../../css/font-awesome.min.css">
+<link rel="stylesheet" href="../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
+<link rel="stylesheet" href="../../plugins/ztree/css/metroStyle/metroStyle.css">
+<link rel="stylesheet" href="../../css/main.css">
+<script src="../../libs/jquery.min.js"></script>
+<script src="../../plugins/layer/layer.js"></script>
+<script src="../../libs/bootstrap.min.js"></script>
+<script src="../../libs/vue.min.js"></script>
+<script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
+<script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
+<script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../../libs/ajaxupload.js"></script>
+</head>
+<body>
+<div id="app" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+			<a class="btn btn-default" id="upload"><i class="fa fa-plus"></i>&nbsp;上传APK文件</a>
+			<a v-if="hasPermission('apkversion:apkversion:update')" class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			<a v-if="hasPermission('apkversion:apkversion:delete')" class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+		</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+    <div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+
+			<div class="form-group">
+				<div class="col-sm-2 control-label">文件名</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="apkVersion.appName"  disabled="disabled" placeholder="文件名"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">版本码</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="apkVersion.versionCode"  disabled="disabled" placeholder="版本码"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">包名</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="apkVersion.packageName" disabled="disabled" placeholder="包名"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">MD5值</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="apkVersion.md5Value"  disabled="disabled" placeholder="MD5值"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">文件大小</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="apkVersion.fileSize"  disabled="disabled" placeholder="文件大小"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">版本号</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="apkVersion.versionName" placeholder="版本号"/>
+				</div>
+			</div>
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">更新内容</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="apkVersion.updateContent" placeholder="更新内容"/>
+			    </div>
+			</div>
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">下载地址</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="apkVersion.downloadUrl" placeholder="下载地址"/>
+			    </div>
+			</div>
+
+			<div class="form-group">
+			   	<div class="col-sm-4 control-label">是否强制安装</div>
+			   	<div class="col-sm-8">
+					<label class="radio-inline">
+						<input type="radio" name="isForce" value="0" v-model="apkVersion.isForce" checked /> 否
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="isForce" value="1" v-model="apkVersion.isForce"/> 是
+					</label>
+			    </div>
+			</div>
+			<div class="form-group">
+			   	<div class="col-sm-4 control-label">是否可忽略该版本</div>
+			   	<div class="col-sm-8">
+					<label class="radio-inline">
+						<input type="radio" name="isIgnorable" value="0" v-model="apkVersion.isIgnorable" checked /> 否
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="isIgnorable" value="1" v-model="apkVersion.isIgnorable"/> 是
+					</label>
+			    </div>
+			</div>
+			<div class="form-group">
+			   	<div class="col-sm-4 control-label">是否静默下载</div>
+			   	<div class="col-sm-8">
+					<label class="radio-inline">
+						<input type="radio" name="isSilent" value="0" v-model="apkVersion.isSilent" checked /> 否
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="isSilent" value="1" v-model="apkVersion.isSilent"/> 是
+					</label>
+			    </div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label"></div> 
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script src="../../js/modules/apkversion/apkversion.js"></script>
+</body>
+</html>

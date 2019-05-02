@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>代码生成器</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link rel="stylesheet" href="../../css/bootstrap.min.css">
+<link rel="stylesheet" href="../../css/font-awesome.min.css">
+<link rel="stylesheet" href="../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
+<link rel="stylesheet" href="../../css/main.css">
+<script src="../../libs/jquery.min.js"></script>
+<script src="../../plugins/layer/layer.js"></script>
+<script src="../../libs/bootstrap.min.js"></script>
+<script src="../../libs/vue.min.js"></script>
+<script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
+<script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
+<script src="../../js/common.js"></script>
+</head>
+<body>
+<div id="app">
+	<div v-show="showList">
+		<div class="grid-btn">
+			<div class="form-group col-sm-2">
+				<input type="text" class="form-control" v-model="q.tableName" @keyup.enter="query" placeholder="表名">
+			</div>
+			<a class="btn btn-default" @click="query">查询</a>
+			<a class="btn btn-primary" @click="showConfig"><i class="fa fa-file-code-o"></i>&nbsp;生成代码</a>
+		</div>
+		<table id="jqGrid"></table>
+		<div id="jqGridPager"></div>
+	</div>
+	<div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">代码生成配置</div>
+		<form class="form-horizontal">
+			<div class="form-group">
+				<div class="col-sm-2 control-label">表</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="config.genTable" disabled="disabled"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">启动类所在包名</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="config.mainPath" placeholder="启动类所在包名"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">包名</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="config.packagePath" placeholder="包名"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">模块名</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="config.moduleName" placeholder="模块名"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">author</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="config.author" placeholder="author"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">email</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="config.email" placeholder="email"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label"></div>
+				<input type="button" class="btn btn-default" @click="generator" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="query" value="返回"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script src="../../js/modules/gen/generator.js"></script>
+</body>
+</html>

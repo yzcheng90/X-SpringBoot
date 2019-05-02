@@ -14,6 +14,10 @@ spring:
         host: localhost
         port: 6379
         password:       # 密码（默认为空）
+    servlet:
+        multipart:
+            maxFileSize: 104857600 #100MB
+            maxRequestSize: 104857600 #100MB
 
 # 暴露监控端点后会打印所有的端点
 management:
