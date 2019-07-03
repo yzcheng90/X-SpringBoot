@@ -2,9 +2,7 @@ package com.suke.czx.modules.sys.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.suke.czx.modules.sys.entity.SysRoleMenu;
-import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,11 +13,6 @@ import java.util.Map;
  * @date 2016年9月18日 上午9:33:46
  */
 public interface SysRoleMenuMapper extends BaseMapper<SysRoleMenu> {
-	
-	/**
-	 * 根据角色ID，获取菜单ID列表
-	 */
-	List<Long> queryMenuIdList(Long roleId);
 
 	void saveUserMenu(Map<String, Object> map);
 }

@@ -125,7 +125,7 @@ public class SysUserController extends AbstractController {
 		ValidatorUtils.validateEntity(user);
 		
 		user.setCreateUserId(getUserId());
-		sysUserService.save(user);
+		sysUserService.saveUserRole(user);
 		
 		return R.ok();
 	}
@@ -140,7 +140,7 @@ public class SysUserController extends AbstractController {
 		ValidatorUtils.validateEntity(user);
 		
 		user.setCreateUserId(getUserId());
-		sysUserService.updateById(user);
+		sysUserService.updateUserRole(user);
 		
 		return R.ok();
 	}

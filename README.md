@@ -1,7 +1,7 @@
 <h1> X-SpringBoot </h1>
 
-![Image text](https://img.shields.io/badge/x--springboot-v2.1-green.svg)
-![Image text](https://img.shields.io/badge/springboot-2.1.3RELEASE-green.svg)
+![Image text](https://img.shields.io/badge/x--springboot-v2.1.1-green.svg)
+![Image text](https://img.shields.io/badge/springboot-2.1.3-green.svg)
 ![Image text](https://img.shields.io/badge/MyBatis%20Plus-3.1.0-green.svg)
 
 [更新日志](https://github.com/yzcheng90/X-SpringBoot/tree/master/doc/updateLog.md) | [项目地址](https://github.com/yzcheng90)
@@ -134,6 +134,6 @@ X-SpringBoot
 
 - 交流QQ群：17470566
 - 本人QQ：913624256
-- 如果喜欢，记得star fork 谢谢您的关注 x_springboot会持续维护
+- 如果喜欢，记得star fork 谢谢您的关注 x-springboot会持续维护
 
 

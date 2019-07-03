@@ -22,4 +22,7 @@ public interface SysRoleService extends IService<SysRole> {
 
 	void deleteBath(Long[] ids);
 
+	void saveRoleMenu(SysRole role);
+	void updateRoleMenu(SysRole role);
+
 }

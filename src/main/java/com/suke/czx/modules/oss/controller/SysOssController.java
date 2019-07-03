@@ -51,6 +51,7 @@ public class SysOssController extends AbstractController {
 
 	private final SysOssService sysOssService;
     private final SysConfigService sysConfigService;
+    private final OSSFactory ossFactory;
 
     private final static String KEY = ConfigConstant.CLOUD_STORAGE_CONFIG_KEY;
 
@@ -127,7 +128,7 @@ public class SysOssController extends AbstractController {
 
 		//上传文件
 		String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-		String url = OSSFactory.build().uploadSuffix(file.getBytes(), suffix);
+		String url = ossFactory.build().uploadSuffix(file.getBytes(), suffix);
 
 		//保存文件信息
 		SysOss ossEntity = new SysOss();
@@ -163,6 +164,7 @@ public class SysOssController extends AbstractController {
 		ApkVersion apkVersion = ApkVersion
 				.builder()
 				.versionCode(Math.toIntExact(apkMeta.getVersionCode()))
+				.versionName(apkMeta.getVersionName())
 				.appName(apkMeta.getLabel())
 				.packageName(apkMeta.getPackageName())
 				.fileName(file.getOriginalFilename())
@@ -172,7 +174,7 @@ public class SysOssController extends AbstractController {
 
 		//上传文件
 //		String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-//		String url = OSSFactory.build().uploadSuffix(file.getBytes(), suffix);
+//		String url = ossFactory.build().uploadSuffix(file.getBytes(), suffix);
 //
 //		//保存文件信息
 //		SysOss ossEntity = new SysOss();

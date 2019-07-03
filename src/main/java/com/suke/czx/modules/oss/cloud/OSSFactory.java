@@ -1,9 +1,10 @@
 package com.suke.czx.modules.oss.cloud;
 
-import com.suke.czx.common.utils.Constant;
-import com.suke.czx.common.utils.SpringContextUtils;
-import com.suke.czx.modules.sys.service.SysConfigService;
 import com.suke.czx.common.utils.ConfigConstant;
+import com.suke.czx.common.utils.Constant;
+import com.suke.czx.modules.sys.service.SysConfigService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 /**
  * 文件上传Factory
@@ -11,14 +12,12 @@ import com.suke.czx.common.utils.ConfigConstant;
  * @email object_czx@163.com
  * @date 2017-03-26 10:18
  */
-public final class OSSFactory {
-    private static SysConfigService sysConfigService;
+@Component
+@AllArgsConstructor
+public class OSSFactory {
+    private SysConfigService sysConfigService;
 
-    static {
-        OSSFactory.sysConfigService = (SysConfigService) SpringContextUtils.getBean("sysConfigService");
-    }
-
-    public static CloudStorageService build(){
+    public CloudStorageService build(){
         //获取云存储配置信息
         CloudStorageConfig config = sysConfigService.getConfigObject(ConfigConstant.CLOUD_STORAGE_CONFIG_KEY, CloudStorageConfig.class);
 

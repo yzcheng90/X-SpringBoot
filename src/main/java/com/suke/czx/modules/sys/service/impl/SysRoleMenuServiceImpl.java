@@ -1,5 +1,6 @@
 package com.suke.czx.modules.sys.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.suke.czx.modules.sys.mapper.SysRoleMenuMapper;
 import com.suke.czx.modules.sys.entity.SysRoleMenu;
@@ -8,6 +9,7 @@ import com.suke.czx.modules.sys.service.SysRoleMenuService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,7 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper,SysRol
 	@Transactional
 	public void saveOrUpdate(Long roleId, List<Long> menuIdList) {
 		//先删除角色与菜单关系
-		sysRoleMenuMapper.deleteById(roleId);
+		sysRoleMenuMapper.delete(Wrappers.<SysRoleMenu>query().lambda().eq(SysRoleMenu::getRoleId,roleId));
 
 		if(menuIdList.size() == 0){
 			return ;
@@ -47,7 +49,11 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper,SysRol
 
 	@Override
 	public List<Long> queryMenuIdList(Long roleId) {
-		return sysRoleMenuMapper.queryMenuIdList(roleId);
+		return sysRoleMenuMapper
+				.selectList(Wrappers.<SysRoleMenu>query().lambda().eq(SysRoleMenu::getRoleId,roleId))
+				.stream()
+				.map(SysRoleMenu::getMenuId)
+				.collect(Collectors.toList());
 	}
 
 }

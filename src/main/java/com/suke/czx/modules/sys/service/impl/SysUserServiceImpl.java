@@ -48,7 +48,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 
 	@Override
 	@Transactional
-	public boolean save(SysUser user) {
+	public void saveUserRole(SysUser user) {
 		user.setCreateTime(new Date());
 		//sha256加密
 		String salt = RandomStringUtils.randomAlphanumeric(20);
@@ -63,11 +63,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 
 		//保存用户与角色关系
 		saveUserRoleList(user);
-		return true;
 	}
 
+	@Override
 	@Transactional
-	public void update(SysUser user) {
+	public void updateUserRole(SysUser user) {
 		if(StringUtils.isBlank(user.getPassword())){
 			user.setPassword(null);
 		}else{

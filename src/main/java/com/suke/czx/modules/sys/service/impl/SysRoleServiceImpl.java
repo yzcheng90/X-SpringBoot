@@ -36,7 +36,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
 	@Override
 	@Transactional
-	public boolean save(SysRole role) {
+	public void saveRoleMenu(SysRole role) {
 		role.setCreateTime(new Date());
 		sysRoleMapper.insert(role);
 		
@@ -45,11 +45,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 		
 		//保存角色与菜单关系
 		sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());
-		return true;
 	}
 
+	@Override
 	@Transactional
-	public void update(SysRole role) {
+	public void updateRoleMenu(SysRole role) {
 		sysRoleMapper.updateById(role);
 		
 		//检查权限是否越权

@@ -52,9 +52,9 @@ public class SysRoleController extends AbstractController {
 			queryWrapper
 					.like("role_name",MapUtil.getStr(params,"key"));
 		}
-		IPage<SysRole> sysConfigList = sysRoleService.page(mpPageConvert.<SysRole>pageParamConvert(params),queryWrapper);
+		IPage<SysRole> sysRoleIPage = sysRoleService.page(mpPageConvert.<SysRole>pageParamConvert(params),queryWrapper);
 
-		return R.ok().put("page", mpPageConvert.pageValueConvert(sysConfigList));
+		return R.ok().put("page", mpPageConvert.pageValueConvert(sysRoleIPage));
 	}
 	
 	/**
@@ -63,7 +63,6 @@ public class SysRoleController extends AbstractController {
 	@RequestMapping("/select")
 	@RequiresPermissions("sys:role:select")
 	public R select(){
-		Map<String, Object> map = new HashMap<>();
 		List<SysRole> list;
 		//如果不是超级管理员，则只查询自己所拥有的角色列表
 		if(getUserId() != Constant.SUPER_ADMIN){
@@ -103,7 +102,7 @@ public class SysRoleController extends AbstractController {
 		ValidatorUtils.validateEntity(role);
 		
 		role.setCreateUserId(getUserId());
-		sysRoleService.save(role);
+		sysRoleService.saveRoleMenu(role);
 		
 		return R.ok();
 	}
@@ -118,7 +117,7 @@ public class SysRoleController extends AbstractController {
 		ValidatorUtils.validateEntity(role);
 		
 		role.setCreateUserId(getUserId());
-		sysRoleService.updateById(role);
+		sysRoleService.updateRoleMenu(role);
 		
 		return R.ok();
 	}

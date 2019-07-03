@@ -7,6 +7,7 @@ import com.google.code.kaptcha.Producer;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.R;
+import com.suke.czx.common.utils.ShiroUtils;
 import com.suke.czx.modules.sys.entity.SysUser;
 import com.suke.czx.modules.sys.service.SysUserService;
 import com.suke.czx.modules.sys.service.SysUserTokenService;
@@ -44,6 +45,12 @@ public class SysLoginController extends AbstractController {
 	private final SysUserService sysUserService;
 	private final SysUserTokenService sysUserTokenService;
 	private final RedisTemplate redisTemplate;
+	private final ShiroUtils shiroUtils;
+
+	@RequestMapping("/")
+	public R hello(){
+		return R.ok("hello welcome to use x-springboot");
+	}
 
 	/**
 	 * 验证码
@@ -173,6 +180,7 @@ public class SysLoginController extends AbstractController {
 	@RequestMapping(value = "/sys/logout", method = RequestMethod.POST)
 	public R logout() {
 		sysUserTokenService.logout(getUserId());
+		shiroUtils.getSubject().logout();
 		return R.ok();
 	}
 

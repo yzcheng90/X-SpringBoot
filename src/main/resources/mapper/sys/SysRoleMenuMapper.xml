@@ -17,9 +17,4 @@
 		)
 		</foreach>
 	</insert>
-
-	<select id="queryMenuIdList" resultType="long">
-		select menu_id from sys_role_menu where role_id = #{value}
-	</select>
-
 </mapper>

@@ -28,4 +28,8 @@ public interface SysUserService extends IService<SysUser> {
 	 * @param newPassword  新密码
 	 */
 	int updatePassword(Long userId, String password, String newPassword);
+
+	void saveUserRole(SysUser user);
+	void updateUserRole(SysUser user);
+
 }
