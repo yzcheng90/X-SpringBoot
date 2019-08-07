@@ -58,8 +58,8 @@ X-SpringBoot
 ├─modules 功能模块
 │  ├─app API接口模块(APP调用)
 │  ├─oss 文件服务模块
-│  └─sys 权限模块
-│  └─apkversion APK 版本管理
+│  ├─sys 权限模块
+│  ├─apkversion APK 版本管理
 │  └─gen 代码生成
 │ 
 ├─Application 项目启动类
@@ -73,7 +73,7 @@ X-SpringBoot
 **部署** 
 - 后台部署
  ```
-   1、 $git clong https://github.com/yzcheng90/X-SpringBoot.git
+   1、 $git clone https://github.com/yzcheng90/X-SpringBoot.git
    
    2 、IDEA 打开项目引入依赖
    
