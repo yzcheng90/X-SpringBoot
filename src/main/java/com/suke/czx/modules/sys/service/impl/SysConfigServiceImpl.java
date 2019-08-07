@@ -35,8 +35,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper,SysConfig>
 	@Transactional
 	public void updateValueByKey(String key, String value) {
 		UpdateWrapper<SysConfig> wrapper = new UpdateWrapper<>();
-		wrapper.eq("config_key",key)
-				.eq("config_value",value);
+		wrapper.eq("config_key",key);
 		baseMapper.update(SysConfig.builder().configKey(key).configValue(value).build(),wrapper);
 	}
 

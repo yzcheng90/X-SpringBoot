@@ -102,6 +102,8 @@ X-SpringBoot
         }
         ...
         
+        ( 这里建议直接复制项目中的doc/nginx.conf替换你的nginx配置文件，然后修改静态页面目录 )
+        
      3、启动nginx 访问 localhost
  ```
 
@@ -126,6 +128,13 @@ X-SpringBoot
 1) 看看application.yml 配置文件中 spring.profiles.active: dev  
    当前配置的是dev ,就修改application-dev.yml 中的数据库连接IP用户密码
 2) 如果改完了还是不行，看看你mysql版本8.0以上 须要修改pom.xml中的 mysql-connector-java 的版本
+
+```
+4、启动了nginx 还是不能访问前台
+```
+1) 确认一下nginx.conf 配置有没有问题
+
+2）把所有的nginx的进程都结束再启动试试 （一般有很多个nginx的进程，结束一个再重新启动也是没用的）
 
 ```
 
