@@ -116,11 +116,14 @@ X-SpringBoot
 
 1、启动报错
 ```
- 是因为依赖没有引入  maven --> reimport 重新引入
+ 是因为依赖没有引入  maven --> 先clear 再reimport 重新引入
 ```
-2、验证码失败
+2、验证码获取失败
 ```
- 是因为redis 没有启动
+1) redis没有启动
+2) nginx 没有配置好
+3) 如果部署的不是同一台机器，前台common.js中的url要改成ip
+
 ```
 3、数据库连接不上（mysql 5.7）
 
