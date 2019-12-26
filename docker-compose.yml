@@ -1,8 +1,0 @@
-version: '2'
-services:
-  x_springboot:
-    image: x_springboot/image
-    ports:
-      - "8080:8080"
-    environment:
-      - spring.profiles.active=dev

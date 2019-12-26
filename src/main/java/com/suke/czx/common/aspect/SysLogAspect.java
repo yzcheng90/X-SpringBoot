@@ -1,23 +1,26 @@
 package com.suke.czx.common.aspect;
 
+import cn.hutool.core.map.MapUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.suke.czx.common.utils.HttpContextUtils;
 import com.suke.czx.common.utils.IPUtils;
 import com.suke.czx.modules.sys.entity.SysLog;
-import com.suke.czx.modules.sys.entity.SysUser;
 import com.suke.czx.modules.sys.service.SysLogService;
-import org.apache.shiro.SecurityUtils;
+import lombok.SneakyThrows;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.HashMap;
 
 
 /**
@@ -32,6 +35,8 @@ import java.util.Date;
 public class SysLogAspect {
 	@Autowired
 	private SysLogService sysLogService;
+
+	private ObjectMapper objectMapper = new ObjectMapper();
 	
 	@Pointcut("@annotation(com.suke.czx.common.annotation.SysLog)")
 	public void logPointCut() { 
@@ -52,6 +57,7 @@ public class SysLogAspect {
 		return result;
 	}
 
+	@SneakyThrows
 	private void saveSysLog(ProceedingJoinPoint joinPoint, long time) {
 		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 		Method method = signature.getMethod();
@@ -83,7 +89,10 @@ public class SysLogAspect {
 		sysLog.setIp(IPUtils.getIpAddr(request));
 
 		//用户名
-		String username = ((SysUser) SecurityUtils.getSubject().getPrincipal()).getUsername();
+		// String username = ((CustomUserDetailsUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(); 强转有问题...原因有待研究
+		String userStr = objectMapper.writeValueAsString(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		HashMap<String,Object> userDetailsUser = objectMapper.readValue(userStr,HashMap.class);
+		String username = MapUtil.getStr(userDetailsUser,"username");
 		sysLog.setUsername(username);
 
 		sysLog.setTime(time);

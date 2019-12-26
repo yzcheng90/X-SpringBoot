@@ -8,7 +8,7 @@ import com.suke.czx.common.utils.R;
 import com.suke.czx.modules.apkversion.entity.ApkVersion;
 import com.suke.czx.modules.apkversion.service.ApkVersionService;
 import lombok.AllArgsConstructor;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -34,7 +34,7 @@ public class ApkVersionController  extends AbstractController {
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("apkversion:apkversion:list")
+    @PreAuthorize("hasRole('apkversion:apkversion:list')")
     public R list(@RequestParam Map<String, Object> params){
         //查询列表数据
         QueryWrapper<ApkVersion> queryWrapper = new QueryWrapper<>();
@@ -47,7 +47,7 @@ public class ApkVersionController  extends AbstractController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("apkversion:apkversion:info")
+    @PreAuthorize("hasRole('apkversion:apkversion:info')")
     public R info(@PathVariable("id") Long id){
         return R.ok().put("apkVersion", apkVersionService.getById(id));
     }
@@ -58,7 +58,7 @@ public class ApkVersionController  extends AbstractController {
      */
     @SysLog("新增APK版本管理数据")
     @RequestMapping("/save")
-    @RequiresPermissions("apkversion:apkversion:save")
+    @PreAuthorize("hasRole('apkversion:apkversion:save')")
     public R save(@RequestBody ApkVersion apkVersion){
         apkVersion.setUserId(getUserId());
         apkVersionService.save(apkVersion);
@@ -71,7 +71,7 @@ public class ApkVersionController  extends AbstractController {
      */
     @SysLog("修改APK版本管理数据")
     @RequestMapping("/update")
-    @RequiresPermissions("apkversion:apkversion:update")
+    @PreAuthorize("hasRole('apkversion:apkversion:update')")
     public R update(@RequestBody ApkVersion apkVersion){
         apkVersion.setUpdateTime(new Date());
 		apkVersionService.updateById(apkVersion);
@@ -84,7 +84,7 @@ public class ApkVersionController  extends AbstractController {
      */
     @SysLog("删除APK版本管理数据")
     @RequestMapping("/delete")
-    @RequiresPermissions("apkversion:apkversion:delete")
+    @PreAuthorize("hasRole('apkversion:apkversion:delete')")
     public R delete(@RequestBody Long[] ids){
 		apkVersionService.removeByIds(Arrays.asList(ids));
         return R.ok();

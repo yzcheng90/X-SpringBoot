@@ -103,7 +103,7 @@ var vm = new Vue({
         logout: function () {
             $.ajax({
                 type: "POST",
-                url: baseURL + "sys/logout",
+                url: baseURL + "token/logout",
                 dataType: "json",
                 success: function(r){
                     //删除本地token

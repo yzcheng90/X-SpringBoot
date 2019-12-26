@@ -6,11 +6,11 @@ import com.suke.czx.common.exception.RRException;
 import com.suke.czx.common.utils.Constant.MenuType;
 import com.suke.czx.common.utils.R;
 import com.suke.czx.modules.sys.entity.SysMenu;
-import com.suke.czx.modules.sys.service.ShiroService;
+import com.suke.czx.modules.sys.service.PermissionsService;
 import com.suke.czx.modules.sys.service.SysMenuService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +32,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class SysMenuController extends AbstractController {
 	private final SysMenuService sysMenuService;
-	private final ShiroService shiroService;
+	private final PermissionsService shiroService;
 
 	/**
 	 * 导航菜单
@@ -48,7 +48,7 @@ public class SysMenuController extends AbstractController {
 	 * 所有菜单列表
 	 */
 	@RequestMapping("/list")
-	@RequiresPermissions("sys:menu:list")
+	@PreAuthorize("hasRole('sys:menu:list')")
 	public List<SysMenu> list(){
 		List<SysMenu> menuList = sysMenuService.list();
 
@@ -59,7 +59,7 @@ public class SysMenuController extends AbstractController {
 	 * 选择菜单(添加、修改菜单)
 	 */
 	@RequestMapping("/select")
-	@RequiresPermissions("sys:menu:select")
+	@PreAuthorize("hasRole('sys:menu:select')")
 	public R select(){
 		//查询列表数据
 		List<SysMenu> menuList = sysMenuService.queryNotButtonList();
@@ -79,7 +79,7 @@ public class SysMenuController extends AbstractController {
 	 * 菜单信息
 	 */
 	@RequestMapping("/info/{menuId}")
-	@RequiresPermissions("sys:menu:info")
+	@PreAuthorize("hasRole('sys:menu:info')")
 	public R info(@PathVariable("menuId") Long menuId){
 		SysMenu menu = sysMenuService.getById(menuId);
 		return R.ok().put("menu", menu);
@@ -90,7 +90,7 @@ public class SysMenuController extends AbstractController {
 	 */
 	@SysLog("保存菜单")
 	@RequestMapping("/save")
-	@RequiresPermissions("sys:menu:save")
+	@PreAuthorize("hasRole('sys:menu:save')")
 	public R save(@RequestBody SysMenu menu){
 		//数据校验
 		verifyForm(menu);
@@ -105,7 +105,7 @@ public class SysMenuController extends AbstractController {
 	 */
 	@SysLog("修改菜单")
 	@RequestMapping("/update")
-	@RequiresPermissions("sys:menu:update")
+	@PreAuthorize("hasRole('sys:menu:update')")
 	public R update(@RequestBody SysMenu menu){
 		//数据校验
 		verifyForm(menu);
@@ -120,7 +120,7 @@ public class SysMenuController extends AbstractController {
 	 */
 	@SysLog("删除菜单")
 	@RequestMapping("/delete")
-	@RequiresPermissions("sys:menu:delete")
+	@PreAuthorize("hasRole('sys:menu:delete')")
 	public R delete(long menuId){
 		//判断是否有子菜单或按钮
 		List<SysMenu> menuList = sysMenuService.queryListParentId(menuId);

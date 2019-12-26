@@ -94,7 +94,7 @@
             captcha: '',
             error: false,
             errorMsg: '',
-            src: baseURL + "/sys/code/"+randomStr
+            src: baseURL + "sys/code/"+randomStr
         },
         beforeCreate: function(){
             if(self != top){
@@ -137,13 +137,13 @@
         methods: {
             refreshCode: function(){
                 randomStr = Math.floor(Math.random()*999999999);
-                this.src = baseURL + "/sys/code/" + randomStr;
+                this.src = baseURL + "sys/code/" + randomStr;
             },
             login: function () {
                 var data = "username="+vm.username+"&password="+vm.password+"&captcha="+vm.captcha+"&randomStr="+randomStr;
                 $.ajax({
                     type: "POST",
-                    url: baseURL + "sys/login",
+                    url: baseURL + "token/login",
                     data: data,
                     dataType: "json",
                     success: function(r){

@@ -2,7 +2,6 @@ package com.suke.czx.modules.oss.controller;
 
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.crypto.digest.DigestUtil;
-import cn.hutool.crypto.digest.MD5;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.gson.Gson;
@@ -25,7 +24,7 @@ import com.suke.czx.modules.sys.service.SysConfigService;
 import lombok.AllArgsConstructor;
 import net.dongliu.apk.parser.ApkFile;
 import net.dongliu.apk.parser.bean.ApkMeta;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,7 +63,7 @@ public class SysOssController extends AbstractController {
 	 * 列表
 	 */
 	@RequestMapping("/list")
-	@RequiresPermissions("sys:oss:all")
+	@PreAuthorize("hasRole('sys:oss:all')")
 	public R list(@RequestParam Map<String, Object> params){
 		//查询列表数据
 		QueryWrapper<SysOss> queryWrapper = new QueryWrapper<>();
@@ -83,7 +82,7 @@ public class SysOssController extends AbstractController {
      * 云存储配置信息
      */
     @RequestMapping("/config")
-    @RequiresPermissions("sys:oss:all")
+	@PreAuthorize("hasRole('sys:oss:all')")
     public R config(){
         CloudStorageConfig config = sysConfigService.getConfigObject(KEY, CloudStorageConfig.class);
 
@@ -95,7 +94,7 @@ public class SysOssController extends AbstractController {
 	 * 保存云存储配置信息
 	 */
 	@RequestMapping("/saveConfig")
-	@RequiresPermissions("sys:oss:all")
+	@PreAuthorize("hasRole('sys:oss:all')")
 	public R saveConfig(@RequestBody CloudStorageConfig config){
 
 		if(config.getType() == Constant.CloudService.QINIU.getValue()){
@@ -120,7 +119,7 @@ public class SysOssController extends AbstractController {
 	 * 上传文件
 	 */
 	@RequestMapping("/upload")
-	@RequiresPermissions("sys:oss:all")
+	@PreAuthorize("hasRole('sys:oss:all')")
 	public R upload(@RequestParam("file") MultipartFile file) throws Exception {
 		if (file.isEmpty()) {
 			throw new RRException("上传文件不能为空");
@@ -143,7 +142,7 @@ public class SysOssController extends AbstractController {
 	 * 上传文件
 	 */
 	@RequestMapping("/upload/apk")
-	@RequiresPermissions("sys:oss:all")
+	@PreAuthorize("hasRole('sys:oss:all')")
 	public R uploadApk(@RequestParam("file") MultipartFile file) throws Exception {
 		if (file.isEmpty()) {
 			throw new RRException("上传文件不能为空");
@@ -191,7 +190,7 @@ public class SysOssController extends AbstractController {
 	 * 删除
 	 */
 	@RequestMapping("/delete")
-	@RequiresPermissions("sys:oss:all")
+	@PreAuthorize("hasRole('sys:oss:all')")
 	public R delete(@RequestBody Long[] ids){
 		sysOssService.removeById(ids);
 		return R.ok();

@@ -9,14 +9,13 @@ import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.R;
 import com.suke.czx.common.validator.ValidatorUtils;
+import com.suke.czx.modules.sys.entity.SysRole;
 import com.suke.czx.modules.sys.service.SysRoleMenuService;
 import com.suke.czx.modules.sys.service.SysRoleService;
-import com.suke.czx.modules.sys.entity.SysRole;
 import lombok.AllArgsConstructor;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +38,7 @@ public class SysRoleController extends AbstractController {
 	 * 角色列表
 	 */
 	@RequestMapping("/list")
-	@RequiresPermissions("sys:role:list")
+	@PreAuthorize("hasRole('sys:role:list')")
 	public R list(@RequestParam Map<String, Object> params){
 		QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
 		//如果不是超级管理员，则只查询自己创建的角色列表
@@ -61,7 +60,7 @@ public class SysRoleController extends AbstractController {
 	 * 角色列表
 	 */
 	@RequestMapping("/select")
-	@RequiresPermissions("sys:role:select")
+	@PreAuthorize("hasRole('sys:role:select')")
 	public R select(){
 		List<SysRole> list;
 		//如果不是超级管理员，则只查询自己所拥有的角色列表
@@ -81,7 +80,7 @@ public class SysRoleController extends AbstractController {
 	 * 角色信息
 	 */
 	@RequestMapping("/info/{roleId}")
-	@RequiresPermissions("sys:role:info")
+	@PreAuthorize("hasRole('sys:role:info')")
 	public R info(@PathVariable("roleId") Long roleId){
 		SysRole role = sysRoleService.getById(roleId);
 		
@@ -97,7 +96,7 @@ public class SysRoleController extends AbstractController {
 	 */
 	@SysLog("保存角色")
 	@RequestMapping("/save")
-	@RequiresPermissions("sys:role:save")
+	@PreAuthorize("hasRole('sys:role:save')")
 	public R save(@RequestBody SysRole role){
 		ValidatorUtils.validateEntity(role);
 		
@@ -112,7 +111,7 @@ public class SysRoleController extends AbstractController {
 	 */
 	@SysLog("修改角色")
 	@RequestMapping("/update")
-	@RequiresPermissions("sys:role:update")
+	@PreAuthorize("hasRole('sys:role:update')")
 	public R update(@RequestBody SysRole role){
 		ValidatorUtils.validateEntity(role);
 		
@@ -127,7 +126,7 @@ public class SysRoleController extends AbstractController {
 	 */
 	@SysLog("删除角色")
 	@RequestMapping("/delete")
-	@RequiresPermissions("sys:role:delete")
+	@PreAuthorize("hasRole('sys:role:delete')")
 	public R delete(@RequestBody Long[] roleIds){
 		sysRoleService.deleteBath(roleIds);
 		return R.ok();

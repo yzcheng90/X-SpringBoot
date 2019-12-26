@@ -10,7 +10,7 @@ import com.suke.czx.common.validator.ValidatorUtils;
 import com.suke.czx.modules.sys.entity.SysConfig;
 import com.suke.czx.modules.sys.service.SysConfigService;
 import lombok.AllArgsConstructor;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -34,7 +34,7 @@ public class SysConfigController extends AbstractController {
 	 * 所有配置列表
 	 */
 	@RequestMapping("/list")
-	@RequiresPermissions("sys:config:list")
+	@PreAuthorize("hasRole('sys:config:list')")
 	public R list(@RequestParam Map<String, Object> params){
 		//查询列表数据
 		QueryWrapper<SysConfig> queryWrapper = new QueryWrapper<>();
@@ -52,7 +52,7 @@ public class SysConfigController extends AbstractController {
 	 * 配置信息
 	 */
 	@RequestMapping("/info/{id}")
-	@RequiresPermissions("sys:config:info")
+	@PreAuthorize("hasRole('sys:config:info')")
 	public R info(@PathVariable("id") Long id){
 		SysConfig config = sysConfigService.getById(id);
 		
@@ -64,7 +64,7 @@ public class SysConfigController extends AbstractController {
 	 */
 	@SysLog("保存配置")
 	@RequestMapping("/save")
-	@RequiresPermissions("sys:config:save")
+	@PreAuthorize("hasRole('sys:config:save')")
 	public R save(@RequestBody SysConfig config){
 		ValidatorUtils.validateEntity(config);
 
@@ -78,12 +78,10 @@ public class SysConfigController extends AbstractController {
 	 */
 	@SysLog("修改配置")
 	@RequestMapping("/update")
-	@RequiresPermissions("sys:config:update")
+	@PreAuthorize("hasRole('sys:config:update')")
 	public R update(@RequestBody SysConfig config){
 		ValidatorUtils.validateEntity(config);
-		
 		sysConfigService.updateById(config);
-		
 		return R.ok();
 	}
 	
@@ -92,7 +90,7 @@ public class SysConfigController extends AbstractController {
 	 */
 	@SysLog("删除配置")
 	@RequestMapping("/delete")
-	@RequiresPermissions("sys:config:delete")
+	@PreAuthorize("hasRole('sys:config:delete')")
 	public R delete(@RequestBody Long[] ids){
 		sysConfigService.removeById((Serializable)Arrays.asList(ids));
 		return R.ok();

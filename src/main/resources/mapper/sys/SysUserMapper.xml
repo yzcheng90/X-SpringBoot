@@ -22,7 +22,7 @@
 
 	<update id="updatePassword" parameterType="map">
 		update sys_user set `password` = #{newPassword} 
-			where user_id = #{userId} and password = #{password}
+			where user_id = #{userId}
 	</update>
 
 

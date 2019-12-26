@@ -1,6 +1,5 @@
 package com.suke.czx.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.suke.czx.common.exception.RRException;
 import com.suke.czx.common.utils.Constant;
@@ -12,8 +11,8 @@ import com.suke.czx.modules.sys.service.SysUserService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +38,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 	private final SysUserMapper sysUserMapper;
 	private final SysUserRoleMapper sysUserRoleMapper;
 	private final SysRoleService sysRoleService;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public List<String> queryAllPerms(Long userId) {
@@ -52,7 +52,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 		user.setCreateTime(new Date());
 		//sha256加密
 		String salt = RandomStringUtils.randomAlphanumeric(20);
-		user.setPassword(new Sha256Hash(user.getPassword(), salt).toHex());
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setSalt(salt);
 		sysUserMapper.insert(user);
 		
@@ -71,7 +71,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 		if(StringUtils.isBlank(user.getPassword())){
 			user.setPassword(null);
 		}else{
-			user.setPassword(new Sha256Hash(user.getPassword(), user.getSalt()).toHex());
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
 		}
 		baseMapper.updateById(user);
 		
@@ -89,7 +89,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 	public int updatePassword(Long userId, String password, String newPassword) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", userId);
-		map.put("password", password);
 		map.put("newPassword", newPassword);
 		return sysUserMapper.updatePassword(map);
 	}

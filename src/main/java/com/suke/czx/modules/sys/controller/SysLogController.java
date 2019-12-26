@@ -8,7 +8,7 @@ import com.suke.czx.common.utils.R;
 import com.suke.czx.modules.sys.entity.SysLog;
 import com.suke.czx.modules.sys.service.SysLogService;
 import lombok.AllArgsConstructor;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +36,7 @@ public class SysLogController extends AbstractController {
 	 */
 	@ResponseBody
 	@RequestMapping("/list")
-	@RequiresPermissions("sys:log:list")
+	@PreAuthorize("hasRole('sys:log:list')")
 	public R list(@RequestParam Map<String, Object> params){
 		//查询列表数据
 		QueryWrapper<SysLog> queryWrapper = new QueryWrapper<>();

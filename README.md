@@ -1,7 +1,7 @@
 <h1> X-SpringBoot </h1>
 
-![Image text](https://img.shields.io/badge/x--springboot-v2.1.1-green.svg)
-![Image text](https://img.shields.io/badge/springboot-2.1.3-green.svg)
+![Image text](https://img.shields.io/badge/x--springboot-v3.0-green.svg)
+![Image text](https://img.shields.io/badge/springboot-2.1.8-green.svg)
 ![Image text](https://img.shields.io/badge/MyBatis%20Plus-3.1.0-green.svg)
 
 [更新日志](https://github.com/yzcheng90/X-SpringBoot/tree/master/doc/updateLog.md) | [项目地址](https://github.com/yzcheng90)  | [SpringCloud版本](https://github.com/yzcheng90/ms)
@@ -14,14 +14,14 @@
 - 引入hutool 工具包 规范工具类
 - 引入minio 分布式文件系统
 - 前后端完全脱离，前端代码可单独部署
-- 支持密码和手机号 获取token
+- 自定义Spring Security 支持获取token
 - 账号密码：admin/admin
 
  
 **版本信息** 
-- 核心框架：Spring Boot 2.1.3
-- 安全框架：Apache Shiro 1.4
-- 视图框架：Spring MVC 5.1
+- 核心框架：Spring Boot 2.1.8
+- 安全框架：Spring Security 
+- 视图框架：Spring MVC 5.1.x
 - 持久层框架：MyBatis Plus 3.1.0
 - 日志管理：SLF4J 1.7、Log4j
 - 页面交互：Vue2.x 
@@ -29,7 +29,7 @@
 
 **环境** 
 - jdk 1.8
-- mysql 5.7
+- mysql 5.7+
 - redis
 - nginx
 

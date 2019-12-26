@@ -1,12 +1,13 @@
 package com.suke.czx.common.exception;
 
 import com.suke.czx.common.utils.R;
-import org.apache.shiro.authz.AuthorizationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.nio.file.AccessDeniedException;
 
 /**
  * 异常处理器
@@ -15,10 +16,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @email object_czx@163.com
  * @date 2016年10月27日 下午10:16:19
  */
+@Slf4j
 @RestControllerAdvice
 public class RRExceptionHandler extends R {
-	private Logger logger = LoggerFactory.getLogger(getClass());
-
 	/**
 	 * 自定义异常
 	 */
@@ -29,19 +29,17 @@ public class RRExceptionHandler extends R {
 
 	@ExceptionHandler(DuplicateKeyException.class)
 	public R handleDuplicateKeyException(DuplicateKeyException e){
-		logger.error(e.getMessage(), e);
 		return R.error("数据库中已存在该记录");
 	}
 
-	@ExceptionHandler(AuthorizationException.class)
-	public R handleAuthorizationException(AuthorizationException e){
-		logger.error(e.getMessage(), e);
-		return R.error("没有权限，请联系管理员授权");
+	@ExceptionHandler(AccessDeniedException.class)
+	public R handleAccessDeniedException(AccessDeniedException e){
+		return R.error(HttpStatus.FORBIDDEN.value(),"没有权限，请联系管理员授权");
 	}
 
 	@ExceptionHandler(Exception.class)
 	public R handleException(Exception e){
-		logger.error(e.getMessage(), e);
-		return R.error();
+		log.error("发生异常",e);
+		return R.error(e.getMessage());
 	}
 }

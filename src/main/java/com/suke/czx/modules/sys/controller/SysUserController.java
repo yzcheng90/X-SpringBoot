@@ -15,8 +15,8 @@ import com.suke.czx.modules.sys.service.SysUserRoleService;
 import com.suke.czx.modules.sys.service.SysUserService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -39,12 +39,13 @@ public class SysUserController extends AbstractController {
 
 	private final SysUserService sysUserService;
 	private final SysUserRoleService sysUserRoleService;
-	
+	private final PasswordEncoder passwordEncoder;
+
 	/**
 	 * 所有用户列表
 	 */
 	@RequestMapping("/list")
-	@RequiresPermissions("sys:user:list")
+	@PreAuthorize("hasRole('sys:user:list')")
 	public R list(@RequestParam Map<String, Object> params){
 		//只有超级管理员，才能查看所有管理员列表
 		if(getUserId() != Constant.SUPER_ADMIN){
@@ -79,18 +80,15 @@ public class SysUserController extends AbstractController {
 	@RequestMapping("/password")
 	public R password(String password, String newPassword){
 		Assert.isBlank(newPassword, "新密码不为能空");
-		
-		//sha256加密
-		password = new Sha256Hash(password, getUser().getSalt()).toHex();
-		//sha256加密
-		newPassword = new Sha256Hash(newPassword, getUser().getSalt()).toHex();
-				
-		//更新密码
-		int count = sysUserService.updatePassword(getUserId(), password, newPassword);
-		if(count == 0){
+		password = passwordEncoder.encode(password);
+		newPassword = passwordEncoder.encode(newPassword);
+
+		SysUser user = sysUserService.getById(getUserId());
+		if(!passwordEncoder.matches(password,user.getPassword())){
 			return R.error("原密码不正确");
 		}
-		
+		//更新密码
+		sysUserService.updatePassword(getUserId(), password, newPassword);
 		return R.ok();
 	}
 	
@@ -98,7 +96,7 @@ public class SysUserController extends AbstractController {
 	 * 用户信息
 	 */
 	@RequestMapping("/info/{userId}")
-	@RequiresPermissions("sys:user:info")
+	@PreAuthorize("hasRole('sys:user:info')")
 	public R info(@PathVariable("userId") Long userId){
 		SysUser user = sysUserService.getById(userId);
 
@@ -120,7 +118,7 @@ public class SysUserController extends AbstractController {
 	 */
 	@SysLog("保存用户")
 	@RequestMapping("/save")
-	@RequiresPermissions("sys:user:save")
+	@PreAuthorize("hasRole('sys:user:save')")
 	public R save(@RequestBody SysUser user){
 		ValidatorUtils.validateEntity(user);
 		
@@ -135,7 +133,7 @@ public class SysUserController extends AbstractController {
 	 */
 	@SysLog("修改用户")
 	@RequestMapping("/update")
-	@RequiresPermissions("sys:user:update")
+	@PreAuthorize("hasRole('sys:user:update')")
 	public R update(@RequestBody SysUser user){
 		ValidatorUtils.validateEntity(user);
 		
@@ -150,7 +148,7 @@ public class SysUserController extends AbstractController {
 	 */
 	@SysLog("删除用户")
 	@RequestMapping("/delete")
-	@RequiresPermissions("sys:user:delete")
+	@PreAuthorize("hasRole('sys:user:delete')")
 	public R delete(@RequestBody Long[] userIds){
 		if(ArrayUtils.contains(userIds, 1L)){
 			return R.error("系统管理员不能删除");

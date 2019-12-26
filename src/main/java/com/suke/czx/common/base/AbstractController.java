@@ -1,13 +1,13 @@
 package com.suke.czx.common.base;
 
+import cn.hutool.core.map.MapUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.suke.czx.common.utils.MPPageConvert;
-import com.suke.czx.modules.sys.entity.SysUser;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.HashMap;
 
 /**
  * Controller公共组件
@@ -21,11 +21,24 @@ public abstract class AbstractController {
 	@Autowired
 	protected MPPageConvert mpPageConvert;
 
-	protected SysUser getUser() {
-		return (SysUser) SecurityUtils.getSubject().getPrincipal();
+	protected ObjectMapper objectMapper = new ObjectMapper();
+
+	protected Object getUser() {
+		Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		强转有问题...原因有待研究
+//		if(object != null){
+//			return (CustomUserDetailsUser) object;
+//		}
+		return object;
 	}
 
+	@SneakyThrows
 	protected Long getUserId() {
-		return getUser().getUserId();
+		if(getUser() != null){
+			String userStr = objectMapper.writeValueAsString(getUser());
+			HashMap<String,Object> userDetailsUser = objectMapper.readValue(userStr,HashMap.class);
+			return MapUtil.getLong(userDetailsUser,"userId");
+		}
+		return null;
 	}
 }

@@ -40,6 +40,7 @@ $.ajaxSetup({
     complete: function(xhr) {
         //token过期，则跳转到登录页面
         var data = xhr.responseJSON;
+        console.log("====",data)
         if(data!=undefined){
             if(data.code === 401){
                 parent.location.href = 'login.html';
