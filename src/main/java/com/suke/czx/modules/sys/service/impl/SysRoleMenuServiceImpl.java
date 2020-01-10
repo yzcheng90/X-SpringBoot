@@ -31,7 +31,6 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper,SysRol
 	@Override
 	@Transactional
 	public void saveOrUpdate(Long roleId, List<Long> menuIdList) {
-		//先删除角色与菜单关系
 		sysRoleMenuMapper.delete(Wrappers.<SysRoleMenu>query().lambda().eq(SysRoleMenu::getRoleId,roleId));
 		if(CollUtil.isNotEmpty(menuIdList)){
 			menuIdList.forEach(id->{

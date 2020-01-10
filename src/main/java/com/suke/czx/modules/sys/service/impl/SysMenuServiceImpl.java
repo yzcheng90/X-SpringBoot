@@ -57,8 +57,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper,SysMenu> imple
 		if(userId == Constant.SUPER_ADMIN){
 			return getAllMenuList(null);
 		}
-		
-		//用户菜单列表
 		List<Long> menuIdList = sysMenuMapper.queryAllMenuId(userId);
 		return getAllMenuList(menuIdList);
 	}
@@ -77,7 +75,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper,SysMenu> imple
 		List<SysMenu> menuList = queryListParentId(0L, menuIdList);
 		//递归获取子菜单
 		getMenuTreeList(menuList, menuIdList);
-		
 		return menuList;
 	}
 
@@ -86,14 +83,12 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper,SysMenu> imple
 	 */
 	private List<SysMenu> getMenuTreeList(List<SysMenu> menuList, List<Long> menuIdList){
 		List<SysMenu> subMenuList = new ArrayList<SysMenu>();
-		
 		for(SysMenu entity : menuList){
 			if(entity.getType() == Constant.MenuType.CATALOG.getValue()){//目录
 				entity.setList(getMenuTreeList(queryListParentId(entity.getMenuId(), menuIdList), menuIdList));
 			}
 			subMenuList.add(entity);
 		}
-		
 		return subMenuList;
 	}
 }

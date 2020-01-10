@@ -51,7 +51,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 	@Transactional
 	public void saveUserRole(SysUser user) {
 		user.setCreateTime(new Date());
-		//sha256加密
 		String salt = RandomStringUtils.randomAlphanumeric(20);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setSalt(salt);

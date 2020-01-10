@@ -39,11 +39,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 	public void saveRoleMenu(SysRole role) {
 		role.setCreateTime(new Date());
 		sysRoleMapper.insert(role);
-		
-		//检查权限是否越权
 		checkPrems(role);
-		
-		//保存角色与菜单关系
 		sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());
 	}
 
@@ -51,11 +47,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 	@Transactional
 	public void updateRoleMenu(SysRole role) {
 		sysRoleMapper.updateById(role);
-		
-		//检查权限是否越权
 		checkPrems(role);
-		
-		//更新角色与菜单关系
 		sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());
 	}
 
@@ -85,11 +77,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 		if(role.getCreateUserId() == Constant.SUPER_ADMIN){
 			return ;
 		}
-		
-		//查询用户所拥有的菜单列表
 		List<Long> menuIdList = sysRoleMapper.queryAllMenuId(role.getCreateUserId());
-		
-		//判断是否越权
 		if(!menuIdList.containsAll(role.getMenuIdList())){
 			throw new RRException("新增角色的权限，已超出你的权限范围");
 		}
