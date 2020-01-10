@@ -1,19 +1,17 @@
 package com.suke.czx.modules.sys.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.suke.czx.modules.sys.mapper.SysRoleMenuMapper;
 import com.suke.czx.modules.sys.entity.SysRoleMenu;
+import com.suke.czx.modules.sys.mapper.SysRoleMenuMapper;
 import com.suke.czx.modules.sys.service.SysRoleMenuService;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 
@@ -35,16 +33,14 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper,SysRol
 	public void saveOrUpdate(Long roleId, List<Long> menuIdList) {
 		//先删除角色与菜单关系
 		sysRoleMenuMapper.delete(Wrappers.<SysRoleMenu>query().lambda().eq(SysRoleMenu::getRoleId,roleId));
-
-		if(menuIdList.size() == 0){
-			return ;
+		if(CollUtil.isNotEmpty(menuIdList)){
+			menuIdList.forEach(id->{
+				SysRoleMenu menu = new SysRoleMenu();
+				menu.setRoleId(roleId);
+				menu.setMenuId(id);
+				sysRoleMenuMapper.insert(menu);
+			});
 		}
-
-		//保存角色与菜单关系
-		Map<String, Object> map = new HashMap<>();
-		map.put("roleId", roleId);
-		map.put("menuIdList", menuIdList);
-		sysRoleMenuMapper.saveUserMenu(map);
 	}
 
 	@Override

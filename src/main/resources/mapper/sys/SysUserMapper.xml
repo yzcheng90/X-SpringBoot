@@ -19,26 +19,4 @@
 			LEFT JOIN sys_menu m on rm.menu_id = m.menu_id 
 		where ur.user_id = #{userId}
 	</select>
-
-	<update id="updatePassword" parameterType="map">
-		update sys_user set `password` = #{newPassword} 
-			where user_id = #{userId}
-	</update>
-
-
-	<insert id="saveUserRole">
-		<foreach collection="roleIdList" item="item" index="index" separator="," >
-			insert into sys_user_role
-			(
-			`user_id`,
-			`role_id`
-			)
-			values
-			(
-			#{userId},
-			#{item}
-			)
-		</foreach>
-	</insert>
-
 </mapper>

@@ -1,9 +1,12 @@
 package com.suke.czx.modules.sys.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.suke.czx.common.exception.RRException;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.modules.sys.entity.SysUser;
+import com.suke.czx.modules.sys.entity.SysUserRole;
 import com.suke.czx.modules.sys.mapper.SysUserMapper;
 import com.suke.czx.modules.sys.mapper.SysUserRoleMapper;
 import com.suke.czx.modules.sys.service.SysRoleService;
@@ -17,9 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 
@@ -55,12 +56,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setSalt(salt);
 		sysUserMapper.insert(user);
-		
 		//检查角色是否越权
 		checkRole(user);
-
-		sysUserRoleMapper.deleteById(user.getUserId());
-
+		sysUserRoleMapper.delete(Wrappers.<SysUserRole>update().lambda().eq(SysUserRole::getUserId,user.getUserId()));
 		//保存用户与角色关系
 		saveUserRoleList(user);
 	}
@@ -74,12 +72,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 		}
 		baseMapper.updateById(user);
-		
 		//检查角色是否越权
 		checkRole(user);
-
-		sysUserRoleMapper.deleteById(user.getUserId());
-
+		sysUserRoleMapper.delete(Wrappers.<SysUserRole>update().lambda().eq(SysUserRole::getUserId,user.getUserId()));
 		//保存用户与角色关系
 		saveUserRoleList(user);
 	}
@@ -87,18 +82,20 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 
 	@Override
 	public int updatePassword(Long userId, String password, String newPassword) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("userId", userId);
-		map.put("newPassword", newPassword);
-		return sysUserMapper.updatePassword(map);
+		SysUser sysUser = new SysUser();
+		sysUser.setUserId(userId);
+		sysUser.setPassword(newPassword);
+		return sysUserMapper.updateById(sysUser);
 	}
 
 	public void saveUserRoleList(SysUser user){
-		if(user.getRoleIdList() != null && user.getRoleIdList().size() != 0){
-			Map<String, Object> map = new HashMap<>();
-			map.put("userId", user.getUserId());
-			map.put("roleIdList", user.getRoleIdList());
-			sysUserMapper.saveUserRole(map);
+		if(CollUtil.isNotEmpty(user.getRoleIdList())){
+			user.getRoleIdList().forEach(roleId ->{
+				SysUserRole userRole = new SysUserRole();
+				userRole.setUserId(user.getUserId());
+				userRole.setRoleId(roleId);
+				sysUserRoleMapper.insert(userRole);
+			});
 		}
 	}
 	

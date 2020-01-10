@@ -3,18 +3,4 @@
 
 <mapper namespace="com.suke.czx.modules.sys.mapper.SysRoleMenuMapper">
 
-	<insert id="saveUserMenu">
-		insert into sys_role_menu
-		(
-			`role_id`, 
-			`menu_id`
-		)
-		values
-		<foreach collection="menuIdList" item="item" index="index" separator="," >
-		(
-			#{roleId}, 
-			#{item} 
-		)
-		</foreach>
-	</insert>
 </mapper>
