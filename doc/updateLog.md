@@ -1,3 +1,7 @@
+### v3.1
+- 修复代码生成一些错误依赖 [issues #10](https://github.com/yzcheng90/X-SpringBoot/issues/10)
+- 修改 security token 保存方式 
+
 ### v3.0
 - 项目部分重构，精简部分代码
 - springboot 版本升级到 2.1.8

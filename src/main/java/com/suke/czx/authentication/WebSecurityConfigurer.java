@@ -1,16 +1,14 @@
 package com.suke.czx.authentication;
 
-import com.suke.czx.common.utils.Constant;
-import com.suke.czx.config.AuthIgnoreConfig;
 import com.suke.czx.authentication.detail.CustomUserDetailsService;
 import com.suke.czx.authentication.handler.CustomAuthenticationFailHandler;
 import com.suke.czx.authentication.handler.CustomAuthenticationSuccessHandler;
 import com.suke.czx.authentication.handler.CustomLogoutSuccessHandler;
 import com.suke.czx.authentication.handler.TokenAuthenticationFailHandler;
+import com.suke.czx.common.utils.Constant;
+import com.suke.czx.config.AuthIgnoreConfig;
 import com.suke.czx.interceptor.AuthenticationTokenFilter;
 import com.suke.czx.interceptor.ValidateCodeFilter;
-import com.suke.czx.common.serialization.JdkSerializationStrategy;
-import com.suke.czx.common.serialization.RedisTokenStoreSerializationStrategy;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +58,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) {
         List<String> permitAll = authIgnoreConfig.getIgnoreUrls();
         permitAll.add("/actuator/**");
+        permitAll.add("/error");
         permitAll.add("/v2/**");
         permitAll.add(Constant.TOKEN_ENTRY_POINT_URL);
         String[] urls = permitAll.stream().distinct().toArray(String[]::new);
@@ -88,14 +87,14 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
             .and()
              // 如果不用验证码，注释这个过滤器即可
             .addFilterBefore(new ValidateCodeFilter(redisTemplate,authenticationFailureHandler()),UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(new AuthenticationTokenFilter(authenticationManagerBean(),redisTemplate,redisTokenStoreSerializationStrategy()), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(new AuthenticationTokenFilter(authenticationManagerBean(),redisTemplate,customUserDetailsService), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder());
+            .userDetailsService(customUserDetailsService)
+            .passwordEncoder(passwordEncoder());
     }
 
     @Bean
@@ -118,11 +117,6 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @SneakyThrows
     public AuthenticationManager authenticationManagerBean() {
         return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public RedisTokenStoreSerializationStrategy redisTokenStoreSerializationStrategy(){
-        return new JdkSerializationStrategy();
     }
 
     @Override

@@ -1,15 +1,10 @@
 package com.suke.czx.modules.sys.controller;
 
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.code.kaptcha.Producer;
 import com.suke.czx.common.annotation.AuthIgnore;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.R;
-import com.suke.czx.modules.sys.entity.SysUser;
-import com.suke.czx.modules.sys.service.SysUserService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +19,6 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 public class SysLoginController extends AbstractController {
 
 	private final Producer producer;
-	private final SysUserService sysUserService;
 	private final RedisTemplate redisTemplate;
 
 	@AuthIgnore
