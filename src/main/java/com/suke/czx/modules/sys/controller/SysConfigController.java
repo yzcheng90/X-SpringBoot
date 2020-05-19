@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * 系统参数信息
- * 
+ *
  * @author czx
  * @email object_czx@163.com
  * @date 2019年4月18日 下午6:55:53
@@ -29,7 +29,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class SysConfigController extends AbstractController {
 	private final SysConfigService sysConfigService;
-	
+
 	/**
 	 * 所有配置列表
 	 */
@@ -46,8 +46,8 @@ public class SysConfigController extends AbstractController {
 
 		return R.ok().put("page", mpPageConvert.pageValueConvert(sysConfigList));
 	}
-	
-	
+
+
 	/**
 	 * 配置信息
 	 */
@@ -55,10 +55,10 @@ public class SysConfigController extends AbstractController {
 	@PreAuthorize("hasRole('sys:config:info')")
 	public R info(@PathVariable("id") Long id){
 		SysConfig config = sysConfigService.getById(id);
-		
+
 		return R.ok().put("config", config);
 	}
-	
+
 	/**
 	 * 保存配置
 	 */
@@ -69,10 +69,10 @@ public class SysConfigController extends AbstractController {
 		ValidatorUtils.validateEntity(config);
 
 		sysConfigService.save(config);
-		
+
 		return R.ok();
 	}
-	
+
 	/**
 	 * 修改配置
 	 */
@@ -84,7 +84,7 @@ public class SysConfigController extends AbstractController {
 		sysConfigService.updateById(config);
 		return R.ok();
 	}
-	
+
 	/**
 	 * 删除配置
 	 */
@@ -92,7 +92,7 @@ public class SysConfigController extends AbstractController {
 	@RequestMapping("/delete")
 	@PreAuthorize("hasRole('sys:config:delete')")
 	public R delete(@RequestBody Long[] ids){
-		sysConfigService.removeById((Serializable)Arrays.asList(ids));
+		sysConfigService.removeByIds(Arrays.asList(ids));
 		return R.ok();
 	}
 

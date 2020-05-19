@@ -32,13 +32,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
 /**
  * 文件上传
- * 
+ *
  * @author czx
  * @email object_czx@163.com
  * @date 2017-03-25 12:13:26
@@ -113,7 +114,7 @@ public class SysOssController extends AbstractController {
         sysConfigService.updateValueByKey(KEY, new Gson().toJson(config));
 		return R.ok();
 	}
-	
+
 
 	/**
 	 * 上传文件
@@ -192,7 +193,7 @@ public class SysOssController extends AbstractController {
 	@RequestMapping("/delete")
 	@PreAuthorize("hasRole('sys:oss:all')")
 	public R delete(@RequestBody Long[] ids){
-		sysOssService.removeById(ids);
+		sysOssService.removeByIds(Arrays.asList(ids));
 		return R.ok();
 	}
 

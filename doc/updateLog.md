@@ -1,3 +1,7 @@
+### v3.2
+- 修复上传文件时报匿名无权限
+- 修复  [issues #15](https://github.com/yzcheng90/X-SpringBoot/issues/15)
+
 ### v3.1
 - 修复代码生成一些错误依赖 [issues #10](https://github.com/yzcheng90/X-SpringBoot/issues/10)
 - 修改 security token 保存方式 

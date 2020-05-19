@@ -43,6 +43,10 @@ public class AuthenticationTokenFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = request.getHeader(Constant.TOKEN);
+        if(StrUtil.isBlank(token) || StrUtil.equals(token,"null")){
+            token = request.getParameter(Constant.TOKEN);
+        }
+
         if(StrUtil.isNotBlank(token) && !StrUtil.equals(token,"null")){
             Object userId = redisTemplate.opsForValue().get(token);
             if(ObjectUtil.isNull(userId)){
