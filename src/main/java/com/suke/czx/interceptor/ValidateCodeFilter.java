@@ -49,6 +49,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
             if(StrUtil.isBlank(captcha) || StrUtil.isBlank(randomStr)){
                 CustomAuthenticationException exception = new CustomAuthenticationException("验证码为空");
                 authenticationFailureHandler.onAuthenticationFailure(request,response,exception);
+                return;
             }
 
             String code_key = (String) redisTemplate.opsForValue().get(Constant.NUMBER_CODE_KEY + randomStr);

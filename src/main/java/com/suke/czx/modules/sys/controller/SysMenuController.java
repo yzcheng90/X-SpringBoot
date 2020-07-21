@@ -1,5 +1,6 @@
 package com.suke.czx.modules.sys.controller;
 
+import com.suke.czx.common.annotation.AuthIgnore;
 import com.suke.czx.common.annotation.SysLog;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.exception.RRException;
@@ -8,7 +9,9 @@ import com.suke.czx.common.utils.R;
 import com.suke.czx.modules.sys.entity.SysMenu;
 import com.suke.czx.modules.sys.service.PermissionsService;
 import com.suke.czx.modules.sys.service.SysMenuService;
+import com.suke.czx.modules.sys.vo.RouterEntity;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +24,12 @@ import java.util.Set;
 
 /**
  * 系统菜单
- * 
+ *
  * @author czx
  * @email object_czx@163.com
  * @date 2016年10月27日 下午9:58:15
  */
-
+@Slf4j
 @RestController
 @RequestMapping("/sys/menu")
 @AllArgsConstructor
@@ -43,7 +46,15 @@ public class SysMenuController extends AbstractController {
 		Set<String> permissions = shiroService.getUserPermissions(getUserId());
 		return R.ok().put("menuList", menuList).put("permissions", permissions);
 	}
-	
+
+	@AuthIgnore
+	@RequestMapping("/getRouter")
+	public R getRouter(){
+		List<RouterEntity> userMenu = sysMenuService.getUserMenu(1l);
+		log.info("========{}",userMenu);
+		return R.ok().put("data",userMenu);
+	}
+
 	/**
 	 * 所有菜单列表
 	 */
@@ -54,7 +65,7 @@ public class SysMenuController extends AbstractController {
 
 		return menuList;
 	}
-	
+
 	/**
 	 * 选择菜单(添加、修改菜单)
 	 */
@@ -63,7 +74,7 @@ public class SysMenuController extends AbstractController {
 	public R select(){
 		//查询列表数据
 		List<SysMenu> menuList = sysMenuService.queryNotButtonList();
-		
+
 		//添加顶级菜单
 		SysMenu root = new SysMenu();
 		root.setMenuId(0L);
@@ -71,10 +82,10 @@ public class SysMenuController extends AbstractController {
 		root.setParentId(-1L);
 		root.setOpen(true);
 		menuList.add(root);
-		
+
 		return R.ok().put("menuList", menuList);
 	}
-	
+
 	/**
 	 * 菜单信息
 	 */
@@ -84,7 +95,7 @@ public class SysMenuController extends AbstractController {
 		SysMenu menu = sysMenuService.getById(menuId);
 		return R.ok().put("menu", menu);
 	}
-	
+
 	/**
 	 * 保存
 	 */
@@ -94,12 +105,12 @@ public class SysMenuController extends AbstractController {
 	public R save(@RequestBody SysMenu menu){
 		//数据校验
 		verifyForm(menu);
-		
+
 		sysMenuService.save(menu);
-		
+
 		return R.ok();
 	}
-	
+
 	/**
 	 * 修改
 	 */
@@ -109,12 +120,12 @@ public class SysMenuController extends AbstractController {
 	public R update(@RequestBody SysMenu menu){
 		//数据校验
 		verifyForm(menu);
-				
+
 		sysMenuService.updateById(menu);
-		
+
 		return R.ok();
 	}
-	
+
 	/**
 	 * 删除
 	 */
@@ -129,10 +140,10 @@ public class SysMenuController extends AbstractController {
 		}
 
 		sysMenuService.removeById(menuId);
-		
+
 		return R.ok();
 	}
-	
+
 	/**
 	 * 验证参数是否正确
 	 */
@@ -140,25 +151,25 @@ public class SysMenuController extends AbstractController {
 		if(StringUtils.isBlank(menu.getName())){
 			throw new RRException("菜单名称不能为空");
 		}
-		
+
 		if(menu.getParentId() == null){
 			throw new RRException("上级菜单不能为空");
 		}
-		
+
 		//菜单
 		if(menu.getType() == MenuType.MENU.getValue()){
 			if(StringUtils.isBlank(menu.getUrl())){
 				throw new RRException("菜单URL不能为空");
 			}
 		}
-		
+
 		//上级菜单类型
 		int parentType = MenuType.CATALOG.getValue();
 		if(menu.getParentId() != 0){
 			SysMenu parentMenu = sysMenuService.getById(menu.getParentId());
 			parentType = parentMenu.getType();
 		}
-		
+
 		//目录、菜单
 		if(menu.getType() == MenuType.CATALOG.getValue() ||
 				menu.getType() == MenuType.MENU.getValue()){
@@ -167,7 +178,7 @@ public class SysMenuController extends AbstractController {
 			}
 			return ;
 		}
-		
+
 		//按钮
 		if(menu.getType() == MenuType.BUTTON.getValue()){
 			if(parentType != MenuType.MENU.getValue()){

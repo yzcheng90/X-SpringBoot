@@ -30,7 +30,7 @@ public class CustomLogoutSuccessHandler implements LogoutHandler {
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         String token = request.getHeader(Constant.TOKEN);
-        redisTemplate.delete(Constant.AUTHENTICATION_TOKEN);
+        redisTemplate.delete(Constant.AUTHENTICATION_TOKEN + token);
         redisTemplate.delete(token);
     }
 }

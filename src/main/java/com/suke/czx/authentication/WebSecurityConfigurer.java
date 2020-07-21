@@ -5,6 +5,7 @@ import com.suke.czx.authentication.handler.CustomAuthenticationFailHandler;
 import com.suke.czx.authentication.handler.CustomAuthenticationSuccessHandler;
 import com.suke.czx.authentication.handler.CustomLogoutSuccessHandler;
 import com.suke.czx.authentication.handler.TokenAuthenticationFailHandler;
+import com.suke.czx.authentication.provider.CustomDaoAuthenticationProvider;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.config.AuthIgnoreConfig;
 import com.suke.czx.interceptor.AuthenticationTokenFilter;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -93,8 +95,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-            .userDetailsService(customUserDetailsService)
-            .passwordEncoder(passwordEncoder());
+                .authenticationProvider(authenticationProvider());
     }
 
     @Bean
@@ -127,5 +128,13 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        CustomDaoAuthenticationProvider provider = new CustomDaoAuthenticationProvider();
+        provider.setUserDetailsService(customUserDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
     }
 }
