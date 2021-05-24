@@ -5,6 +5,7 @@ import com.suke.czx.common.annotation.AuthIgnore;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.R;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -23,21 +24,21 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 登录相关
- * 
+ *
  * @author czx
  * @email object_czx@163.com
- * @date 2019年4月18日 下午8:15:31
  */
 @Slf4j
 @RestController
 @AllArgsConstructor
+@Api(value = "SysLoginController" ,tags = "登录相关")
 public class SysLoginController extends AbstractController {
 
 	private final Producer producer;
 	private final RedisTemplate redisTemplate;
 
 	@AuthIgnore
-	@RequestMapping("/")
+	@RequestMapping(value = "/",method = RequestMethod.GET)
 	public R hello(){
 		return R.ok("hello welcome to use x-springboot");
 	}
@@ -47,7 +48,7 @@ public class SysLoginController extends AbstractController {
 	 */
 	@AuthIgnore
 	@SneakyThrows
-	@RequestMapping("/sys/code/{time}")
+	@RequestMapping(value = "/sys/code/{time}",method = RequestMethod.GET)
 	public void captcha(@PathVariable("time") String time, HttpServletResponse response){
 		response.setHeader("Cache-Control", "no-store, no-cache");
 		response.setContentType("image/jpeg");

@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,66 +15,43 @@ import java.util.List;
 
 /**
  * 系统用户
- * 
+ *
  * @author czx
  * @email object_czx@163.com
- * @date 2016年9月18日 上午9:28:55
  */
 @Data
+@ApiModel(value = "系统用户")
 @EqualsAndHashCode(callSuper = true)
 public class SysUser extends Model<SysUser> {
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * 用户ID
-	 */
+
 	@TableId(value = "user_id", type = IdType.AUTO)
-	private Long userId;
+	public Long userId;
 
-	/**
-	 * 用户名
-	 */
+	@ApiModelProperty(value = "用户名")
 	@NotBlank(message="用户名不能为空")
-	private String username;
+	public String username;
 
-	/**
-	 * 密码
-	 */
+	@ApiModelProperty(value = "密码")
 	@NotBlank(message="密码不能为空")
-	private String password;
+	public String password;
 
-	/**
-	 * 盐
-	 */
-	private String salt;
-
-	/**
-	 * 邮箱
-	 */
+	@ApiModelProperty(value = "邮箱")
 	@NotBlank(message="邮箱不能为空")
-	private String email;
+	public String email;
 
-	/**
-	 * 手机号
-	 */
-	private String mobile;
+	@ApiModelProperty(value = "手机号")
+	public String mobile;
 
-	/**
-	 * 状态  0：禁用   1：正常
-	 */
-	private Integer status;
+	@ApiModelProperty(value = "状态  0：禁用   1：正常")
+	public Integer status;
 
-	
-	/**
-	 * 创建者ID
-	 */
-	private Long createUserId;
+	@ApiModelProperty(value = "创建者ID")
+	public Long createUserId;
 
-	/**
-	 * 创建时间
-	 */
-	private Date createTime;
+	@ApiModelProperty(value = "创建时间")
+	public Date createTime;
 
 	@TableField(exist = false)
-	private List<Long> roleIdList;
+	@ApiModelProperty(value = "角色ID")
+	public List<Long> roleIdList;
 }

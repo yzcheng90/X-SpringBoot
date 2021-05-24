@@ -1,4 +1,4 @@
-package com.suke.czx;
+package com.suke.czx.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,16 +6,15 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * Created by czx on 2017/10/31.
+ * Created by czx on 2021/04/02.
  */
 @Configuration
-@EnableSwagger2
-public class Swagger2 {
+public class SwaggerConfig {
 
     /**
      * 通过 createRestApi函数来构建一个DocketBean
@@ -29,7 +28,7 @@ public class Swagger2 {
                 //控制暴露出去的路径下的实例
                 //如果某个接口不想暴露,可以使用以下注解
                 //这样,该接口就不会暴露在 swagger2 的页面下
-                .apis(RequestHandlerSelectors.basePackage("com.suke.czx.modules.app"))
+                .apis(RequestHandlerSelectors.basePackage("com.suke.czx.modules"))
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -39,7 +38,7 @@ public class Swagger2 {
                 //页面标题
                 .title("X-SpringBoot API")
                 //创建人
-                .contact("czx")
+                .contact(new Contact("czx","https://github.com/yzcheng90/X-SpringBoot",""))
                 //版本号
                 .version("1.0")
                 //描述

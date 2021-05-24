@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,44 +16,33 @@ import java.util.List;
 
 /**
  * 角色
- * 
+ *
  * @author czx
  * @email object_czx@163.com
- * @date 2016年9月18日 上午9:27:38
  */
 @Data
+@ApiModel(value = "角色")
 @EqualsAndHashCode(callSuper = true)
 public class SysRole extends Model<SysRole> implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * 角色ID
-	 */
+
+	@ApiModelProperty(value = "角色ID")
 	@TableId(value = "role_id", type = IdType.AUTO)
-	private Long roleId;
+	public Long roleId;
 
-	/**
-	 * 角色名称
-	 */
+	@ApiModelProperty(value = "角色名称")
 	@NotBlank(message="角色名称不能为空")
-	private String roleName;
+	public String roleName;
 
-	/**
-	 * 备注
-	 */
-	private String remark;
-	
-	/**
-	 * 创建者ID
-	 */
-	private Long createUserId;
+	@ApiModelProperty(value = "备注")
+	public String remark;
 
+	@ApiModelProperty(value = "创建者ID")
+	public Long createUserId;
+
+	@ApiModelProperty(value = "创建时间")
+	public Date createTime;
+
+	@ApiModelProperty(value = "菜单ID")
 	@TableField(exist = false)
-	private List<Long> menuIdList;
-	
-	/**
-	 * 创建时间
-	 */
-	private Date createTime;
-
+	public List<Long> menuIdList;
 }

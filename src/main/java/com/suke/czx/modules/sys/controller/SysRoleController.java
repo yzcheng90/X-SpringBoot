@@ -8,10 +8,10 @@ import com.suke.czx.common.annotation.SysLog;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.R;
-import com.suke.czx.common.validator.ValidatorUtils;
 import com.suke.czx.modules.sys.entity.SysRole;
 import com.suke.czx.modules.sys.service.SysRoleMenuService;
 import com.suke.czx.modules.sys.service.SysRoleService;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,23 +21,22 @@ import java.util.Map;
 
 /**
  * 角色管理
- * 
+ *
  * @author czx
  * @email object_czx@163.com
- * @date 2019年4月17日
  */
-
 @RestController
 @RequestMapping("/sys/role")
 @AllArgsConstructor
+@Api(value = "SysRoleController" ,tags = "角色管理")
 public class SysRoleController extends AbstractController {
 	private final SysRoleService sysRoleService;
 	private final SysRoleMenuService sysRoleMenuService;
-	
+
 	/**
 	 * 角色列表
 	 */
-	@RequestMapping("/list")
+	@RequestMapping(value = "/list",method = RequestMethod.GET)
 	@PreAuthorize("hasRole('sys:role:list')")
 	public R list(@RequestParam Map<String, Object> params){
 		QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
@@ -55,11 +54,11 @@ public class SysRoleController extends AbstractController {
 
 		return R.ok().put("page", mpPageConvert.pageValueConvert(sysRoleIPage));
 	}
-	
+
 	/**
 	 * 角色列表
 	 */
-	@RequestMapping("/select")
+	@RequestMapping(value = "/select",method = RequestMethod.GET)
 	@PreAuthorize("hasRole('sys:role:select')")
 	public R select(){
 		List<SysRole> list;
@@ -75,57 +74,52 @@ public class SysRoleController extends AbstractController {
 		}
 		return R.ok().put("list", list);
 	}
-	
+
 	/**
 	 * 角色信息
 	 */
-	@RequestMapping("/info/{roleId}")
+	@RequestMapping(value = "/info/{roleId}",method = RequestMethod.GET)
 	@PreAuthorize("hasRole('sys:role:info')")
 	public R info(@PathVariable("roleId") Long roleId){
 		SysRole role = sysRoleService.getById(roleId);
-		
+
 		//查询角色对应的菜单
 		List<Long> menuIdList = sysRoleMenuService.queryMenuIdList(roleId);
 		role.setMenuIdList(menuIdList);
-		
+
 		return R.ok().put("role", role);
 	}
-	
+
 	/**
 	 * 保存角色
 	 */
 	@SysLog("保存角色")
-	@RequestMapping("/save")
+	@RequestMapping(value = "/save",method = RequestMethod.POST)
 	@PreAuthorize("hasRole('sys:role:save')")
 	public R save(@RequestBody SysRole role){
-		ValidatorUtils.validateEntity(role);
-		
 		role.setCreateUserId(getUserId());
 		sysRoleService.saveRoleMenu(role);
-		
 		return R.ok();
 	}
-	
+
 	/**
 	 * 修改角色
 	 */
 	@SysLog("修改角色")
-	@RequestMapping("/update")
+	@RequestMapping(value = "/update",method = RequestMethod.POST)
 	@PreAuthorize("hasRole('sys:role:update')")
 	public R update(@RequestBody SysRole role){
-		ValidatorUtils.validateEntity(role);
-		
 		role.setCreateUserId(getUserId());
 		sysRoleService.updateRoleMenu(role);
-		
+
 		return R.ok();
 	}
-	
+
 	/**
 	 * 删除角色
 	 */
 	@SysLog("删除角色")
-	@RequestMapping("/delete")
+	@RequestMapping(value = "/delete",method = RequestMethod.POST)
 	@PreAuthorize("hasRole('sys:role:delete')")
 	public R delete(@RequestBody Long[] roleIds){
 		sysRoleService.deleteBath(roleIds);

@@ -7,6 +7,7 @@ import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.R;
 import com.suke.czx.modules.apkversion.entity.ApkVersion;
 import com.suke.czx.modules.apkversion.service.ApkVersionService;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 /**
  * APK版本管理
- * 
+ *
  * @author czx
  * @email object_czx@163.com
  * @date 2019-04-28 15:56:33
@@ -27,13 +28,14 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/apkversion/apkversion")
+@Api(value = "ApkVersionController" ,tags = "APK版本管理")
 public class ApkVersionController  extends AbstractController {
     private final  ApkVersionService apkVersionService;
 
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
     @PreAuthorize("hasRole('apkversion:apkversion:list')")
     public R list(@RequestParam Map<String, Object> params){
         //查询列表数据
@@ -46,7 +48,7 @@ public class ApkVersionController  extends AbstractController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
+    @RequestMapping(value = "/info/{id}",method = RequestMethod.GET)
     @PreAuthorize("hasRole('apkversion:apkversion:info')")
     public R info(@PathVariable("id") Long id){
         return R.ok().put("apkVersion", apkVersionService.getById(id));
@@ -57,7 +59,7 @@ public class ApkVersionController  extends AbstractController {
      * 新增APK版本管理
      */
     @SysLog("新增APK版本管理数据")
-    @RequestMapping("/save")
+    @RequestMapping(value = "/save",method = RequestMethod.POST)
     @PreAuthorize("hasRole('apkversion:apkversion:save')")
     public R save(@RequestBody ApkVersion apkVersion){
         apkVersion.setUserId(getUserId());
@@ -70,7 +72,7 @@ public class ApkVersionController  extends AbstractController {
      * 修改
      */
     @SysLog("修改APK版本管理数据")
-    @RequestMapping("/update")
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
     @PreAuthorize("hasRole('apkversion:apkversion:update')")
     public R update(@RequestBody ApkVersion apkVersion){
         apkVersion.setUpdateTime(new Date());
@@ -83,11 +85,11 @@ public class ApkVersionController  extends AbstractController {
      * 删除
      */
     @SysLog("删除APK版本管理数据")
-    @RequestMapping("/delete")
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
     @PreAuthorize("hasRole('apkversion:apkversion:delete')")
     public R delete(@RequestBody Long[] ids){
 		apkVersionService.removeByIds(Arrays.asList(ids));
         return R.ok();
     }
-	
+
 }

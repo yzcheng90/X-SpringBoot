@@ -26,6 +26,11 @@ management:
       exposure:
         include: '*'
 
+#填充框架配置
+autofull:
+  show-log: false
+  max-level: 1
+
 # mybaits-plus配置
 mybatis-plus:
   # MyBatis Mapper所对应的XML文件位置

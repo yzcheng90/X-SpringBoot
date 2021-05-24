@@ -7,8 +7,7 @@ import com.suke.czx.modules.apkversion.entity.ApkVersion;
 import com.suke.czx.modules.apkversion.service.ApkVersionService;
 
 
-
 @Service
 public class ApkVersionServiceImpl extends ServiceImpl<ApkVersionMapper, ApkVersion> implements ApkVersionService {
-	
+
 }

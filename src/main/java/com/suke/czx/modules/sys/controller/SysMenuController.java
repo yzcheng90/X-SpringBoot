@@ -10,14 +10,12 @@ import com.suke.czx.modules.sys.entity.SysMenu;
 import com.suke.czx.modules.sys.service.PermissionsService;
 import com.suke.czx.modules.sys.service.SysMenuService;
 import com.suke.czx.modules.sys.vo.RouterEntity;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
@@ -27,28 +25,28 @@ import java.util.Set;
  *
  * @author czx
  * @email object_czx@163.com
- * @date 2016年10月27日 下午9:58:15
  */
 @Slf4j
 @RestController
 @RequestMapping("/sys/menu")
 @AllArgsConstructor
+@Api(value = "SysMenuController" ,tags = "系统菜单")
 public class SysMenuController extends AbstractController {
 	private final SysMenuService sysMenuService;
-	private final PermissionsService shiroService;
+	private final PermissionsService permissionsService;
 
 	/**
 	 * 导航菜单
 	 */
-	@RequestMapping("/nav")
+	@RequestMapping(value = "/nav",method = RequestMethod.POST)
 	public R nav(){
 		List<SysMenu> menuList = sysMenuService.getUserMenuList(getUserId());
-		Set<String> permissions = shiroService.getUserPermissions(getUserId());
+		Set<String> permissions = permissionsService.getUserPermissions(getUserId());
 		return R.ok().put("menuList", menuList).put("permissions", permissions);
 	}
 
 	@AuthIgnore
-	@RequestMapping("/getRouter")
+	@RequestMapping(value = "/getRouter",method = RequestMethod.GET)
 	public R getRouter(){
 		List<RouterEntity> userMenu = sysMenuService.getUserMenu(1l);
 		log.info("========{}",userMenu);
@@ -58,7 +56,7 @@ public class SysMenuController extends AbstractController {
 	/**
 	 * 所有菜单列表
 	 */
-	@RequestMapping("/list")
+	@RequestMapping(value = "/list",method = RequestMethod.GET)
 	@PreAuthorize("hasRole('sys:menu:list')")
 	public List<SysMenu> list(){
 		List<SysMenu> menuList = sysMenuService.list();
@@ -69,7 +67,7 @@ public class SysMenuController extends AbstractController {
 	/**
 	 * 选择菜单(添加、修改菜单)
 	 */
-	@RequestMapping("/select")
+	@RequestMapping(value = "/select",method = RequestMethod.GET)
 	@PreAuthorize("hasRole('sys:menu:select')")
 	public R select(){
 		//查询列表数据
@@ -89,7 +87,7 @@ public class SysMenuController extends AbstractController {
 	/**
 	 * 菜单信息
 	 */
-	@RequestMapping("/info/{menuId}")
+	@RequestMapping(value = "/info/{menuId}",method = RequestMethod.GET)
 	@PreAuthorize("hasRole('sys:menu:info')")
 	public R info(@PathVariable("menuId") Long menuId){
 		SysMenu menu = sysMenuService.getById(menuId);
@@ -100,7 +98,7 @@ public class SysMenuController extends AbstractController {
 	 * 保存
 	 */
 	@SysLog("保存菜单")
-	@RequestMapping("/save")
+	@RequestMapping(value = "/save",method = RequestMethod.POST)
 	@PreAuthorize("hasRole('sys:menu:save')")
 	public R save(@RequestBody SysMenu menu){
 		//数据校验
@@ -115,7 +113,7 @@ public class SysMenuController extends AbstractController {
 	 * 修改
 	 */
 	@SysLog("修改菜单")
-	@RequestMapping("/update")
+	@RequestMapping(value = "/update",method = RequestMethod.POST)
 	@PreAuthorize("hasRole('sys:menu:update')")
 	public R update(@RequestBody SysMenu menu){
 		//数据校验
@@ -130,7 +128,7 @@ public class SysMenuController extends AbstractController {
 	 * 删除
 	 */
 	@SysLog("删除菜单")
-	@RequestMapping("/delete")
+	@RequestMapping(value = "/delete",method = RequestMethod.POST)
 	@PreAuthorize("hasRole('sys:menu:delete')")
 	public R delete(long menuId){
 		//判断是否有子菜单或按钮

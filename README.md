@@ -1,8 +1,8 @@
 <h1> X-SpringBoot </h1>
 
-![Image text](https://img.shields.io/badge/x--springboot-v3.0-green.svg)
-![Image text](https://img.shields.io/badge/springboot-2.1.8-green.svg)
-![Image text](https://img.shields.io/badge/MyBatis%20Plus-3.1.0-green.svg)
+![Image text](https://img.shields.io/badge/x--springboot-v4.0-green.svg)
+![Image text](https://img.shields.io/badge/springboot-2.4.4-green.svg)
+![Image text](https://img.shields.io/badge/MyBatis%20Plus-3.4.2-green.svg)
 
 [更新日志](https://github.com/yzcheng90/X-SpringBoot/tree/master/doc/updateLog.md) | [项目地址](https://github.com/yzcheng90)  | [SpringCloud版本](https://github.com/yzcheng90/ms) |[动态数据源](https://github.com/yzcheng90/dynamic-data-source)
 
@@ -13,16 +13,17 @@
 - 引入了MyBatis Plus 大量简化了SQL
 - 引入hutool 工具包 规范工具类
 - 引入minio 分布式文件系统
+- 引入[autoFull](https://github.com/yzcheng90/zhjg-common-autofull) 自动填充绑定框架,多表关联不用写sql
 - 前后端完全脱离，前端代码可单独部署
 - 自定义Spring Security 支持获取token
 - 账号密码：admin/admin
 
  
 **版本信息** 
-- 核心框架：Spring Boot 2.1.8
+- 核心框架：Spring Boot 2.4.4
 - 安全框架：Spring Security 
-- 视图框架：Spring MVC 5.1.x
-- 持久层框架：MyBatis Plus 3.1.0
+- 视图框架：Spring MVC 5.3.x
+- 持久层框架：MyBatis Plus 3.4.2
 - 日志管理：SLF4J 1.7、Log4j
 - 页面交互：Vue2.x 
 
@@ -49,7 +50,6 @@ X-SpringBoot
 │  ├─base base包
 │  ├─exception 异常处理
 │  ├─utils 一些工具类
-│  ├─validator 后台校验
 │  └─xss XSS过滤
 │ 
 ├─config 配置信息
@@ -63,7 +63,6 @@ X-SpringBoot
 │  └─gen 代码生成
 │ 
 ├─Application 项目启动类
-├─Swagger2 swagger2类
 │  
 ├──resources 
 │  ├─mapper SQL对应的XML文件

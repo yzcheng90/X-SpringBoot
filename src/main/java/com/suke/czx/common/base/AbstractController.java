@@ -16,10 +16,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 
 public abstract class AbstractController {
+
 	@Autowired
 	protected MPPageConvert mpPageConvert;
 
-	protected ObjectMapper objectMapper = new ObjectMapper();
+	@Autowired
+	public ObjectMapper objectMapper;
 
 	protected CustomUserDetailsUser getUser() {
 		Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

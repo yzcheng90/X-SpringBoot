@@ -73,8 +73,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper,SysMenu> imple
 
 	@Override
 	public List<RouterEntity> getUserMenu(Long userId) {
-
-
 		return getRouterList();
 	}
 

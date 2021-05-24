@@ -10,12 +10,10 @@ import com.suke.czx.common.utils.R;
 import com.suke.czx.modules.gen.entity.GenConfig;
 import com.suke.czx.modules.gen.entity.InfoRmationSchema;
 import com.suke.czx.modules.gen.service.SysGenService;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.IOUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +23,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/gen")
 @AllArgsConstructor
+@Api(value = "SysGenController" ,tags = "代码生成")
 public class SysGenController extends AbstractController {
 
     private final SysGenService sysGenService;
@@ -33,7 +32,7 @@ public class SysGenController extends AbstractController {
      * 列表
      */
     @ResponseBody
-    @RequestMapping("/list")
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
     public R list(@RequestParam Map<String, Object> params){
         //查询列表数据
         QueryWrapper<InfoRmationSchema> queryWrapper = new QueryWrapper<>();
@@ -49,7 +48,7 @@ public class SysGenController extends AbstractController {
      * 生成代码
      */
     @AuthIgnore
-    @RequestMapping("/code")
+    @RequestMapping(value = "/code",method = RequestMethod.GET)
     public void code(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String data = request.getParameter("data");

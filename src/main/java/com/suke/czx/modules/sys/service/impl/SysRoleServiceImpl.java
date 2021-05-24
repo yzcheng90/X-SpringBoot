@@ -3,12 +3,11 @@ package com.suke.czx.modules.sys.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.suke.czx.common.exception.RRException;
 import com.suke.czx.common.utils.Constant;
-import com.suke.czx.modules.sys.mapper.SysRoleMapper;
 import com.suke.czx.modules.sys.entity.SysRole;
+import com.suke.czx.modules.sys.mapper.SysRoleMapper;
 import com.suke.czx.modules.sys.service.SysRoleMenuService;
 import com.suke.czx.modules.sys.service.SysRoleService;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,13 +19,11 @@ import java.util.List;
 
 /**
  * 角色
- * 
+ *
  * @author czx
  * @email object_czx@163.com
  * @date 2019年4月17日
  */
-
-@Lazy
 @Service
 @AllArgsConstructor
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> implements SysRoleService {
@@ -56,17 +53,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 		return sysRoleMapper.queryRoleIdList(createUserId);
 	}
 
-	/**
-	 * @Author czx
-	 * @Description //TODO deleteById  报 Parameter 'roleId' not found. Available parameters are [array]
-	 * @Date 15:58 2019/4/18
-	 * @Param [ids]
-	 * @return void
-	 **/
+
 	@Override
 	public void deleteBath(Long[] ids) {
 		baseMapper.deleteBatchIds(Arrays.asList(ids));
-		//Arrays.stream(ids).forEach(id->baseMapper.deleteById(id));
 	}
 
 	/**

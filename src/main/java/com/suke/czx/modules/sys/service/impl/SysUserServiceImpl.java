@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * 系统用户
- * 
+ *
  * @author czx
  * @email object_czx@163.com
  * @date 2016年9月18日 上午9:46:09
@@ -51,9 +51,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 	@Transactional
 	public void saveUserRole(SysUser user) {
 		user.setCreateTime(new Date());
-		String salt = RandomStringUtils.randomAlphanumeric(20);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		user.setSalt(salt);
 		sysUserMapper.insert(user);
 		//检查角色是否越权
 		checkRole(user);
@@ -97,7 +95,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 			});
 		}
 	}
-	
+
 	/**
 	 * 检查角色是否越权
 	 */
@@ -106,10 +104,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 		if(user.getCreateUserId() == Constant.SUPER_ADMIN){
 			return ;
 		}
-		
+
 		//查询用户创建的角色列表
 		List<Long> roleIdList = sysRoleService.queryRoleIdList(user.getCreateUserId());
-		
+
 		//判断是否越权
 		if(!roleIdList.containsAll(user.getRoleIdList())){
 			throw new RRException("新增用户所选角色，不是本人创建");
