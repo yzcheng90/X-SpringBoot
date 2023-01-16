@@ -9,7 +9,7 @@ import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.exception.RRException;
 import com.suke.czx.common.utils.ConfigConstant;
 import com.suke.czx.common.utils.R;
-import com.suke.czx.modules.apkversion.entity.ApkVersion;
+import com.suke.czx.modules.apk.entity.ApkVersion;
 import com.suke.czx.modules.oss.cloud.CloudStorageConfig;
 import com.suke.czx.modules.oss.cloud.OSSFactory;
 import com.suke.czx.modules.oss.entity.SysOss;

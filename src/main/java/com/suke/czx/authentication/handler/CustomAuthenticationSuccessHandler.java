@@ -46,11 +46,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         }else {
             token = SecureUtil.md5(String.valueOf(System.currentTimeMillis()));
         }
+        // 保存token
         redisTemplate.opsForValue().set(Constant.AUTHENTICATION_TOKEN + token,token,Constant.TOKEN_EXPIRE, TimeUnit.SECONDS);
+        // 保存用户ID
         redisTemplate.opsForValue().set(token,userId,Constant.TOKEN_EXPIRE, TimeUnit.SECONDS);
 
         response.setCharacterEncoding(CharsetUtil.UTF_8);
-        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         PrintWriter printWriter = response.getWriter();
         printWriter.append(objectMapper.writeValueAsString(R.ok().put(Constant.TOKEN,token)));
     }

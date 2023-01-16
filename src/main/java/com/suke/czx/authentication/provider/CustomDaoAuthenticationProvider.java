@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
     @Override
-    public void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication){
+    public void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) {
         if (authentication.getCredentials() == null) {
             throw new BadCredentialsException("认证错误");
         } else {

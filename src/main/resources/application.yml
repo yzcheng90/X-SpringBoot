@@ -1,23 +1,23 @@
 # Tomcat
 server:
-    port: 8080
+  port: 8080
 
 spring:
-    # 环境 dev|test|pro
-    profiles:
-        active: test
-    # jackson时间格式化
-    jackson:
-        time-zone: GMT+8
-        date-format: yyyy-MM-dd HH:mm:ss
-    redis:
-        host: localhost
-        port: 6379
-        password:       # 密码（默认为空）
-    servlet:
-        multipart:
-            maxFileSize: 104857600 #100MB
-            maxRequestSize: 104857600 #100MB
+  # 环境 dev|test|pro
+  profiles:
+    active: test
+  # jackson时间格式化
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  redis:
+    host: localhost
+    port: 6379
+    password:       # 密码（默认为空）
+  servlet:
+    multipart:
+      maxFileSize: 104857600 #100MB
+      maxRequestSize: 104857600 #100MB
 
 # 暴露监控端点后会打印所有的端点
 management:

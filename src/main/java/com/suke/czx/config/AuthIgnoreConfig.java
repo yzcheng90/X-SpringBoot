@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -43,16 +42,16 @@ public class AuthIgnoreConfig implements InitializingBean {
 
     @Override
     public void afterPropertiesSet(){
-        RequestMappingHandlerMapping mapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
+        RequestMappingHandlerMapping mapping = applicationContext.getBean("requestMappingHandlerMapping",RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> map = mapping.getHandlerMethods();
         map.keySet().forEach(mappingInfo -> {
             HandlerMethod handlerMethod = map.get(mappingInfo);
             AuthIgnore method = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), AuthIgnore.class);
-            Optional.ofNullable(method)
-                    .ifPresent(authIgnore -> mappingInfo
-                            .getPatternsCondition()
-                            .getPatterns()
-                            .forEach(url -> ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, ASTERISK))));
+            if(method != null){
+                mappingInfo.getPathPatternsCondition().getPatternValues().stream().forEach(url ->{
+                    ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, ASTERISK));
+                });
+            }
         });
     }
 }

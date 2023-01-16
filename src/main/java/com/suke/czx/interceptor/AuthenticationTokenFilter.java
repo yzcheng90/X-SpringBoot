@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.suke.czx.authentication.detail.CustomUserDetailsService;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.R;
+import com.suke.czx.common.utils.SpringContextUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -31,13 +32,11 @@ import java.io.IOException;
 public class AuthenticationTokenFilter extends BasicAuthenticationFilter {
 
     private RedisTemplate redisTemplate;
-    private CustomUserDetailsService customUserDetailsService;
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public AuthenticationTokenFilter(AuthenticationManager authenticationManager,RedisTemplate template,CustomUserDetailsService customUserDetailsService) {
+    public AuthenticationTokenFilter(AuthenticationManager authenticationManager,RedisTemplate template) {
         super(authenticationManager);
         this.redisTemplate = template;
-        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
@@ -53,6 +52,7 @@ public class AuthenticationTokenFilter extends BasicAuthenticationFilter {
                 writer(response,"无效token");
                 return;
             }
+            CustomUserDetailsService customUserDetailsService = SpringContextUtils.getBean(CustomUserDetailsService.class);
             UserDetails userDetails = customUserDetailsService.loadUserByUserId((Long) userId);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

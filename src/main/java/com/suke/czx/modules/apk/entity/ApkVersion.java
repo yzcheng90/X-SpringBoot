@@ -1,4 +1,4 @@
-package com.suke.czx.modules.apkversion.entity;
+package com.suke.czx.modules.apk.entity;
 
 
 import com.baomidou.mybatisplus.annotation.TableId;
