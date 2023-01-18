@@ -21,7 +21,7 @@ public class R extends HashMap<String, Object> {
 	private static final int defaultLevel = 1;
 
 	public R() {
-		put("code", 0);
+		put("code", 200);
 		put("msg", "success");
 	}
 

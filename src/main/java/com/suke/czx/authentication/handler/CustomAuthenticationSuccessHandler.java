@@ -47,10 +47,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             token = SecureUtil.md5(String.valueOf(System.currentTimeMillis()));
         }
         // 保存token
-        redisTemplate.opsForValue().set(Constant.AUTHENTICATION_TOKEN + token,token,Constant.TOKEN_EXPIRE, TimeUnit.SECONDS);
-        // 保存用户ID
-        redisTemplate.opsForValue().set(token,userId,Constant.TOKEN_EXPIRE, TimeUnit.SECONDS);
-
+        redisTemplate.opsForValue().set(Constant.AUTHENTICATION_TOKEN + token,userId,Constant.TOKEN_EXPIRE, TimeUnit.SECONDS);
+        log.info("token:{}",token);
         response.setCharacterEncoding(CharsetUtil.UTF_8);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         PrintWriter printWriter = response.getWriter();

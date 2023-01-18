@@ -47,7 +47,7 @@ public class AuthenticationTokenFilter extends BasicAuthenticationFilter {
         }
 
         if(StrUtil.isNotBlank(token) && !StrUtil.equals(token,"null")){
-            Object userId = redisTemplate.opsForValue().get(token);
+            Object userId = redisTemplate.opsForValue().get(Constant.AUTHENTICATION_TOKEN + token);
             if(ObjectUtil.isNull(userId)){
                 writer(response,"无效token");
                 return;
