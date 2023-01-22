@@ -1,7 +1,9 @@
 package com.suke.czx.modules.sys.entity;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,11 +19,11 @@ import java.io.Serializable;
  * @email object_czx@163.com
  */
 @Data
+@TableName("sys_role_menu")
 @ApiModel(value = "角色与菜单对应关系")
-@EqualsAndHashCode(callSuper = true)
-public class SysRoleMenu extends Model<SysRoleMenu> implements Serializable {
+public class SysRoleMenu  implements Serializable {
 
-	@TableId
+	@TableId(type = IdType.AUTO)
 	public Long id;
 
 	@ApiModelProperty(value = "角色ID")

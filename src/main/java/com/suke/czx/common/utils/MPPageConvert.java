@@ -16,6 +16,11 @@ import java.util.Map;
 @Component
 public class MPPageConvert {
 
+    public String getKeyword(Map<String, Object> param){
+        final String keyword = MapUtil.getStr(param, "keyword");
+        return keyword;
+    }
+
     /**
      * @Author czx
      * @Description //TODO 前台传过来的参数转换为MyBatis Plus的Page
@@ -26,8 +31,8 @@ public class MPPageConvert {
     public <T> IPage<T> pageParamConvert(Map<String, Object> param){
         int currPage = 1;
         int limit = 10;
-        if(MapUtil.getInt(param,"page") != null){
-            currPage = MapUtil.getInt(param,"page");
+        if(MapUtil.getInt(param,"current") != null){
+            currPage = MapUtil.getInt(param,"current");
         }
         if(MapUtil.getInt(param,"limit") != null){
             limit = MapUtil.getInt(param,"limit");
@@ -47,8 +52,8 @@ public class MPPageConvert {
         HashMap<Object,Object> pageData = new HashMap<>();
         pageData.put("list",page.getRecords());
         pageData.put("totalCount",page.getTotal());
-        pageData.put("pageSize",page.getSize());
-        pageData.put("currPage",page.getCurrent());
+        pageData.put("limit",page.getSize());
+        pageData.put("current",page.getCurrent());
         pageData.put("totalPage",page.getPages());
         return pageData;
     }

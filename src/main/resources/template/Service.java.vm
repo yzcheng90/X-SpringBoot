@@ -12,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @date ${datetime}
  */
 public interface ${className}Service extends IService<${className}> {
+
 }

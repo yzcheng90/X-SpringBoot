@@ -1,13 +1,15 @@
 package ${package}.${moduleName}.entity;
 
-
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
 #end
@@ -15,23 +17,30 @@ import java.math.BigDecimal;
 
 /**
  * ${comments}
- * 
+ *
  * @author ${author}
  * @email ${email}
  * @date ${datetime}
  */
 @Data
 @TableName("${tableName}")
-@EqualsAndHashCode(callSuper = true)
-public class ${className} extends Model<${className}> implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class ${className} implements Serializable {
+	public static final long serialVersionUID = 1L;
 
 	#foreach ($column in $columns)
-	//$column.columnComment
 	#if($column.columnKey != $null && $column.columnKey == "PRI")
-	@TableId
+@TableId(type = IdType.ASSIGN_UUID)
 	#end
-	private $column.attrType $column.attrNameMin;
+	#if($column.attrType == "Date")
+@ApiModelProperty(value = "$column.columnComment")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	#end
+	#if($column.attrType != "Date")
+@ApiModelProperty(value = "$column.columnComment")
+	#end
+@JsonProperty(value = "$column.attrNameMin")
+	public $column.attrType $column.attrNameMin;
+
+#end
 
 }

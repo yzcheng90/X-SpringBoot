@@ -1,4 +1,10 @@
 ### v3.2
+- springboot 版本升级到 2.7.7
+- mybatis-plus 版本升级到 3.5.2
+- 项目重构，精简代码
+- 前台UI换成 vue-cli 
+
+### v3.2
 - 修复上传文件时报匿名无权限
 - 修复一些删除报错问题
 - 修复  [issues #15](https://github.com/yzcheng90/X-SpringBoot/issues/15)

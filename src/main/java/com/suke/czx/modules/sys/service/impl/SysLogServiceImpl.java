@@ -10,6 +10,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class SysLogServiceImpl extends ServiceImpl<SysLogMapper,SysLog> implements SysLogService {
+public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> implements SysLogService {
 
 }

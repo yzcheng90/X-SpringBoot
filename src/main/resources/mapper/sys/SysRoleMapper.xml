@@ -10,8 +10,11 @@
 
 	<!-- 查询用户的所有菜单ID -->
 	<select id="queryAllMenuId" resultType="long">
-		select distinct rm.menu_id from sys_user_role ur
-			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
+		SELECT DISTINCT
+			rm.menu_id
+		FROM
+			sys_role_menu rm
+				LEFT JOIN sys_user_role ur ON ur.role_id = rm.role_id
 		where ur.user_id = #{userId}
 	</select>
 </mapper>

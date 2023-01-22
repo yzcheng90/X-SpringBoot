@@ -54,4 +54,9 @@ public class AuthIgnoreConfig implements InitializingBean {
             }
         });
     }
+
+    public boolean isContains(String url){
+        final String u = ReUtil.replaceAll(url, PATTERN, ASTERISK);
+        return ignoreUrls.contains(u);
+    }
 }

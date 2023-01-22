@@ -4,7 +4,7 @@
 ![Image text](https://img.shields.io/badge/springboot-2.7.7-green.svg)
 ![Image text](https://img.shields.io/badge/MyBatis%20Plus-3.5.2-green.svg)
 
-[更新日志](https://github.com/yzcheng90/X-SpringBoot/tree/master/doc/updateLog.md) | [项目地址](https://github.com/yzcheng90)  | [SpringCloud版本](https://github.com/yzcheng90/ms) |[动态数据源](https://github.com/yzcheng90/dynamic-data-source)
+[更新日志](https://github.com/yzcheng90/X-SpringBoot/tree/master/doc/updateLog.md) | [项目地址](https://github.com/yzcheng90)  | [SpringCloud版本](https://github.com/yzcheng90/ms) |[前台项目地址](https://github.com/yzcheng90/x-springboot-ui)
 
 **项目说明** 
 - X-SpringBoot 是一个轻量级的Java快速开发平台，基于各大开源项目组合而来，用于快速构建中小型API、RESTful API项目，该项目已经有过多个真实项目的实践，稳定、简单、快速，使我们摆脱那些重复劳动。
@@ -55,10 +55,8 @@ X-SpringBoot
 ├─interceptor token拦截器
 │ 
 ├─modules 功能模块
-│  ├─app API接口模块(APP调用)
 │  ├─oss 文件服务模块
 │  ├─sys 权限模块
-│  ├─apkversion APK 版本管理
 │  └─gen 代码生成
 │ 
 ├─Application 项目启动类
@@ -68,47 +66,11 @@ X-SpringBoot
 
 
 ```
-**部署** 
-- 后台部署
- ```
-   1、 $git clone https://github.com/yzcheng90/X-SpringBoot.git
-   
-   2 、IDEA 打开项目引入依赖
-   
-   3、 创建数据库x_springboot，数据库编码为UTF-8，执行doc/db.sql文件，初始化数据
-   
-   4、 IDEA运行Application.java，则可启动项目 http://localhost:8080
- ```
-- 前台部署
- ```
-    1、 打开nginx 目录 /conf/nginx.conf 
-    
-    2、 在server中修改 root 和 index  
-        
-        ...
-        server {
-            ....
-            #静态页面目录
-            root  E:\github\X-SpringBoot\x-springboot-ui;
-            #默认首页
-            index  login.html;
-            ....
-            
-            location ^~// {
-                 proxy_pass   http://127.0.0.1:8080; #这里为后台服务地址
-            }
-        }
-        ...
-        
-        ( 这里建议直接复制项目中的doc/nginx.conf替换你的nginx配置文件，然后修改静态页面目录 )
-        
-     3、启动nginx 访问 localhost
- ```
 
 **系统截图**
-![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20190419153826.jpg)
-![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20190422163826.jpg)
-![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20190422163331.jpg)
+![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20230122174113.jpg)
+![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20230122174148.jpg)
+![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20230122174204.jpg)
 
 **常见问题**
 

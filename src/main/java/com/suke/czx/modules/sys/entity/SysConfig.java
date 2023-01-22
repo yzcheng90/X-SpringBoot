@@ -1,6 +1,7 @@
 package com.suke.czx.modules.sys.entity;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
@@ -21,7 +22,7 @@ import javax.validation.constraints.NotBlank;
 @EqualsAndHashCode(callSuper = true)
 public class SysConfig extends Model<SysConfig> {
 
-	@TableId
+	@TableId(type = IdType.AUTO)
 	public Long id;
 
 	@ApiModelProperty(value = "key")

@@ -21,13 +21,13 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 public class SysUserRole extends Model<SysUserRole> implements Serializable {
 
-	@TableId
-	public Long id;
+    @TableId
+    public Long id;
 
-	@ApiModelProperty(value = "用户ID")
-	public Long userId;
+    @ApiModelProperty(value = "用户ID")
+    public Long userId;
 
-	@ApiModelProperty(value = "角色ID")
-	public Long roleId;
+    @ApiModelProperty(value = "角色ID")
+    public Long roleId;
 
 }

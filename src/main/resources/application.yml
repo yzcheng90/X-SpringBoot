@@ -19,16 +19,18 @@ spring:
       maxFileSize: 104857600 #100MB
       maxRequestSize: 104857600 #100MB
 
-# 暴露监控端点后会打印所有的端点
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
+swagger:
+  enable: true
+  title: X-SpringBoot API
+  description: API 描述
+  version: 5.0.0
+  author: czx
+  url: https://github.com/yzcheng90/X-SpringBoot
+  email: object_czx@163.com
 
 #填充框架配置
 autofull:
-  show-log: false
+  show-log: true
   max-level: 1
 
 # mybaits-plus配置

@@ -3,6 +3,7 @@ package com.suke.czx.common.base;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.suke.czx.authentication.detail.CustomUserDetailsUser;
 import com.suke.czx.common.utils.MPPageConvert;
+import com.suke.czx.common.utils.UserUtil;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,15 +25,11 @@ public abstract class AbstractController {
 	public ObjectMapper objectMapper;
 
 	protected CustomUserDetailsUser getUser() {
-		Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if(object != null){
-			return (CustomUserDetailsUser) object;
-		}
-		return null;
+		return UserUtil.getUser();
 	}
 
 	@SneakyThrows
 	protected Long getUserId() {
-		return getUser() == null ? null :getUser().getUserId();
+		return UserUtil.getUserId();
 	}
 }

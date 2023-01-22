@@ -1,16 +1,13 @@
 package com.suke.czx.modules.gen.entity;
 
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
 @Data
 @Builder
-@EqualsAndHashCode(callSuper = true)
-public class InfoRmationSchema extends Model<InfoRmationSchema> implements Serializable {
+public class InfoRmationSchema implements Serializable {
 
     private String tableName;
     private String engine;

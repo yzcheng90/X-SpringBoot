@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,6 +29,9 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,13 +55,18 @@ public class SecurityConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         List<String> permitAll = authIgnoreConfig.getIgnoreUrls();
         permitAll.add("/error");
-        permitAll.add("/v2/**");
+        permitAll.add("/v3/**");
+        permitAll.add("/swagger-ui/**");
+        permitAll.add("/swagger-resources/**");
         permitAll.add(Constant.TOKEN_ENTRY_POINT_URL);
         permitAll.add(Constant.TOKEN_LOGOUT_URL);
         String[] urls = permitAll.stream().distinct().toArray(String[]::new);
 
         // 基于 token，不需要 csrf
-        http.csrf().disable();
+        http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/**").permitAll();
+        // 跨域配置
+        http.cors().configurationSource(corsConfigurationSource());
+
         // 基于 token，不需要 session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // 权限
@@ -74,16 +83,28 @@ public class SecurityConfigurer {
         // 设置退出URL
         http.logout()
                 .logoutUrl(Constant.TOKEN_LOGOUT_URL)
+                .logoutSuccessUrl("/sys/logout")
                 .addLogoutHandler(logoutHandler());
         // 如果不用验证码，注释这个过滤器即可
         http.addFilterBefore(new ValidateCodeFilter(redisTemplate, authenticationFailureHandler()), UsernamePasswordAuthenticationFilter.class);
         // token 验证过滤器
-        http.addFilterBefore(new AuthenticationTokenFilter(authenticationManager(), redisTemplate), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new AuthenticationTokenFilter(authenticationManager(), authIgnoreConfig,redisTemplate), UsernamePasswordAuthenticationFilter.class);
         // 认证异常处理
         http.exceptionHandling().authenticationEntryPoint(new TokenAuthenticationFailHandler());
         // 用户管理service
         http.userDetailsService(userDetailsService());
         return http.build();
+    }
+
+    // 解决跨域
+    public CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
     }
 
     @Bean

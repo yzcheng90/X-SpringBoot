@@ -8,21 +8,22 @@ import java.util.List;
 
 /**
  * 角色
- * 
+ *
  * @author czx
  * @email object_czx@163.com
  * @date 2016年9月18日 上午9:42:52
  */
 public interface SysRoleService extends IService<SysRole> {
-	
-	/**
-	 * 查询用户创建的角色ID列表
-	 */
-	List<Long> queryRoleIdList(Long createUserId);
 
-	void deleteBath(Long[] ids);
+    /**
+     * 查询用户创建的角色ID列表
+     */
+    List<Long> queryRoleIdList(Long createUserId);
 
-	void saveRoleMenu(SysRole role);
-	void updateRoleMenu(SysRole role);
+    void deleteBath(Long id);
+
+    void saveRoleMenu(SysRole role);
+
+    void updateRoleMenu(SysRole role);
 
 }

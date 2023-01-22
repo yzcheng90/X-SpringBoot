@@ -1,6 +1,8 @@
 package com.suke.czx.config;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +11,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
@@ -23,8 +26,12 @@ import java.util.stream.Collectors;
 /**
  * Created by czx on 2021/04/02.
  */
+@EnableOpenApi
 @Configuration
 public class SwaggerConfig {
+
+    @Autowired
+    private SwaggerProperties swaggerProperties;
 
     /**
      * 通过 createRestApi函数来构建一个DocketBean
@@ -32,31 +39,35 @@ public class SwaggerConfig {
      */
     @Bean
     public Docket createRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())//调用apiInfo方法,创建一个ApiInfo实例,里面是展示在文档页面信息内容
+
+        return new Docket(DocumentationType.OAS_30)
+                .pathMapping("/")
+                .enable(swaggerProperties.getEnable())//生产禁用
+                .apiInfo(apiInfo())
                 .select()
-                //控制暴露出去的路径下的实例
-                //如果某个接口不想暴露,可以使用以下注解
-                //这样,该接口就不会暴露在 swagger2 的页面下
-                .apis(RequestHandlerSelectors.basePackage("com.suke.czx.modules"))
+//                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))//方法一、扫描类上有@Api的，推荐，不会显示basic-error-controller
+//                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))//方法二、扫描方法上有@ApiOperation，但缺少类信息，不会显示basic-error-controller
+                .apis(RequestHandlerSelectors.basePackage("com.suke.czx.modules"))//按包扫描,也可以扫描共同的父包，不会显示basic-error-controller
+//                .paths(PathSelectors.regex("/.*"))// 对根下所有路径进行监控
                 .paths(PathSelectors.any())
                 .build();
     }
 
-    //构建 api文档的详细信息函数
+    /**
+     * API 页面上半部分展示信息
+     */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                //页面标题
-                .title("X-SpringBoot API")
-                //创建人
-                .contact(new Contact("czx", "https://github.com/yzcheng90/X-SpringBoot", ""))
-                //版本号
-                .version("1.0")
-                //描述
-                .description("API 描述")
+                .title(swaggerProperties.getTitle())//标题
+                .description(swaggerProperties.getDescription())//描述
+                .contact(new Contact(swaggerProperties.getAuthor(), swaggerProperties.getUrl(), swaggerProperties.getEmail()))//作者信息
+                .version(swaggerProperties.getVersion())//版本号
                 .build();
     }
 
+    /**
+     * 解决springboot 2.7.7 的security 报错问题
+     */
     @Bean
     public static BeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
         return new BeanPostProcessor() {

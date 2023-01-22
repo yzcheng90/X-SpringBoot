@@ -1,67 +1,62 @@
 package ${package}.${moduleName}.controller;
 
 import java.util.Map;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import ${package}.${moduleName}.entity.${className};
 import ${package}.${moduleName}.service.${className}Service;
-import com.suke.czx.common.utils.R;
+import com.suke.zhjg.common.autofull.util.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import com.suke.czx.common.annotation.SysLog;
 import com.suke.czx.common.base.AbstractController;
-import org.springframework.security.access.prepost.PreAuthorize;
-import java.util.Arrays;
-
 
 
 /**
  * ${comments}
- * 
+ *
  * @author ${author}
  * @email ${email}
  * @date ${datetime}
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/${moduleName}/${pathName}")
-public class ${className}Controller  extends AbstractController {
-    private final  ${className}Service ${classname}Service;
+@RequestMapping("/${moduleName}/${requestMapping}")
+@Api(value = "${className}Controller", tags = "登录相关")
+public class ${className}Controller extends AbstractController {
+    private final ${className}Service ${classname}Service;
 
     /**
      * 列表
      */
+    @ApiOperation(value = "${comments}列表")
     @RequestMapping("/list")
-    @PreAuthorize("hasRole('${moduleName}:${pathName}:list')")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         QueryWrapper<${className}> queryWrapper = new QueryWrapper<>();
-        IPage<${className}> sysConfigList = ${classname}Service.page(mpPageConvert.<${className}>pageParamConvert(params),queryWrapper);
-        return R.ok().put("page", mpPageConvert.pageValueConvert(sysConfigList));
-    }
+        final String keyword = mpPageConvert.getKeyword(params);
+        if (StrUtil.isNotEmpty(keyword)) {
 
-
-    /**
-     * 信息
-     */
-    @RequestMapping("/info/{${pk.attrNameMin}}")
-    @PreAuthorize("hasRole('${moduleName}:${pathName}:info')")
-    public R info(@PathVariable("${pk.attrNameMin}") ${pk.attrType} ${pk.attrNameMin}){
-        return R.ok().put("${classname}", ${classname}Service.getById(${pk.attrNameMin}));
+        }
+        IPage<${className}> listPage = ${classname}Service.page(mpPageConvert.<${className}>pageParamConvert(params), queryWrapper);
+        return R.ok().setData(listPage);
     }
 
 
     /**
      * 新增${comments}
      */
+    @ApiOperation(value = "新增${comments}数据")
     @SysLog("新增${comments}数据")
-    @RequestMapping("/save")
-    @PreAuthorize("hasRole('${moduleName}:${pathName}:save')")
-    public R save(@RequestBody ${className} ${classname}){
+    #if($useRestful)
+@PutMapping("/${requestMapping}")
+    #else
+@PostMapping("/save")
+    #end
+public R save(@RequestBody ${className} ${classname}) {
         ${classname}Service.save(${classname});
         return R.ok();
     }
@@ -70,11 +65,15 @@ public class ${className}Controller  extends AbstractController {
     /**
      * 修改
      */
+    @ApiOperation(value = "修改${comments}数据")
     @SysLog("修改${comments}数据")
-    @RequestMapping("/update")
-    @PreAuthorize("hasRole('${moduleName}:${pathName}:update')")
-    public R update(@RequestBody ${className} ${classname}){
-		${classname}Service.updateById(${classname});
+    #if($useRestful)
+@PutMapping("/${requestMapping}")
+    #else
+@PostMapping("/update")
+    #end
+public R update(@RequestBody ${className} ${classname}) {
+        ${classname}Service.updateById(${classname});
         return R.ok();
     }
 
@@ -82,12 +81,16 @@ public class ${className}Controller  extends AbstractController {
     /**
      * 删除
      */
+    @ApiOperation(value = "删除${comments}数据")
     @SysLog("删除${comments}数据")
-    @RequestMapping("/delete")
-    @PreAuthorize("hasRole('${moduleName}:${pathName}:delete')")
-    public R delete(@RequestBody ${pk.attrType}[] ${pk.attrNameMin}s){
-		${classname}Service.removeByIds(Arrays.asList(${pk.attrNameMin}s));
+    #if($useRestful)
+@DeleteMapping("/${requestMapping}")
+    #else
+@PostMapping("/delete")
+    #end
+public R delete(@RequestBody ${className} ${classname}) {
+        ${classname}Service.removeById(${classname}.get${pk.attrName}());
         return R.ok();
     }
-	
+
 }

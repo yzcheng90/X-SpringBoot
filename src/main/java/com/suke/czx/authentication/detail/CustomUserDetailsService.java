@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.suke.czx.modules.sys.entity.SysUser;
-import com.suke.czx.modules.sys.service.PermissionsService;
 import com.suke.czx.modules.sys.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -26,8 +26,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private SysUserService sysUserService;
 
-    @Autowired
-    private PermissionsService permissionsService;
+//    @Autowired
+//    private PermissionsService permissionsService;
 
 
     @Override
@@ -48,7 +48,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails getDetail(SysUser sysUser) {
-        Set<String> permissions = permissionsService.getUserPermissions(sysUser.getUserId());
+//        Set<String> permissions = permissionsService.getUserPermissions(sysUser.getUserId());
+        Set<String> permissions = new HashSet<>();
         String[] roles = new String[0];
         if (CollUtil.isNotEmpty(permissions)) {
             roles = permissions.stream().map(role -> "ROLE_" + role).toArray(String[]::new);

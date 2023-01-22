@@ -2,7 +2,11 @@ package com.suke.czx.authentication.handler;
 
 import cn.hutool.core.util.CharsetUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.suke.czx.common.event.LoginLogEvent;
+import com.suke.czx.common.utils.IPUtils;
 import com.suke.czx.common.utils.R;
+import com.suke.czx.common.utils.SpringContextUtils;
+import com.suke.czx.modules.sys.entity.SysLoginLog;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -28,6 +32,15 @@ public class CustomAuthenticationFailHandler implements AuthenticationFailureHan
     @SneakyThrows
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception){
+
+        final String username = request.getParameter("username");
+        SysLoginLog loginLog = new SysLoginLog();
+        loginLog.setOptionIp(IPUtils.getIpAddr(request));
+        loginLog.setOptionName("用户登录失败");
+        loginLog.setOptionTerminal(request.getHeader("User-Agent"));
+        loginLog.setUsername(username);
+        SpringContextUtils.publishEvent(new LoginLogEvent(loginLog));
+
         response.setCharacterEncoding(CharsetUtil.UTF_8);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         PrintWriter printWriter = response.getWriter();

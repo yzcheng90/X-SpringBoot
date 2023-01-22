@@ -1,25 +1,29 @@
 package com.suke.czx.modules.sys.controller;
 
-import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.suke.czx.authentication.detail.CustomUserDetailsUser;
 import com.suke.czx.common.annotation.SysLog;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
-import com.suke.czx.common.utils.R;
 import com.suke.czx.modules.sys.entity.SysUser;
 import com.suke.czx.modules.sys.entity.SysUserRole;
+import com.suke.czx.modules.sys.service.SysMenuNewService;
 import com.suke.czx.modules.sys.service.SysUserRoleService;
 import com.suke.czx.modules.sys.service.SysUserService;
+import com.suke.czx.modules.sys.vo.RouterInfo;
+import com.suke.czx.modules.sys.vo.SysMenuNewVO;
+import com.suke.czx.modules.sys.vo.UserInfoVO;
+import com.suke.zhjg.common.autofull.util.R;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang.ArrayUtils;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,127 +37,133 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/sys/user")
 @AllArgsConstructor
-@Api(value = "SysUserController" ,tags = "系统用户")
+@Api(value = "SysUserController", tags = "系统用户")
 public class SysUserController extends AbstractController {
 
-	private final SysUserService sysUserService;
-	private final SysUserRoleService sysUserRoleService;
-	private final PasswordEncoder passwordEncoder;
+    private final SysUserService sysUserService;
+    private final PasswordEncoder passwordEncoder;
+    private final SysMenuNewService sysMenuNewService;
+    private final SysUserRoleService sysUserRoleService;
 
-	/**
-	 * 所有用户列表
-	 */
-	@RequestMapping(value = "/list",method = RequestMethod.GET)
-	@PreAuthorize("hasRole('sys:user:list')")
-	public R list(@RequestParam Map<String, Object> params){
-		//只有超级管理员，才能查看所有管理员列表
-		if(getUserId() != Constant.SUPER_ADMIN){
-			params.put("createUserId", getUserId());
-		}
+    /**
+     * 所有用户列表
+     */
+    @GetMapping(value = "/list")
+    public R list(@RequestParam Map<String, Object> params) {
+        //查询列表数据
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
 
-		//查询列表数据
-		QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-		if(MapUtil.getStr(params,"key") != null){
-			queryWrapper
-					.like("username",MapUtil.getStr(params,"key"))
-					.or()
-					.like("mobile",MapUtil.getStr(params,"key"));
-		}
-		IPage<SysUser> sysConfigList = sysUserService.page(mpPageConvert.<SysUser>pageParamConvert(params),queryWrapper);
+        //只有超级管理员，才能查看所有管理员列表
+        if (getUserId() != Constant.SUPER_ADMIN) {
+            queryWrapper.lambda().eq(SysUser::getCreateUserId, getUserId());
+        }
 
-		return R.ok().put("page", mpPageConvert.pageValueConvert(sysConfigList));
-	}
+        final String keyword = mpPageConvert.getKeyword(params);
+        if (StrUtil.isNotEmpty(keyword)) {
+            queryWrapper
+                    .lambda()
+                    .and(func -> func.like(SysUser::getUsername, keyword)
+                                    .or()
+                                    .like(SysUser::getMobile, keyword));
+        }
+        IPage<SysUser> listPage = sysUserService.page(mpPageConvert.<SysUser>pageParamConvert(params), queryWrapper);
+        listPage.getRecords().forEach(sysUser -> {
+            sysUser.setPassword(null);
+            final List<Long> roleIds = sysUserRoleService
+                    .list(Wrappers.<SysUserRole>query().lambda().eq(SysUserRole::getUserId, sysUser.getUserId()))
+                    .stream()
+                    .map(role -> role.getRoleId())
+                    .collect(Collectors.toList());
+            sysUser.setRoleIdList(roleIds);
+        });
+        return R.ok().setData(listPage);
+    }
 
-	/**
-	 * 获取登录的用户信息
-	 */
-	@RequestMapping(value = "/info",method = RequestMethod.GET)
-	public R info(){
-		return R.ok().put("user", getUser());
-	}
+    /**
+     * 获取登录的用户信息和菜单信息
+     */
+    @GetMapping(value = "/sysInfo")
+    public R sysInfo() {
+        // 用户菜单
+        final List<SysMenuNewVO> userMenu = sysMenuNewService.getUserMenu();
 
-	/**
-	 * 修改登录用户密码
-	 */
-	@SysLog("修改密码")
-	@RequestMapping(value = "/password",method = RequestMethod.POST)
-	public R password(String password, String newPassword){
-		if(StrUtil.isEmpty(newPassword)){
-			return R.error("新密码不为能空");
-		}
-		password = passwordEncoder.encode(password);
-		newPassword = passwordEncoder.encode(newPassword);
+        RouterInfo routerInfo = new RouterInfo();
+        routerInfo.setMenus(userMenu);
 
-		SysUser user = sysUserService.getById(getUserId());
-		if(!passwordEncoder.matches(password,user.getPassword())){
-			return R.error("原密码不正确");
-		}
-		//更新密码
-		sysUserService.updatePassword(getUserId(), password, newPassword);
-		return R.ok();
-	}
+        // 用户信息
+        final CustomUserDetailsUser user = getUser();
+        UserInfoVO userInfo = new UserInfoVO();
+        userInfo.setUserId(user.getUserId());
+        userInfo.setUserName(user.getUsername());
+        userInfo.setPhoto("https://img0.baidu.com/it/u=1833472230,3849481738&fm=253&fmt=auto?w=200&h=200");
+        userInfo.setRoles(new String[]{"admin"});
+        userInfo.setTime(DateUtil.now());
+        userInfo.setAuthBtnList(new String[]{"btn.add", "btn.del", "btn.edit", "btn.link"});
+        routerInfo.setUserInfo(userInfo);
+        return R.ok().setData(routerInfo);
+    }
 
-	/**
-	 * 用户信息
-	 */
-	@RequestMapping(value = "/info/{userId}",method = RequestMethod.GET)
-	@PreAuthorize("hasRole('sys:user:info')")
-	public R info(@PathVariable("userId") Long userId){
-		SysUser user = sysUserService.getById(userId);
-		//获取用户所属的角色列表
-		List<Long> roleIdList = sysUserRoleService.list(
-				        new QueryWrapper<SysUserRole>()
-                        .lambda()
-                        .eq(SysUserRole::getUserId,userId)
-		        ).stream()
-                .map(sysUserRole ->sysUserRole.getRoleId())
-                .collect(Collectors.toList());
+    /**
+     * 修改登录用户密码
+     */
+    @SysLog("修改密码")
+    @RequestMapping(value = "/password", method = RequestMethod.POST)
+    public R password(String password, String newPassword) {
+        if (StrUtil.isEmpty(newPassword)) {
+            return R.error("新密码不为能空");
+        }
+        password = passwordEncoder.encode(password);
+        newPassword = passwordEncoder.encode(newPassword);
 
-		user.setRoleIdList(roleIdList);
-		return R.ok().put("user", user);
-	}
+        SysUser user = sysUserService.getById(getUserId());
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            return R.error("原密码不正确");
+        }
+        //更新密码
+        sysUserService.updatePassword(getUserId(), password, newPassword);
+        return R.ok();
+    }
 
-	/**
-	 * 保存用户
-	 */
-	@SysLog("保存用户")
-	@RequestMapping(value = "/save",method = RequestMethod.POST)
-	@PreAuthorize("hasRole('sys:user:save')")
-	public R save(@RequestBody SysUser user){
-		user.setCreateUserId(getUserId());
-		sysUserService.saveUserRole(user);
 
-		return R.ok();
-	}
+    /**
+     * 保存用户
+     */
+    @SysLog("保存用户")
+    @PostMapping(value = "/save")
+    public R save(@RequestBody @Validated SysUser user) {
+        user.setCreateUserId(getUserId());
+        sysUserService.saveUserRole(user);
+        return R.ok();
+    }
 
-	/**
-	 * 修改用户
-	 */
-	@SysLog("修改用户")
-	@RequestMapping(value = "/update",method = RequestMethod.POST)
-	@PreAuthorize("hasRole('sys:user:update')")
-	public R update(@RequestBody SysUser user){
-		user.setCreateUserId(getUserId());
-		sysUserService.updateUserRole(user);
+    /**
+     * 修改用户
+     */
+    @SysLog("修改用户")
+    @PostMapping(value = "/update")
+    public R update(@RequestBody @Validated SysUser user) {
+        sysUserService.updateUserRole(user);
+        return R.ok();
+    }
 
-		return R.ok();
-	}
+    /**
+     * 删除用户
+     */
+    @SysLog("删除用户")
+    @PostMapping(value = "/delete")
+    public R delete(@RequestBody SysUser user) {
+        if(user == null || user.getUserId() == null){
+            return R.error("参数错误");
+        }
 
-	/**
-	 * 删除用户
-	 */
-	@SysLog("删除用户")
-	@RequestMapping(value = "/delete",method = RequestMethod.POST)
-	@PreAuthorize("hasRole('sys:user:delete')")
-	public R delete(@RequestBody Long[] userIds){
-		if(ArrayUtils.contains(userIds, 1L)){
-			return R.error("系统管理员不能删除");
-		}
+        if (user.getUserId() == 1L) {
+            return R.error("系统管理员不能删除");
+        }
 
-		if(ArrayUtils.contains(userIds, getUserId())){
-			return R.error("当前用户不能删除");
-		}
-		sysUserService.removeByIds(Arrays.asList(userIds));
-		return R.ok();
-	}
+        if (user.getUserId() == getUserId()) {
+            return R.error("当前用户不能删除");
+        }
+        sysUserService.removeById(user.getUserId());
+        return R.ok();
+    }
 }
