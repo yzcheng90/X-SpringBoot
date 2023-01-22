@@ -68,9 +68,9 @@ X-SpringBoot
 ```
 
 **系统截图**
-![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20230122174113.jpg)
-![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20230122174148.jpg)
-![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20230122174204.jpg)
+![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20230122174113.png)
+![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20230122174148.png)
+![Image text](https://github.com/yzcheng90/X-SpringBoot/blob/master/pic/20230122174204.png)
 
 **常见问题**
 
