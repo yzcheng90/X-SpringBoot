@@ -79,14 +79,13 @@ X-SpringBoot
  是因为依赖没有引入  maven --> 先clear 再reimport 重新引入
 ```
 
-```
 2、数据库连接不上（mysql 5.7）
 
 ```
 1) 看看application.yml 配置文件中 spring.profiles.active: dev  
    当前配置的是dev ,就修改application-dev.yml 中的数据库连接IP用户密码
 2) 如果改完了还是不行，看看你mysql版本8.0以上 须要修改pom.xml中的 mysql-connector-java 的版本
-
+```
 
  **最后**
 
