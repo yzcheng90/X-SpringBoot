@@ -20,12 +20,14 @@ public class WebConfigurer implements WebMvcConfigurer {
         return new ObjectMapper();
     }
 
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(new String[]{"/swagger-ui/**"})
                 .addResourceLocations(new String[]{"classpath:/META-INF/resources/webjars/springfox-swagger-ui/"})
                 .resourceChain(false);
     }
 
+    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/swagger-ui/").setViewName("forward:/swagger-ui/index.html");
     }
