@@ -17,9 +17,9 @@ import java.util.Collection;
 @EqualsAndHashCode(callSuper = true)
 public class CustomUserDetailsUser extends User implements Serializable {
 
-    private Long userId;
+    private String userId;
 
-    public CustomUserDetailsUser(Long userId,String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetailsUser(String userId,String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
         this.userId = userId;
     }

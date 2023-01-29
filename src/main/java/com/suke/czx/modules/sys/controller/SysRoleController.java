@@ -42,7 +42,7 @@ public class SysRoleController extends AbstractController {
     public R list(@RequestParam Map<String, Object> params) {
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
         //如果不是超级管理员，则只查询自己创建的角色列表
-        if (getUserId() != Constant.SUPER_ADMIN) {
+        if (!getUserId().equals(Constant.SUPER_ADMIN)) {
             queryWrapper.lambda().eq(SysRole::getCreateUserId, getUserId());
         }
 

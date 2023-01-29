@@ -1,5 +1,7 @@
 package com.suke.czx.common.xss;
 
+import com.suke.czx.common.utils.SpringContextUtils;
+import com.suke.czx.config.XssIgnoreConfig;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpHeaders;
@@ -45,8 +47,13 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
             return super.getInputStream();
         }
 
+
         //xss过滤
-        json = xssEncode(json);
+        final XssIgnoreConfig xssIgnoreConfig = SpringContextUtils.getBean(XssIgnoreConfig.class);
+        final String requestURI = orgRequest.getRequestURI();
+        if (xssIgnoreConfig == null || !xssIgnoreConfig.isContains(requestURI)) {
+            json = xssEncode(json);
+        }
         final ByteArrayInputStream bis = new ByteArrayInputStream(json.getBytes("utf-8"));
         return new ServletInputStream() {
             @Override

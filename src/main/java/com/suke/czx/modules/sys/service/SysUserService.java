@@ -20,7 +20,7 @@ public interface SysUserService extends IService<SysUser> {
      * @param password    原密码
      * @param newPassword 新密码
      */
-    int updatePassword(Long userId, String password, String newPassword);
+    int updatePassword(String userId, String password, String newPassword);
 
     void saveUserRole(SysUser user);
 

@@ -3,6 +3,7 @@ package com.suke.czx.modules.sys.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.UserUtil;
 import com.suke.czx.modules.sys.entity.SysMenuNew;
 import com.suke.czx.modules.sys.mapper.SysMenuNewMapper;
@@ -32,13 +33,13 @@ public class SysMenuNewServiceImpl extends ServiceImpl<SysMenuNewMapper, SysMenu
     public List<SysMenuNewVO> getRouterChildList(Long menuId) {
         List<SysMenuNewVO> routerEntities = new ArrayList<>();
         QueryWrapper<SysMenuNew> queryWrapper = new QueryWrapper();
-        final Long userId = UserUtil.getUserId();
-        if(userId != 1L){
+        final String userId = UserUtil.getUserId();
+        if (!userId.equals(Constant.SUPER_ADMIN)) {
             // 用户配置的菜单
             final List<Long> menuIds = sysRoleMapper.queryAllMenuId(userId);
-            if(CollUtil.isNotEmpty(menuIds)){
-                queryWrapper.lambda().in(SysMenuNew::getMenuId,menuIds);
-            }else {
+            if (CollUtil.isNotEmpty(menuIds)) {
+                queryWrapper.lambda().in(SysMenuNew::getMenuId, menuIds);
+            } else {
                 return routerEntities;
             }
         }
@@ -46,7 +47,7 @@ public class SysMenuNewServiceImpl extends ServiceImpl<SysMenuNewMapper, SysMenu
         if (menuId != null) {
             queryWrapper.lambda().eq(SysMenuNew::getParentId, menuId);
         }
-        queryWrapper.lambda().eq(SysMenuNew::isDisabled,true);
+        queryWrapper.lambda().eq(SysMenuNew::isDisabled, true);
         List<SysMenuNew> sysMenus = sysMenuNewMapper.selectList(queryWrapper);
         if (CollUtil.isNotEmpty(sysMenus)) {
             sysMenus.forEach(sysMenu -> {

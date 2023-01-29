@@ -22,6 +22,6 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
     /**
      * 查询用户的所有菜单ID
      */
-    List<Long> queryAllMenuId(Long userId);
+    List<Long> queryAllMenuId(String userId);
 
 }

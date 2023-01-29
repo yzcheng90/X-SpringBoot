@@ -29,7 +29,7 @@ public abstract class AbstractController {
 	}
 
 	@SneakyThrows
-	protected Long getUserId() {
+	protected String getUserId() {
 		return UserUtil.getUserId();
 	}
 }

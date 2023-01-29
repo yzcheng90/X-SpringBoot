@@ -26,12 +26,15 @@ public class SysUser implements Serializable {
 
     public static final long serialVersionUID = 1L;
 
-    @TableId(value = "user_id", type = IdType.AUTO)
-    public Long userId;
+    @TableId(value = "user_id", type = IdType.ASSIGN_UUID)
+    public String userId;
 
     @ApiModelProperty(value = "用户名")
     @NotBlank(message = "用户名不能为空")
     public String username;
+
+    @ApiModelProperty(value = "姓名")
+    public String name;
 
     @ApiModelProperty(value = "密码")
     public String password;
@@ -43,15 +46,14 @@ public class SysUser implements Serializable {
     @ApiModelProperty(value = "手机号")
     public String mobile;
 
+    @ApiModelProperty(value = "头像")
+    public String photo;
+
     @ApiModelProperty(value = "状态  0：禁用   1：正常")
     public Integer status;
 
-    @TableField(exist = false)
-    @ApiModelProperty(value = "状态  0：禁用   1：正常")
-    public Boolean userStatus;
-
     @ApiModelProperty(value = "创建者ID")
-    public Long createUserId;
+    public String createUserId;
 
     @ApiModelProperty(value = "创建时间")
     public Date createTime;

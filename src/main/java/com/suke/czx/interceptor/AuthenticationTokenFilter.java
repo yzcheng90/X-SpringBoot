@@ -5,9 +5,9 @@ import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.suke.czx.authentication.detail.CustomUserDetailsService;
 import com.suke.czx.common.utils.Constant;
-import com.suke.czx.common.utils.R;
 import com.suke.czx.common.utils.SpringContextUtils;
 import com.suke.czx.config.AuthIgnoreConfig;
+import com.suke.zhjg.common.autofull.util.R;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -63,7 +63,7 @@ public class AuthenticationTokenFilter extends BasicAuthenticationFilter {
                     return;
                 }
 
-                Long userId = Long.valueOf(user[0]);
+                String userId = user[0];
                 CustomUserDetailsService customUserDetailsService = SpringContextUtils.getBean(CustomUserDetailsService.class);
                 UserDetails userDetails = customUserDetailsService.loadUserByUserId(userId);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

@@ -9,6 +9,8 @@ import com.suke.czx.authentication.detail.CustomUserDetailsUser;
 import com.suke.czx.common.annotation.SysLog;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
+import com.suke.czx.common.utils.HttpContextUtils;
+import com.suke.czx.common.utils.IPUtils;
 import com.suke.czx.modules.sys.entity.SysUser;
 import com.suke.czx.modules.sys.entity.SysUserRole;
 import com.suke.czx.modules.sys.service.SysMenuNewService;
@@ -54,7 +56,7 @@ public class SysUserController extends AbstractController {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
 
         //只有超级管理员，才能查看所有管理员列表
-        if (getUserId() != Constant.SUPER_ADMIN) {
+        if (!getUserId().equals(Constant.SUPER_ADMIN)) {
             queryWrapper.lambda().eq(SysUser::getCreateUserId, getUserId());
         }
 
@@ -63,8 +65,8 @@ public class SysUserController extends AbstractController {
             queryWrapper
                     .lambda()
                     .and(func -> func.like(SysUser::getUsername, keyword)
-                                    .or()
-                                    .like(SysUser::getMobile, keyword));
+                            .or()
+                            .like(SysUser::getMobile, keyword));
         }
         IPage<SysUser> listPage = sysUserService.page(mpPageConvert.<SysUser>pageParamConvert(params), queryWrapper);
         listPage.getRecords().forEach(sysUser -> {
@@ -91,12 +93,16 @@ public class SysUserController extends AbstractController {
         routerInfo.setMenus(userMenu);
 
         // 用户信息
-        final CustomUserDetailsUser user = getUser();
+        final SysUser sysUser = sysUserService.getById(getUserId());
+
         UserInfoVO userInfo = new UserInfoVO();
-        userInfo.setUserId(user.getUserId());
-        userInfo.setUserName(user.getUsername());
-        userInfo.setPhoto("https://img0.baidu.com/it/u=1833472230,3849481738&fm=253&fmt=auto?w=200&h=200");
-        userInfo.setRoles(new String[]{"admin"});
+        userInfo.setUserId(sysUser.getUserId());
+        userInfo.setUserName(sysUser.getUsername());
+        userInfo.setName(sysUser.getName());
+        userInfo.setLoginIp(IPUtils.getIpAddr(HttpContextUtils.getHttpServletRequest()));
+        final String photo = sysUser.getPhoto();
+        userInfo.setPhoto(photo == null ? "https://img0.baidu.com/it/u=1833472230,3849481738&fm=253&fmt=auto?w=200&h=200" : photo);
+        userInfo.setRoles(new String[]{sysUser.getUserId().equals(Constant.SUPER_ADMIN) ? "admin" : "common"});
         userInfo.setTime(DateUtil.now());
         userInfo.setAuthBtnList(new String[]{"btn.add", "btn.del", "btn.edit", "btn.link"});
         routerInfo.setUserInfo(userInfo);
@@ -152,15 +158,15 @@ public class SysUserController extends AbstractController {
     @SysLog("删除用户")
     @PostMapping(value = "/delete")
     public R delete(@RequestBody SysUser user) {
-        if(user == null || user.getUserId() == null){
+        if (user == null || user.getUserId() == null) {
             return R.error("参数错误");
         }
 
-        if (user.getUserId() == 1L) {
+        if (user.getUserId().equals(Constant.SUPER_ADMIN)) {
             return R.error("系统管理员不能删除");
         }
 
-        if (user.getUserId() == getUserId()) {
+        if (user.getUserId().equals(getUserId())) {
             return R.error("当前用户不能删除");
         }
         sysUserService.removeById(user.getUserId());

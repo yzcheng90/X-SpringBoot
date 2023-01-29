@@ -43,7 +43,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         String token;
-        Long userId = 0l;
+        String userId = "";
         String userName = "";
         if (authentication.getPrincipal() instanceof CustomUserDetailsUser) {
             CustomUserDetailsUser userDetailsUser = (CustomUserDetailsUser) authentication.getPrincipal();

@@ -1,15 +1,15 @@
 package com.suke.czx.modules.sys.controller;
 
+import cn.hutool.core.io.IoUtil;
 import com.google.code.kaptcha.Producer;
 import com.suke.czx.common.annotation.AuthIgnore;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
-import com.suke.czx.common.utils.R;
+import com.suke.zhjg.common.autofull.util.R;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,7 +60,7 @@ public class SysLoginController extends AbstractController {
 
         ServletOutputStream out = response.getOutputStream();
         ImageIO.write(image, "jpg", out);
-        IOUtils.closeQuietly(out);
+        IoUtil.close(out);
     }
 
     /**

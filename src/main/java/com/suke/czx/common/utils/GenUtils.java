@@ -190,12 +190,12 @@ public class GenUtils {
         }
 
         // js
-        if (makerConfig.isFileEntity() && template.contains("index.js.vm")) {
+        if (makerConfig.isGenUi() && template.contains("index.js.vm")) {
             return File.separator + "src" + File.separator + "api" + File.separator + moduleName + File.separator + "index.js";
         }
 
         // vue
-        if (makerConfig.isFileEntity() && template.contains("index.vue.vm")) {
+        if (makerConfig.isGenUi() && template.contains("index.vue.vm")) {
             return File.separator + "src" + File.separator + "views" + File.separator + moduleName + File.separator + "index.vue";
         }
 

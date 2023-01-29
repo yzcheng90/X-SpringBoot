@@ -10,11 +10,14 @@ import lombok.Data;
 @Data
 public class UserInfoVO {
 
-    public Long userId;
+    public String userId;
     public String userName;
+    public String name;
+    public String loginIp;
     public String photo;
     public String time;
     public String[] roles;
     public String[] authBtnList;
+
 
 }

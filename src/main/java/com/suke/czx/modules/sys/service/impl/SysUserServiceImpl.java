@@ -59,7 +59,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 
     @Override
-    public int updatePassword(Long userId, String password, String newPassword) {
+    public int updatePassword(String userId, String password, String newPassword) {
         SysUser sysUser = new SysUser();
         sysUser.setUserId(userId);
         sysUser.setPassword(newPassword);

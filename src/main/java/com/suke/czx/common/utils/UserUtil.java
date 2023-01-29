@@ -22,7 +22,7 @@ public class UserUtil {
     }
 
     @SneakyThrows
-    public Long getUserId() {
+    public String getUserId() {
         return getUser() == null ? null :getUser().getUserId();
     }
 

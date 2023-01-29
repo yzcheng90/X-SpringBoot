@@ -29,5 +29,6 @@ public class MakerConfigEntity {
     private boolean fileMapper;
     private boolean fileMapperXml;
     private boolean fileEntity;
+    private boolean genUi;
 
 }

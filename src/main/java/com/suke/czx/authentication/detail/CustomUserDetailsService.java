@@ -39,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return getDetail(sysUser);
     }
 
-    public UserDetails loadUserByUserId(Long userId) throws UsernameNotFoundException {
+    public UserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
         SysUser sysUser = sysUserService.getById(userId);
         if (ObjectUtil.isNull(sysUser)) {
             throw new UsernameNotFoundException("用户不存在");

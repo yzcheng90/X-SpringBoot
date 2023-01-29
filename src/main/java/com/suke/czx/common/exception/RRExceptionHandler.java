@@ -1,6 +1,6 @@
 package com.suke.czx.common.exception;
 
-import com.suke.czx.common.utils.R;
+import com.suke.zhjg.common.autofull.util.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;

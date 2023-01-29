@@ -2,7 +2,7 @@ package com.suke.czx.common.utils;
 
 /**
  * 常量
- * 
+ *
  * @author czx
  * @email object_czx@163.com
  * @date 2016年11月15日 下午1:23:52
@@ -19,13 +19,13 @@ public class Constant {
     public static final int TOKEN_EXPIRE = 60 * 60 * 24 * 7;
 
 	/** 超级管理员ID */
-	public static final int SUPER_ADMIN = 1;
+	public static final String SUPER_ADMIN = "0";
 
 	public static final int CODE_SIZE = 4;
 
 	/**
 	 * 菜单类型
-	 * 
+	 *
 	 * @author czx
 	 * @email object_czx@163.com
 	 * @date 2016年11月15日 下午1:24:29

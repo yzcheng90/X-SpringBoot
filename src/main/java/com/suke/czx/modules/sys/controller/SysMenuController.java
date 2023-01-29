@@ -64,7 +64,14 @@ public class SysMenuController extends AbstractController {
      */
     @SysLog("删除菜单")
     @PostMapping(value = "/delete")
-    public R delete(long menuId) {
+    public R delete(@RequestBody SysMenuNew menu) {
+        if(menu == null){
+            return R.error("参数错误");
+        }
+        Long menuId = menu.getMenuId();
+        if(menuId == null){
+            return R.error("ID为空");
+        }
         //判断是否有子菜单或按钮
         QueryWrapper<SysMenuNew> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(SysMenuNew::getParentId, menuId);

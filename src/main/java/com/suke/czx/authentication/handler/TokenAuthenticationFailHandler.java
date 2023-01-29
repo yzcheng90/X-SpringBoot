@@ -1,7 +1,7 @@
 package com.suke.czx.authentication.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.suke.czx.common.utils.R;
+import com.suke.zhjg.common.autofull.util.R;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
