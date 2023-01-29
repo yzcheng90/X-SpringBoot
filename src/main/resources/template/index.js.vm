@@ -10,47 +10,47 @@ import request from '@/utils/request';
 export function use${ModuleName}Api() {
 	return {
 		list: (params) => {
-			return request({
-				url: '/sys/${moduleName}/list',
-				method: 'get',
-				params
-			});
-		},
-		add: (params) => {
-			return request({
-		#if($useRestful)
-		url: '/sys/${moduleName}/${requestMapping}',
-		method: 'put',
-		#else
-		url: '/sys/${moduleName}/save',
-		method: 'post',
-		#end
-				data: params
-			});
-		},
-		update: (params) => {
-			return request({
-		#if($useRestful)
-		url: '/sys/${moduleName}/${requestMapping}',
-		method: 'put',
-		#else
-		url: '/sys/${moduleName}/update',
-		method: 'post',
-		#end
-				data: params
-			});
-		},
-		delete: (params) => {
-			return request({
-		#if($useRestful)
-		url: '/sys/${moduleName}/${requestMapping}',
-		method: 'delete',
-		#else
-		url: '/sys/${moduleName}/delete',
-		method: 'post',
-		#end
-				data: params
-			});
-		}
-	};
+		return request({
+			url: '/${moduleName}/${requestMapping}/list',
+			method: 'get',
+			params
+		});
+},
+	add: (params) => {
+		return request({
+			#if($useRestful)
+				url: '/${moduleName}/${moduleName}/${requestMapping}',
+				method: 'put',
+			#else
+				url: '/${moduleName}/${requestMapping}/save',
+				method: 'post',
+			#end
+			data: params
+		});
+	},
+	update: (params) => {
+		return request({
+			#if($useRestful)
+				url: '/${moduleName}/${moduleName}/${requestMapping}',
+				method: 'put',
+			#else
+				url: '/${moduleName}/${requestMapping}/update',
+				method: 'post',
+			#end
+			data: params
+		});
+	},
+	delete: (params) => {
+		return request({
+			#if($useRestful)
+				url: '/${moduleName}/${moduleName}/${requestMapping}',
+				method: 'delete',
+			#else
+				url: '/${moduleName}/${requestMapping}/delete',
+				method: 'post',
+			#end
+			data: params
+		});
+	}
+};
 }

@@ -25,21 +25,21 @@ import java.math.BigDecimal;
 @Data
 @TableName("${tableName}")
 public class ${className} implements Serializable {
-	public static final long serialVersionUID = 1L;
+public static final long serialVersionUID = 1L;
 
-	#foreach ($column in $columns)
+#foreach ($column in $columns)
 	#if($column.columnKey != $null && $column.columnKey == "PRI")
-@TableId(type = IdType.ASSIGN_UUID)
+	@TableId(type = IdType.ASSIGN_UUID)
 	#end
 	#if($column.attrType == "Date")
-@ApiModelProperty(value = "$column.columnComment")
+	@ApiModelProperty(value = "$column.columnComment")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	#end
 	#if($column.attrType != "Date")
-@ApiModelProperty(value = "$column.columnComment")
+	@ApiModelProperty(value = "$column.columnComment")
 	#end
 @JsonProperty(value = "$column.attrNameMin")
-	public $column.attrType $column.attrNameMin;
+public $column.attrType $column.attrNameMin;
 
 #end
 

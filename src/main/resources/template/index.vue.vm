@@ -20,9 +20,9 @@
 			<el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
 				<el-table-column type="index" label="序号" width="60"/>
 				#foreach($column in $columns)
-				#if($column.columnName != $pk.columnName)
-				<el-table-column prop="${column.attrNameMin}" label="${column.columnComment}" show-overflow-tooltip></el-table-column>
-				#end
+					#if($column.columnName != $pk.columnName)
+						<el-table-column prop="${column.attrNameMin}" label="${column.columnComment}" show-overflow-tooltip></el-table-column>
+					#end
 				#end
 				<el-table-column label="操作" width="200">
 					<template #default="scope">
@@ -49,15 +49,15 @@
 			<div>
 				<el-form ref="userDialogFormRef" :model="state.ruleForm" size="default" label-width="90px">
 					#foreach($column in $columns)
-					#if($column.columnName != $pk.columnName)
-					<el-row :gutter="35">
-						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-							<el-form-item label="${column.columnComment}">
-								<el-input v-model="state.ruleForm.${column.attrNameMin}" placeholder="${column.columnComment}" clearable></el-input>
-							</el-form-item>
-						</el-col>
-					</el-row>
-					#end
+						#if($column.columnName != $pk.columnName)
+							<el-row :gutter="35">
+								<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+									<el-form-item label="${column.columnComment}">
+										<el-input v-model="state.ruleForm.${column.attrNameMin}" placeholder="${column.columnComment}" clearable></el-input>
+									</el-form-item>
+								</el-col>
+							</el-row>
+						#end
 					#end
 				</el-form>
 				<template>
@@ -97,18 +97,18 @@
 						submitTxt: '',
 					},
 					ruleForm: {
-						#foreach($column in $columns)
-						#if($column.columnName != $pk.columnName)
-						${column.attrNameMin}: '', // ${column.columnComment}
-						#end
-						#end
-					},
-					submitBtn: {
-						loading: false,
+			#foreach($column in $columns)
+				#if($column.columnName != $pk.columnName)
+					${column.attrNameMin}: '', // ${column.columnComment}
+				#end
+			#end
+		},
+			submitBtn: {
+				loading: false,
 						type:''
-					}
-				}
 			}
+		}
+		}
 		},
 		methods: {
 			fetchData() {
@@ -129,12 +129,12 @@
 				} else {
 					this.state.submitBtn.type = 'add';
 					this.state.ruleForm = {
-						#foreach($column in $columns)
+					#foreach($column in $columns)
 						#if($column.columnName != $pk.columnName)
-						${column.attrNameMin}: '', // ${column.columnComment}
+							${column.attrNameMin}: '', // ${column.columnComment}
 						#end
-						#end
-					};
+					#end
+				};
 					this.state.dialog.title = '新增${column.columnComment}';
 					this.state.dialog.submitTxt = '新 增';
 				}
