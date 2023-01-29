@@ -3,14 +3,12 @@ package com.suke.czx.modules.sys.controller;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.suke.czx.common.annotation.SysLog;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.modules.sys.entity.SysRole;
-import com.suke.czx.modules.sys.entity.SysRoleMenu;
-import com.suke.czx.modules.sys.service.SysRoleMenuService;
 import com.suke.czx.modules.sys.service.SysRoleService;
+import com.suke.zhjg.common.autofull.annotation.AutoFullData;
 import com.suke.zhjg.common.autofull.util.R;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 角色管理
@@ -33,11 +30,11 @@ import java.util.stream.Collectors;
 public class SysRoleController extends AbstractController {
 
     private final SysRoleService sysRoleService;
-    private final SysRoleMenuService sysRoleMenuService;
 
     /**
      * 角色列表
      */
+    @AutoFullData
     @GetMapping(value = "/list")
     public R list(@RequestParam Map<String, Object> params) {
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
@@ -54,14 +51,6 @@ public class SysRoleController extends AbstractController {
                     .and(func -> func.like(SysRole::getRoleName, keyword));
         }
         IPage<SysRole> listPage = sysRoleService.page(mpPageConvert.<SysRole>pageParamConvert(params), queryWrapper);
-        listPage.getRecords().forEach(sysRole -> {
-            final List<Long> menuIds = sysRoleMenuService
-                    .list(Wrappers.<SysRoleMenu>query().lambda().eq(SysRoleMenu::getRoleId, sysRole.getRoleId()))
-                    .stream()
-                    .map(id -> id.getMenuId())
-                    .collect(Collectors.toList());
-            sysRole.setMenuIdList(menuIds);
-        });
         return R.ok().setData(listPage);
     }
 
@@ -104,7 +93,7 @@ public class SysRoleController extends AbstractController {
     @SysLog("删除角色")
     @PostMapping(value = "/delete")
     public R delete(@RequestBody SysRole role) {
-        if(role == null || role.getRoleId() == null){
+        if (role == null || role.getRoleId() == null) {
             return R.error("ID为空");
         }
         sysRoleService.deleteBath(role.getRoleId());

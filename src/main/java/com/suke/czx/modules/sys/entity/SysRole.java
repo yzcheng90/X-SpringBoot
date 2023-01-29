@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.suke.zhjg.common.autofull.annotation.AutoFullFieldSQL;
 import com.suke.zhjg.common.autofull.annotation.AutoFullListSQL;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -41,10 +43,17 @@ public class SysRole implements Serializable {
     @ApiModelProperty(value = "创建者ID")
     public String createUserId;
 
+    @TableField(exist = false)
+    @ApiModelProperty(value = "创建者名称")
+    @AutoFullFieldSQL(sql = "select username as createUserName from sys_user where user_id = {createUserId}")
+    public String createUserName;
+
     @ApiModelProperty(value = "创建时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date createTime;
 
     @ApiModelProperty(value = "菜单ID")
     @TableField(exist = false)
+    @AutoFullListSQL(sql = "select menu_id as menuIdList from sys_role_menu where role_id = {roleId}")
     public List<Long> menuIdList;
 }

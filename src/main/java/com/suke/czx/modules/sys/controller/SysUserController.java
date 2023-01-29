@@ -4,21 +4,18 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.suke.czx.authentication.detail.CustomUserDetailsUser;
 import com.suke.czx.common.annotation.SysLog;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.HttpContextUtils;
 import com.suke.czx.common.utils.IPUtils;
 import com.suke.czx.modules.sys.entity.SysUser;
-import com.suke.czx.modules.sys.entity.SysUserRole;
 import com.suke.czx.modules.sys.service.SysMenuNewService;
-import com.suke.czx.modules.sys.service.SysUserRoleService;
 import com.suke.czx.modules.sys.service.SysUserService;
 import com.suke.czx.modules.sys.vo.RouterInfo;
 import com.suke.czx.modules.sys.vo.SysMenuNewVO;
 import com.suke.czx.modules.sys.vo.UserInfoVO;
+import com.suke.zhjg.common.autofull.annotation.AutoFullData;
 import com.suke.zhjg.common.autofull.util.R;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
@@ -28,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 系统用户
@@ -45,11 +41,11 @@ public class SysUserController extends AbstractController {
     private final SysUserService sysUserService;
     private final PasswordEncoder passwordEncoder;
     private final SysMenuNewService sysMenuNewService;
-    private final SysUserRoleService sysUserRoleService;
 
     /**
      * 所有用户列表
      */
+    @AutoFullData
     @GetMapping(value = "/list")
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
@@ -69,15 +65,7 @@ public class SysUserController extends AbstractController {
                             .like(SysUser::getMobile, keyword));
         }
         IPage<SysUser> listPage = sysUserService.page(mpPageConvert.<SysUser>pageParamConvert(params), queryWrapper);
-        listPage.getRecords().forEach(sysUser -> {
-            sysUser.setPassword(null);
-            final List<Long> roleIds = sysUserRoleService
-                    .list(Wrappers.<SysUserRole>query().lambda().eq(SysUserRole::getUserId, sysUser.getUserId()))
-                    .stream()
-                    .map(role -> role.getRoleId())
-                    .collect(Collectors.toList());
-            sysUser.setRoleIdList(roleIds);
-        });
+        listPage.getRecords().forEach(sysUser -> sysUser.setPassword(null));
         return R.ok().setData(listPage);
     }
 

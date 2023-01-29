@@ -52,9 +52,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public void updateRoleMenu(SysRole role) {
         sysRoleMapper.updateById(role);
         if (CollUtil.isNotEmpty(role.getMenuIdList())) {
-
             sysRoleMenuService.remove(Wrappers.<SysRoleMenu>query().lambda().eq(SysRoleMenu::getRoleId, role.getRoleId()));
-
             List<SysRoleMenu> sysRoleMenus = role.getMenuIdList().stream().map(id -> {
                 SysRoleMenu menu = new SysRoleMenu();
                 menu.setMenuId(id);
