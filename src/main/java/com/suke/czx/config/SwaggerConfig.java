@@ -5,8 +5,10 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
  * Created by czx on 2021/04/02.
  */
 @EnableOpenApi
+@ComponentScan(basePackages = {"com.suke.czx.modules"})
 @Configuration
 public class SwaggerConfig {
 
@@ -45,9 +48,9 @@ public class SwaggerConfig {
                 .enable(swaggerProperties.getEnable())//生产禁用
                 .apiInfo(apiInfo())
                 .select()
-//                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))//方法一、扫描类上有@Api的，推荐，不会显示basic-error-controller
+                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))//方法一、扫描类上有@Api的，推荐，不会显示basic-error-controller
 //                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))//方法二、扫描方法上有@ApiOperation，但缺少类信息，不会显示basic-error-controller
-                .apis(RequestHandlerSelectors.basePackage("com.suke.czx.modules"))//按包扫描,也可以扫描共同的父包，不会显示basic-error-controller
+//                .apis(RequestHandlerSelectors.basePackage("com.suke.czx.modules"))//按包扫描,也可以扫描共同的父包，不会显示basic-error-controller
 //                .paths(PathSelectors.regex("/.*"))// 对根下所有路径进行监控
                 .paths(PathSelectors.any())
                 .build();

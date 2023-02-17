@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
+import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -48,9 +50,12 @@ public class AuthIgnoreConfig implements InitializingBean {
             HandlerMethod handlerMethod = map.get(mappingInfo);
             AuthIgnore method = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), AuthIgnore.class);
             if(method != null){
-                mappingInfo.getPathPatternsCondition().getPatternValues().stream().forEach(url ->{
-                    ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, ASTERISK));
-                });
+                PatternsRequestCondition patternsCondition = mappingInfo.getPatternsCondition();
+                if(patternsCondition != null){
+                    patternsCondition.getPatterns().stream().forEach(url ->{
+                        ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, ASTERISK));
+                    });
+                }
             }
         });
     }

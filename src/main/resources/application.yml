@@ -18,6 +18,9 @@ spring:
     multipart:
       maxFileSize: 104857600 #100MB
       maxRequestSize: 104857600 #100MB
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher  #解决swaggerUI不匹配接口
 
 swagger:
   enable: true
