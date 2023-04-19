@@ -49,11 +49,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
@@ -85,6 +80,16 @@
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-extension</artifactId>
 			<version>${mybatis-plus.version}</version>
+			<exclusions>
+				<exclusion>
+					  <artifactId>annotations</artifactId>
+					  <groupId>org.jetbrains</groupId>
+				</exclusion>
+				<exclusion>
+					  <artifactId>kotlin-stdlib-jdk7</artifactId>
+					  <groupId>org.jetbrains.kotlin</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!--mybatis-->
 		<dependency>
@@ -97,6 +102,12 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.version}</version>
+			<exclusions>
+				<exclusion>
+					  <artifactId>protobuf-java</artifactId>
+					  <groupId>com.google.protobuf</groupId>
+				</exclusion>
+			      </exclusions>
 		</dependency>
 
 		<!--代码生成模板引擎-->
@@ -155,6 +166,16 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>${swagger.version}</version>
+			<exclusions>
+				<exclusion>
+					  <artifactId>byte-buddy</artifactId>
+					  <groupId>net.bytebuddy</groupId>
+				</exclusion>
+				<exclusion>
+					  <artifactId>classgraph</artifactId>
+					  <groupId>io.github.classgraph</groupId>
+				</exclusion>
+		      </exclusions>
 		</dependency>
 	</dependencies>
 
