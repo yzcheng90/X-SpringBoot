@@ -9,7 +9,9 @@
 **ChatGPT体验地址，进群免费使用**
 
 <img src="https://cdn.andyeason.cn/ai/0.png" width="30%" height="50%"  alt="图片名称" align=center>
-> H5扫码体验
+- H5扫码体验
+
+
 
 **项目说明** 
 - X-SpringBoot 是一个轻量级的Java快速开发平台，基于各大开源项目组合而来，用于快速构建中小型API、RESTful API项目，该项目已经有过多个真实项目的实践，稳定、简单、快速，使我们摆脱那些重复劳动。
