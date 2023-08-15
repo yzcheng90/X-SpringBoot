@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.suke.zhjg.common.autofull.annotation.AutoFullEmpty;
 import com.suke.zhjg.common.autofull.annotation.AutoFullListSQL;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -38,6 +39,7 @@ public class SysUser implements Serializable {
     @ApiModelProperty(value = "姓名")
     public String name;
 
+    @AutoFullEmpty
     @ApiModelProperty(value = "密码")
     public String password;
 

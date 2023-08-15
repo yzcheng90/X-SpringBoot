@@ -65,7 +65,6 @@ public class SysUserController extends AbstractController {
                             .like(SysUser::getMobile, keyword));
         }
         IPage<SysUser> listPage = sysUserService.page(mpPageConvert.<SysUser>pageParamConvert(params), queryWrapper);
-        listPage.getRecords().forEach(sysUser -> sysUser.setPassword(null));
         return R.ok().setData(listPage);
     }
 

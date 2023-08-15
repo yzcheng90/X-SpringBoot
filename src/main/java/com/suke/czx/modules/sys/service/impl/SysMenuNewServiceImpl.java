@@ -32,7 +32,7 @@ public class SysMenuNewServiceImpl extends ServiceImpl<SysMenuNewMapper, SysMenu
 
     public List<SysMenuNewVO> getRouterChildList(Long menuId) {
         List<SysMenuNewVO> routerEntities = new ArrayList<>();
-        QueryWrapper<SysMenuNew> queryWrapper = new QueryWrapper();
+        QueryWrapper<SysMenuNew> queryWrapper = new QueryWrapper<>();
         final String userId = UserUtil.getUserId();
         if (!userId.equals(Constant.SUPER_ADMIN)) {
             // 用户配置的菜单
