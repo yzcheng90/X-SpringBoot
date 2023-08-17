@@ -19,10 +19,12 @@ public class SysMenuNewVO implements Serializable {
     public Long parentId;
     public String path;
     public String name;
+    public String menuType;
     public String component;
     public String redirect;
     public String title;
     public int orderSort;
+    public boolean isLink;
 
     public RouterMetaVO meta;
 

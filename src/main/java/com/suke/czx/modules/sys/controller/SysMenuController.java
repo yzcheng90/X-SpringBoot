@@ -44,8 +44,12 @@ public class SysMenuController extends AbstractController {
      */
     @SysLog("保存菜单")
     @PostMapping(value = "/save")
-    public R save(@RequestBody SysMenuNew menu) {
-        sysMenuNewService.save(menu);
+    public R save(@RequestBody SysMenuNewVO menu) {
+        SysMenuNew menuNew = this.getParam(menu);
+        if(menuNew.getParentId() == null){
+            menuNew.setParentId(0L);
+        }
+        sysMenuNewService.save(menuNew);
         return R.ok();
     }
 
@@ -54,9 +58,37 @@ public class SysMenuController extends AbstractController {
      */
     @SysLog("修改菜单")
     @PostMapping(value = "/update")
-    public R update(@RequestBody SysMenuNew menu) {
-        sysMenuNewService.updateById(menu);
+    public R update(@RequestBody SysMenuNewVO menu) {
+        if (menu.getMenuId() == null) {
+            return R.error("菜单ID为空");
+        }
+        SysMenuNew menuNew = this.getParam(menu);
+        menuNew.setMenuId(menu.getMenuId());
+        sysMenuNewService.updateById(menuNew);
         return R.ok();
+    }
+
+    public SysMenuNew getParam(SysMenuNewVO menu) {
+        SysMenuNew menuNew = new SysMenuNew();
+        menuNew.setParentId(menu.getParentId());
+        menuNew.setPath(menu.getPath());
+        menuNew.setName(menu.getName());
+        menuNew.setComponent(menu.getComponent());
+        menuNew.setRedirect(menu.getRedirect());
+        menuNew.setTitle(menu.getTitle());
+        menuNew.setOrderSort(menu.getOrderSort());
+        if (menu.getMeta() != null) {
+            menuNew.setTitle(menu.getMeta().getTitle());
+            menuNew.setIsLink(menu.getMeta().getIsLink());
+            menuNew.setHide(menu.getMeta().isHide());
+            menuNew.setKeepAlive(menu.getMeta().isKeepAlive());
+            menuNew.setAffix(menu.getMeta().isAffix());
+            menuNew.setIframe(menu.getMeta().isIframe());
+            menuNew.setIcon(menu.getMeta().getIcon());
+            menuNew.setRoles(menu.getMeta().getRoles());
+            menuNew.setDisabled(!menu.getMeta().isHide());
+        }
+        return menuNew;
     }
 
     /**
@@ -65,11 +97,11 @@ public class SysMenuController extends AbstractController {
     @SysLog("删除菜单")
     @PostMapping(value = "/delete")
     public R delete(@RequestBody SysMenuNew menu) {
-        if(menu == null){
+        if (menu == null) {
             return R.error("参数错误");
         }
         Long menuId = menu.getMenuId();
-        if(menuId == null){
+        if (menuId == null) {
             return R.error("ID为空");
         }
         //判断是否有子菜单或按钮
