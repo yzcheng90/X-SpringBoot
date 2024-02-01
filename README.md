@@ -6,9 +6,6 @@
 
 [更新日志](https://github.com/yzcheng90/X-SpringBoot/tree/master/doc/updateLog.md) | [项目地址](https://github.com/yzcheng90)  | [SpringCloud版本](https://github.com/yzcheng90/ms) |[前台项目地址](https://github.com/yzcheng90/x-springboot-ui)
 
-**ChatGPT体验地址，进群免费使用，扫码体验**
-
-<img src="https://cdn.andyeason.cn/ai/0.png" width="30%" height="50%"  alt="图片名称" align=center>
 
 
 **项目说明** 
