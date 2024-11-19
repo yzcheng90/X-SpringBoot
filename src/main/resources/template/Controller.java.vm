@@ -32,7 +32,7 @@ public class ${className}Controller extends AbstractController {
     /**
      * 列表
      */
-    @ApiOperation(value = "${comments}列表")
+    @Operation(summary= "${comments}列表")
     @GetMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
@@ -49,7 +49,7 @@ public class ${className}Controller extends AbstractController {
     /**
      * 新增${comments}
      */
-    @ApiOperation(value = "新增${comments}数据")
+    @Operation(summary= "新增${comments}数据")
     @SysLog("新增${comments}数据")
         #if($useRestful)
         @PutMapping("/${requestMapping}")
@@ -65,7 +65,7 @@ public class ${className}Controller extends AbstractController {
     /**
      * 修改
      */
-    @ApiOperation(value = "修改${comments}数据")
+    @Operation(summary= "修改${comments}数据")
     @SysLog("修改${comments}数据")
         #if($useRestful)
         @PutMapping("/${requestMapping}")
@@ -81,7 +81,7 @@ public class ${className}Controller extends AbstractController {
     /**
      * 删除
      */
-    @ApiOperation(value = "删除${comments}数据")
+    @Operation(summary= "删除${comments}数据")
     @SysLog("删除${comments}数据")
         #if($useRestful)
         @DeleteMapping("/${requestMapping}")

@@ -7,7 +7,7 @@ import com.suke.czx.modules.sys.entity.SysMenuNew;
 import com.suke.czx.modules.sys.service.SysMenuNewService;
 import com.suke.czx.modules.sys.vo.SysMenuNewVO;
 import com.suke.zhjg.common.autofull.util.R;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +25,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/menu")
 @AllArgsConstructor
-@Api(value = "SysMenuController", tags = "系统菜单")
+@Tag(name = "SysMenuController", description = "系统菜单")
 public class SysMenuController extends AbstractController {
 
     private final SysMenuNewService sysMenuNewService;
@@ -108,7 +108,7 @@ public class SysMenuController extends AbstractController {
         QueryWrapper<SysMenuNew> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(SysMenuNew::getParentId, menuId);
         List<SysMenuNew> menuList = sysMenuNewService.list(queryWrapper);
-        if (menuList.size() > 0) {
+        if (!menuList.isEmpty()) {
             return R.error("请先删除子菜单");
         }
         sysMenuNewService.removeById(menuId);

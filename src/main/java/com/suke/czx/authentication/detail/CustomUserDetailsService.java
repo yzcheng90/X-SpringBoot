@@ -5,7 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.suke.czx.modules.sys.entity.SysUser;
 import com.suke.czx.modules.sys.service.SysUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,13 +18,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @Description //TODO $
+ * @Description 自定义用户认证
  * @Date 21:09
  * @Author yzcheng90@qq.com
  **/
+@Configuration
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
+    @Resource
     private SysUserService sysUserService;
 
 //    @Autowired

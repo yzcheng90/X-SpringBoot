@@ -8,8 +8,8 @@ import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.modules.apk.entity.TbApkVersion;
 import com.suke.czx.modules.apk.service.TbApkVersionService;
 import com.suke.zhjg.common.autofull.util.R;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,14 +27,14 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/apk/version")
-@Api(value = "TbApkVersionController", tags = "APK版本管理")
+@Tag(name = "APK版本管理", description = "APK版本管理")
 public class TbApkVersionController extends AbstractController {
     private final TbApkVersionService tbApkVersionService;
 
     /**
      * 列表
      */
-    @ApiOperation(value = "APK版本管理列表")
+    @Operation(summary  = "APK版本管理列表")
     @GetMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
@@ -52,7 +52,7 @@ public class TbApkVersionController extends AbstractController {
     /**
      * 新增APK版本管理
      */
-    @ApiOperation(value = "新增APK版本管理数据")
+    @Operation(summary= "新增APK版本管理数据")
     @SysLog("新增APK版本管理数据")
     @PostMapping("/save")
     public R save(@RequestBody TbApkVersion param) {
@@ -65,7 +65,7 @@ public class TbApkVersionController extends AbstractController {
     /**
      * 删除
      */
-    @ApiOperation(value = "删除APK版本管理数据")
+    @Operation(summary= "删除APK版本管理数据")
     @SysLog("删除APK版本管理数据")
     @PostMapping("/delete")
     public R delete(@RequestBody TbApkVersion param) {

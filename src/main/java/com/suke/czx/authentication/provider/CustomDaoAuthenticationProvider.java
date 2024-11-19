@@ -7,10 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author czx
- * @title: CustomDaoAuthenticationProvider
- * @projectName zhjg
- * @description: TODO
- * @date 2020/5/1515:26
+ * @description 自定义认证提供者
  */
 public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 

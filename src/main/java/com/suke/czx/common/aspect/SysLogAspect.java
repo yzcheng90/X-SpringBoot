@@ -1,26 +1,24 @@
 package com.suke.czx.common.aspect;
 
-import cn.hutool.core.map.MapUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.suke.czx.common.utils.HttpContextUtils;
 import com.suke.czx.common.utils.IPUtils;
 import com.suke.czx.modules.sys.entity.SysLog;
 import com.suke.czx.modules.sys.service.SysLogService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Date;
-import java.util.HashMap;
 
 
 /**
@@ -33,10 +31,9 @@ import java.util.HashMap;
 @Aspect
 @Component
 public class SysLogAspect {
-	@Autowired
-	private SysLogService sysLogService;
 
-	private ObjectMapper objectMapper = new ObjectMapper();
+	@Resource
+	private SysLogService sysLogService;
 	
 	@Pointcut("@annotation(com.suke.czx.common.annotation.SysLog)")
 	public void logPointCut() { 
@@ -77,9 +74,9 @@ public class SysLogAspect {
 		//请求的参数
 		Object[] args = joinPoint.getArgs();
 		try{
-			String params = new Gson().toJson(args[0]);
+			String params = JSONUtil.toJsonStr(args);
 			sysLog.setParams(params);
-		}catch (Exception e){
+		}catch (Exception ignored){
 
 		}
 
@@ -89,10 +86,9 @@ public class SysLogAspect {
 		sysLog.setIp(IPUtils.getIpAddr(request));
 
 		//用户名
-		// String username = ((CustomUserDetailsUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(); 强转有问题...原因有待研究
-		String userStr = objectMapper.writeValueAsString(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		HashMap<String,Object> userDetailsUser = objectMapper.readValue(userStr,HashMap.class);
-		String username = MapUtil.getStr(userDetailsUser,"username");
+		String userStr = JSONUtil.toJsonStr(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		JSONObject userDetailsUser = JSONUtil.parseObj(userStr);
+		String username = userDetailsUser.getStr("username");
 		sysLog.setUsername(username);
 
 		sysLog.setTime(time);

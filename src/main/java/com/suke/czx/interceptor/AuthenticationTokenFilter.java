@@ -2,12 +2,16 @@ package com.suke.czx.interceptor;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import cn.hutool.json.JSONUtil;
 import com.suke.czx.authentication.detail.CustomUserDetailsService;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.SpringContextUtils;
 import com.suke.czx.config.AuthIgnoreConfig;
 import com.suke.zhjg.common.autofull.util.R;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,10 +22,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -32,11 +32,10 @@ import java.io.IOException;
 @Slf4j
 public class AuthenticationTokenFilter extends BasicAuthenticationFilter {
 
-    private RedisTemplate redisTemplate;
-    private AuthIgnoreConfig authIgnoreConfig;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final RedisTemplate<String,Object> redisTemplate;
+    private final AuthIgnoreConfig authIgnoreConfig;
 
-    public AuthenticationTokenFilter(AuthenticationManager authenticationManager, AuthIgnoreConfig authIgnoreConfig,RedisTemplate template) {
+    public AuthenticationTokenFilter(AuthenticationManager authenticationManager, AuthIgnoreConfig authIgnoreConfig,RedisTemplate<String,Object> template) {
         super(authenticationManager);
         this.redisTemplate = template;
         this.authIgnoreConfig = authIgnoreConfig;
@@ -57,8 +56,8 @@ public class AuthenticationTokenFilter extends BasicAuthenticationFilter {
                     writer(response, "无效token");
                     return;
                 }
-                String user[] = userInfo.toString().split(",");
-                if (user == null || user.length != 2) {
+                String[] user = userInfo.toString().split(",");
+                if (user.length != 2) {
                     writer(response, "无效token");
                     return;
                 }
@@ -79,6 +78,6 @@ public class AuthenticationTokenFilter extends BasicAuthenticationFilter {
     public void writer(HttpServletResponse response, String msg) {
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(objectMapper.writeValueAsString(R.error(HttpServletResponse.SC_UNAUTHORIZED, msg)));
+        response.getWriter().write(JSONUtil.toJsonStr(R.error(HttpServletResponse.SC_UNAUTHORIZED, msg)));
     }
 }
