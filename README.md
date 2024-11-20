@@ -1,14 +1,15 @@
 <h1> X-SpringBoot </h1>
 
-![Image text](https://img.shields.io/badge/x--springboot-v5.0-green.svg)
-![Image text](https://img.shields.io/badge/springboot-2.7.7-green.svg)
-![Image text](https://img.shields.io/badge/MyBatis%20Plus-3.5.2-green.svg)
+![Image text](https://img.shields.io/badge/x--springboot-v6.0-green.svg)
+![Image text](https://img.shields.io/badge/springboot-3.3.5-green.svg)
+![Image text](https://img.shields.io/badge/MyBatis%20Plus-3.5.9-green.svg)
 
 [更新日志](https://github.com/yzcheng90/X-SpringBoot/tree/master/doc/updateLog.md) | [项目地址](https://github.com/yzcheng90)  | [SpringCloud版本](https://github.com/yzcheng90/ms) |[前台项目地址](https://github.com/yzcheng90/x-springboot-ui)
 
 
 
 **项目说明** 
+- 【NEW】最新springboot 3版本在springboot3 分支
 - X-SpringBoot 是一个轻量级的Java快速开发平台，基于各大开源项目组合而来，用于快速构建中小型API、RESTful API项目，该项目已经有过多个真实项目的实践，稳定、简单、快速，使我们摆脱那些重复劳动。
 - 本项目已大量重构,精简了大量代码减少第三方依赖，最干净的脚手架。
 - 引入了lombok 大量简化了代码
@@ -22,16 +23,16 @@
 
  
 **版本信息** 
-- 核心框架：Spring Boot 2.7.7
-- 安全框架：Spring Security 5.7.x
-- 持久层框架：MyBatis Plus 3.5.2
+- 核心框架：Spring Boot 3.5.5
+- 安全框架：Spring Security 6.x
+- 持久层框架：MyBatis Plus 3.5.9
 - 日志管理：SLF4J 1.7、Log4j
 - 页面交互：Vue2.x 
 
 
 **环境** 
-- jdk 1.8
-- mysql 5.7+
+- jdk 17
+- mysql 8.0
 - redis
 - nginx
 
