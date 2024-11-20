@@ -1,11 +1,7 @@
 package com.suke.czx.authentication;
 
-import com.suke.czx.authentication.detail.CustomUserDetailsService;
-import com.suke.czx.authentication.handler.CustomAuthenticationFailHandler;
-import com.suke.czx.authentication.handler.CustomAuthenticationSuccessHandler;
-import com.suke.czx.authentication.handler.CustomLogoutSuccessHandler;
-import com.suke.czx.authentication.handler.TokenAuthenticationFailHandler;
-import com.suke.czx.authentication.provider.CustomDaoAuthenticationProvider;
+import com.suke.czx.authentication.handler.*;
+import com.suke.czx.authentication.provider.CustomAuthorizationManager;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.config.AuthIgnoreConfig;
 import com.suke.czx.interceptor.AuthenticationTokenFilter;
@@ -15,17 +11,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -34,7 +29,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -48,7 +42,7 @@ import java.util.List;
 public class SecurityConfigurer {
 
     @Resource
-    private RedisTemplate<Object,Object> redisTemplate;
+    private RedisTemplate<Object, Object> redisTemplate;
 
     @Resource
     private AuthIgnoreConfig authIgnoreConfig;
@@ -72,10 +66,11 @@ public class SecurityConfigurer {
         // 基于 token，不需要 session
         httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         // 权限
-        httpSecurity.authorizeHttpRequests(it->
+        httpSecurity.authorizeHttpRequests(it ->
                 it.requestMatchers(urls).permitAll()  //设置登录路径所有人都可以访问
-                  .anyRequest().authenticated()  //其他路径都要进行拦截
+                        .anyRequest().access(authorizationManager())  //其他路径都要进行拦截
         );
+
         // 设置登录URL
         httpSecurity.formLogin(formLogin -> formLogin
                 .loginProcessingUrl(Constant.TOKEN_ENTRY_POINT_URL)
@@ -89,14 +84,18 @@ public class SecurityConfigurer {
         // 如果不用验证码，注释这个过滤器即可
         httpSecurity.addFilterBefore(new ValidateCodeFilter(redisTemplate, authenticationFailureHandler()), UsernamePasswordAuthenticationFilter.class);
         // token 验证过滤器
-        httpSecurity.addFilterBefore(new AuthenticationTokenFilter(authenticationManager(), authIgnoreConfig,redisTemplate), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(new AuthenticationTokenFilter(authIgnoreConfig, redisTemplate), UsernamePasswordAuthenticationFilter.class);
         // 认证异常处理
         httpSecurity.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
+            httpSecurityExceptionHandlingConfigurer.accessDeniedHandler(new CustomAccessDeniedHandler());
             httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(new TokenAuthenticationFailHandler());
         });
-        // 用户管理service
-        httpSecurity.userDetailsService(userDetailsService());
         return httpSecurity.build();
+    }
+
+    @Bean
+    public AuthorizationManager<RequestAuthorizationContext> authorizationManager() {
+        return new CustomAuthorizationManager();
     }
 
     // 解决跨域
@@ -116,18 +115,6 @@ public class SecurityConfigurer {
         return web -> web.ignoring().requestMatchers("/actuator/**", "/css/**", "/error");
     }
 
-    @Bean
-    public CustomDaoAuthenticationProvider authenticationProvider() {
-        CustomDaoAuthenticationProvider authenticationProvider = new CustomDaoAuthenticationProvider();
-        authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        return authenticationProvider;
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        return new ProviderManager(Collections.singletonList(authenticationProvider()));
-    }
 
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
@@ -142,11 +129,6 @@ public class SecurityConfigurer {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return new CustomAuthenticationSuccessHandler();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService();
     }
 
     @Bean

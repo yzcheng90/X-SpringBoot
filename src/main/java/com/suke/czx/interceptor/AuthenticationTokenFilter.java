@@ -5,9 +5,9 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.suke.czx.authentication.detail.CustomUserDetailsService;
 import com.suke.czx.common.utils.Constant;
+import com.suke.czx.common.utils.R;
 import com.suke.czx.common.utils.SpringContextUtils;
 import com.suke.czx.config.AuthIgnoreConfig;
-import com.suke.czx.common.utils.R;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,12 +15,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
@@ -30,13 +29,12 @@ import java.io.IOException;
  * @Author yzcheng90@qq.com
  **/
 @Slf4j
-public class AuthenticationTokenFilter extends BasicAuthenticationFilter {
+public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final RedisTemplate<Object,Object> redisTemplate;
     private final AuthIgnoreConfig authIgnoreConfig;
 
-    public AuthenticationTokenFilter(AuthenticationManager authenticationManager, AuthIgnoreConfig authIgnoreConfig,RedisTemplate<Object,Object> template) {
-        super(authenticationManager);
+    public AuthenticationTokenFilter(AuthIgnoreConfig authIgnoreConfig,RedisTemplate<Object,Object> template) {
         this.redisTemplate = template;
         this.authIgnoreConfig = authIgnoreConfig;
     }

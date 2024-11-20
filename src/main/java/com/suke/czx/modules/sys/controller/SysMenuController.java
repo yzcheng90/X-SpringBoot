@@ -1,6 +1,7 @@
 package com.suke.czx.modules.sys.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.suke.czx.common.annotation.ResourceAuth;
 import com.suke.czx.common.annotation.SysLog;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.modules.sys.entity.SysMenuNew;
@@ -34,6 +35,7 @@ public class SysMenuController extends AbstractController {
      * 所有菜单列表
      */
     @GetMapping(value = "/list")
+    @ResourceAuth(value = "所有菜单列表", module = "系统菜单")
     public R list(@RequestParam Map<String, Object> params) {
         final List<SysMenuNewVO> userMenu = sysMenuNewService.getUserMenu();
         return R.ok().setData(userMenu);
@@ -44,9 +46,10 @@ public class SysMenuController extends AbstractController {
      */
     @SysLog("保存菜单")
     @PostMapping(value = "/save")
+    @ResourceAuth(value = "保存菜单", module = "系统菜单")
     public R save(@RequestBody SysMenuNewVO menu) {
         SysMenuNew menuNew = this.getParam(menu);
-        if(menuNew.getParentId() == null){
+        if (menuNew.getParentId() == null) {
             menuNew.setParentId(0L);
         }
         sysMenuNewService.save(menuNew);
@@ -58,6 +61,7 @@ public class SysMenuController extends AbstractController {
      */
     @SysLog("修改菜单")
     @PostMapping(value = "/update")
+    @ResourceAuth(value = "修改菜单", module = "系统菜单")
     public R update(@RequestBody SysMenuNewVO menu) {
         if (menu.getMenuId() == null) {
             return R.error("菜单ID为空");
@@ -96,6 +100,7 @@ public class SysMenuController extends AbstractController {
      */
     @SysLog("删除菜单")
     @PostMapping(value = "/delete")
+    @ResourceAuth(value = "删除菜单", module = "系统菜单")
     public R delete(@RequestBody SysMenuNew menu) {
         if (menu == null) {
             return R.error("参数错误");

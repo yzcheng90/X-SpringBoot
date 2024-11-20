@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.suke.czx.common.annotation.ResourceAuth;
 import com.suke.czx.common.annotation.SysLog;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
@@ -45,6 +46,7 @@ public class SysUserController extends AbstractController {
      * 所有用户列表
      */
     @GetMapping(value = "/list")
+    @ResourceAuth(value = "所有用户列表", module = "系统用户")
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
@@ -70,6 +72,7 @@ public class SysUserController extends AbstractController {
      * 获取登录的用户信息和菜单信息
      */
     @GetMapping(value = "/sysInfo")
+    @ResourceAuth(value = "获取登录的用户信息和菜单信息", module = "系统用户")
     public R sysInfo() {
         // 用户菜单
         final List<SysMenuNewVO> userMenu = sysMenuNewService.getUserMenu();
@@ -99,6 +102,7 @@ public class SysUserController extends AbstractController {
      */
     @SysLog("修改密码")
     @RequestMapping(value = "/password", method = RequestMethod.POST)
+    @ResourceAuth(value = "修改密码", module = "系统用户")
     public R password(String password, String newPassword) {
         if (StrUtil.isEmpty(newPassword)) {
             return R.error("新密码不为能空");
@@ -121,6 +125,7 @@ public class SysUserController extends AbstractController {
      */
     @SysLog("保存用户")
     @PostMapping(value = "/save")
+    @ResourceAuth(value = "保存用户", module = "系统用户")
     public R save(@RequestBody @Validated SysUser user) {
         user.setCreateUserId(getUserId());
         sysUserService.saveUserRole(user);
@@ -132,6 +137,7 @@ public class SysUserController extends AbstractController {
      */
     @SysLog("修改用户")
     @PostMapping(value = "/update")
+    @ResourceAuth(value = "修改用户", module = "系统用户")
     public R update(@RequestBody @Validated SysUser user) {
         sysUserService.updateUserRole(user);
         return R.ok();
@@ -142,6 +148,7 @@ public class SysUserController extends AbstractController {
      */
     @SysLog("删除用户")
     @PostMapping(value = "/delete")
+    @ResourceAuth(value = "删除用户", module = "系统用户")
     public R delete(@RequestBody SysUser user) {
         if (user == null || user.getUserId() == null) {
             return R.error("参数错误");

@@ -49,4 +49,8 @@ public class SysRole implements Serializable {
     @Schema(description = "菜单ID")
     @TableField(exist = false)
     public List<Long> menuIdList;
+
+    @Schema(description = "权限ID")
+    @TableField(exist = false)
+    public List<String> permissionList;
 }

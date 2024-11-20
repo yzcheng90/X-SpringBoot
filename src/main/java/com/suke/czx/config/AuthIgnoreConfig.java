@@ -7,9 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
@@ -39,6 +39,8 @@ public class AuthIgnoreConfig implements InitializingBean {
     private static final Pattern PATTERN = Pattern.compile("\\{(.*?)\\}");
     private static final String ASTERISK = "*";
 
+    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
+
     @Getter
     @Setter
     private List<String> ignoreUrls = new ArrayList<>();
@@ -51,10 +53,11 @@ public class AuthIgnoreConfig implements InitializingBean {
             HandlerMethod handlerMethod = map.get(mappingInfo);
             AuthIgnore method = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), AuthIgnore.class);
             if(method != null){
-                PatternsRequestCondition patternsCondition = mappingInfo.getPatternsCondition();
-                if(patternsCondition != null){
-                    patternsCondition.getPatterns().stream().forEach(url ->{
-                        ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, ASTERISK));
+                PathPatternsRequestCondition pathPatternsCondition = mappingInfo.getPathPatternsCondition();
+                if(pathPatternsCondition != null){
+                    pathPatternsCondition.getPatterns().stream().forEach(url ->{
+                        String patternString = url.getPatternString();
+                        ignoreUrls.add(ReUtil.replaceAll(patternString, PATTERN, ASTERISK));
                     });
                 }
             }
@@ -64,5 +67,10 @@ public class AuthIgnoreConfig implements InitializingBean {
     public boolean isContains(String url){
         final String u = ReUtil.replaceAll(url, PATTERN, ASTERISK);
         return ignoreUrls.contains(u);
+    }
+
+    public boolean match(String url){
+        long count = ignoreUrls.stream().filter(u -> antPathMatcher.match(u, url)).count();
+        return count > 0;
     }
 }

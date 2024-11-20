@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -42,6 +43,11 @@ public class CustomAuthenticationFailHandler implements AuthenticationFailureHan
         response.setCharacterEncoding(CharsetUtil.UTF_8);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         PrintWriter printWriter = response.getWriter();
-        printWriter.append(JSONUtil.toJsonStr(R.error(exception.getMessage())));
+
+        if(exception instanceof DisabledException){
+            printWriter.append(JSONUtil.toJsonStr(R.error("账户被禁用，请联系管理员")));
+        }else {
+            printWriter.append(JSONUtil.toJsonStr(R.error(exception.getMessage())));
+        }
     }
 }
