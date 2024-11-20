@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.suke.zhjg.common.autofull.annotation.AutoFullEmpty;
-import com.suke.zhjg.common.autofull.annotation.AutoFullListSQL;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -36,7 +34,6 @@ public class SysUser implements Serializable {
     @Schema(description = "姓名")
     public String name;
 
-    @AutoFullEmpty
     @Schema(description = "密码")
     public String password;
 
@@ -61,6 +58,5 @@ public class SysUser implements Serializable {
 
     @TableField(exist = false)
     @Schema(description = "角色ID")
-    @AutoFullListSQL(sql = "select role_id as roleIdList from sys_user_role where user_id = {userId}")
     public List<Long> roleIdList;
 }

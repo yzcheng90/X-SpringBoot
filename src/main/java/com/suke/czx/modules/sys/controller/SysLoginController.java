@@ -5,7 +5,7 @@ import com.google.code.kaptcha.Producer;
 import com.suke.czx.common.annotation.AuthIgnore;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
-import com.suke.zhjg.common.autofull.util.R;
+import com.suke.czx.common.utils.R;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;

@@ -8,7 +8,7 @@ import com.suke.czx.modules.sys.entity.SysLog;
 import com.suke.czx.modules.sys.entity.SysLoginLog;
 import com.suke.czx.modules.sys.service.SysLogService;
 import com.suke.czx.modules.sys.service.SysLoginLogService;
-import com.suke.zhjg.common.autofull.util.R;
+import com.suke.czx.common.utils.R;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

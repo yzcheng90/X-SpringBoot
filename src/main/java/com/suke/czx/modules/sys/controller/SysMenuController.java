@@ -6,7 +6,7 @@ import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.modules.sys.entity.SysMenuNew;
 import com.suke.czx.modules.sys.service.SysMenuNewService;
 import com.suke.czx.modules.sys.vo.SysMenuNewVO;
-import com.suke.zhjg.common.autofull.util.R;
+import com.suke.czx.common.utils.R;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

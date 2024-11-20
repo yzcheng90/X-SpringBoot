@@ -15,8 +15,7 @@ import com.suke.czx.modules.sys.service.SysUserService;
 import com.suke.czx.modules.sys.vo.RouterInfo;
 import com.suke.czx.modules.sys.vo.SysMenuNewVO;
 import com.suke.czx.modules.sys.vo.UserInfoVO;
-import com.suke.zhjg.common.autofull.annotation.AutoFullData;
-import com.suke.zhjg.common.autofull.util.R;
+import com.suke.czx.common.utils.R;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,7 +44,6 @@ public class SysUserController extends AbstractController {
     /**
      * 所有用户列表
      */
-    @AutoFullData
     @GetMapping(value = "/list")
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据

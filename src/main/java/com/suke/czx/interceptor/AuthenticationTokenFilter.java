@@ -7,7 +7,7 @@ import com.suke.czx.authentication.detail.CustomUserDetailsService;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.SpringContextUtils;
 import com.suke.czx.config.AuthIgnoreConfig;
-import com.suke.zhjg.common.autofull.util.R;
+import com.suke.czx.common.utils.R;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.suke.zhjg.common.autofull.annotation.AutoFullFieldSQL;
-import com.suke.zhjg.common.autofull.annotation.AutoFullListSQL;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -42,7 +40,6 @@ public class SysRole implements Serializable {
 
     @TableField(exist = false)
     @Schema(description = "创建者名称")
-    @AutoFullFieldSQL(sql = "select username as createUserName from sys_user where user_id = {createUserId}")
     public String createUserName;
 
     @Schema(description = "创建时间")
@@ -51,6 +48,5 @@ public class SysRole implements Serializable {
 
     @Schema(description = "菜单ID")
     @TableField(exist = false)
-    @AutoFullListSQL(sql = "select menu_id as menuIdList from sys_role_menu where role_id = {roleId}")
     public List<Long> menuIdList;
 }

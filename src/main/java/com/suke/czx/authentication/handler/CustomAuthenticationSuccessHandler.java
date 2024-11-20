@@ -7,9 +7,10 @@ import com.suke.czx.authentication.detail.CustomUserDetailsUser;
 import com.suke.czx.common.event.LoginLogEvent;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.common.utils.IPUtils;
+import com.suke.czx.common.utils.R;
 import com.suke.czx.common.utils.SpringContextUtils;
 import com.suke.czx.modules.sys.entity.SysLoginLog;
-import com.suke.zhjg.common.autofull.util.R;
+
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

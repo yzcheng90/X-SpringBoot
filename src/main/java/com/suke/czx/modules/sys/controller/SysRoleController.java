@@ -8,8 +8,7 @@ import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
 import com.suke.czx.modules.sys.entity.SysRole;
 import com.suke.czx.modules.sys.service.SysRoleService;
-import com.suke.zhjg.common.autofull.annotation.AutoFullData;
-import com.suke.zhjg.common.autofull.util.R;
+import com.suke.czx.common.utils.R;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +33,6 @@ public class SysRoleController extends AbstractController {
     /**
      * 角色列表
      */
-    @AutoFullData
     @GetMapping(value = "/list")
     public R list(@RequestParam Map<String, Object> params) {
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();

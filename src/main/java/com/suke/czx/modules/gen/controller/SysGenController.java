@@ -7,7 +7,7 @@ import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.modules.gen.entity.InfoRmationSchema;
 import com.suke.czx.modules.gen.entity.MakerConfigEntity;
 import com.suke.czx.modules.gen.service.SysGenService;
-import com.suke.zhjg.common.autofull.util.R;
+import com.suke.czx.common.utils.R;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

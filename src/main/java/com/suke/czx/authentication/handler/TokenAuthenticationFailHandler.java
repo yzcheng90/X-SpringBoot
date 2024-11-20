@@ -1,7 +1,7 @@
 package com.suke.czx.authentication.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.suke.zhjg.common.autofull.util.R;
+import com.suke.czx.common.utils.R;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;

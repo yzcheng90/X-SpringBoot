@@ -11,7 +11,7 @@ import com.suke.czx.modules.apk.entity.TbApkVersion;
 import com.suke.czx.modules.oss.cloud.ICloudStorage;
 import com.suke.czx.modules.oss.entity.SysOss;
 import com.suke.czx.modules.oss.service.SysOssService;
-import com.suke.zhjg.common.autofull.util.R;
+import com.suke.czx.common.utils.R;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
