@@ -9,7 +9,7 @@
 
 
 **项目说明** 
-- 【NEW】最新springboot 3版本在springboot3 分支
+- 【NEW】最新springboot 3版本在springboot3x 分支
 - X-SpringBoot 是一个轻量级的Java快速开发平台，基于各大开源项目组合而来，用于快速构建中小型API、RESTful API项目，该项目已经有过多个真实项目的实践，稳定、简单、快速，使我们摆脱那些重复劳动。
 - 本项目已大量重构,精简了大量代码减少第三方依赖，最干净的脚手架。
 - 引入了lombok 大量简化了代码
