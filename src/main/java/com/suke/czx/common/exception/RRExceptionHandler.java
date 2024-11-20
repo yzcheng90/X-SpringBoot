@@ -8,6 +8,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.nio.file.AccessDeniedException;
 
@@ -49,6 +50,12 @@ public class RRExceptionHandler extends R {
     public R handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         log.error("参数JSON解析错误:", e);
         return R.error("参数JSON解析错误");
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public R handleHttpMessageNotReadableException(NoResourceFoundException e) {
+        log.error("无该资源:", e);
+        return R.error("无该资源");
     }
 
     @ExceptionHandler(Exception.class)

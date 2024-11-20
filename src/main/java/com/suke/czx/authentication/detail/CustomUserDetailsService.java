@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.suke.czx.modules.sys.entity.SysUser;
 import com.suke.czx.modules.sys.service.SysUserService;
 import jakarta.annotation.Resource;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +21,6 @@ import java.util.Set;
  * @Date 21:09
  * @Author yzcheng90@qq.com
  **/
-@Configuration
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Resource

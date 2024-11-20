@@ -5,7 +5,10 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,20 +20,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
-    @Autowired
+    @Resource
     private SwaggerProperties swaggerProperties;
 
     @Bean
     public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("标题")
+                .info(new Info().title(swaggerProperties.getTitle())
                         .contact(new Contact())
-                        .description("我的API文档")
-                        .version("v1")
-                        .license(new License().name("Apache 2.0").url("http://springdoc.org")))
+                        .description(swaggerProperties.getDescription())
+                        .version(swaggerProperties.getVersion())
+                        .license(new License().name(swaggerProperties.getAuthor()).url(swaggerProperties.getUrl())))
                 .externalDocs(new ExternalDocumentation()
-                        .description("外部文档")
-                        .url("https://springshop.wiki.github.org/docs"));
+                        .description(swaggerProperties.getEmail())
+                        .url(swaggerProperties.getUrl()));
     }
 
 
