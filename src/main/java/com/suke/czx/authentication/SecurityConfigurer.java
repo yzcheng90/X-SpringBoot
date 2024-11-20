@@ -48,7 +48,7 @@ import java.util.List;
 public class SecurityConfigurer {
 
     @Resource
-    private RedisTemplate<String,Object> redisTemplate;
+    private RedisTemplate<Object,Object> redisTemplate;
 
     @Resource
     private AuthIgnoreConfig authIgnoreConfig;
