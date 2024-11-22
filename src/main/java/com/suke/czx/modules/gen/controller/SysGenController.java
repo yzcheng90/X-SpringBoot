@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/gen")
 @AllArgsConstructor
-@Api(value = "SysGenController", tags = "代码生成")
+@Api(value = "SysGenController", tags = "code generating")
 public class SysGenController extends AbstractController {
 
     private final SysGenService sysGenService;
@@ -27,7 +27,7 @@ public class SysGenController extends AbstractController {
      */
     @GetMapping(value = "/list")
     public R list(@RequestParam Map<String, Object> params) {
-        //查询列表数据
+        //query 列表数据
         QueryWrapper<InfoRmationSchema> queryWrapper = new QueryWrapper<>();
         final String keyword = mpPageConvert.getKeyword(params);
         if (StrUtil.isNotEmpty(keyword)) {
