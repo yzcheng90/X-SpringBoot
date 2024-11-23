@@ -1,8 +1,6 @@
 package com.suke.czx.config;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.db.Db;
-import cn.hutool.db.DbUtil;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.extension.toolkit.SqlRunner;
@@ -15,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -75,7 +72,8 @@ public class ShardingTableConfig {
     /**
      * 每小时执行一次
      */
-    @Scheduled(cron = "0 0 0/1 * * ?")
+//    @Scheduled(cron = "0 0 0/1 * * ?")
+    @Scheduled(cron = "1/5 * * * * ?")
     private void createShardingTable() {
         // 上锁30秒
         final boolean success = redissonLock.lock(Constant.SYSTEM_NAME + "createShardingTable", 30, TimeUnit.SECONDS);

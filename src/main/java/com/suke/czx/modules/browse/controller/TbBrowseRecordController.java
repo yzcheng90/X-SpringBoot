@@ -59,20 +59,18 @@ public class TbBrowseRecordController extends AbstractController {
         }
         queryWrapper.lambda().orderByDesc(TbBrowseRecord::getCreateTime);
         // 设置当前查询哪个表，如果不设置就默认查询最新分表
-        ShardingTableConfig.setTableName("tb_browse_record");
+        //ShardingTableConfig.setTableName("tb_browse_record");
         IPage<TbBrowseRecord> listPage = tbAdvertiserRecordService.getPage(mpPageConvert.<TbBrowseRecord>pageParamConvert(params), queryWrapper);
         return R.ok().setData(listPage);
     }
 
 
+    @AuthIgnore
     @SysLog("新增浏览记录数据")
-    @PostMapping("/save")
-    @ResourceAuth(value = "新增浏览记录数据", module = "浏览记录")
-    public R save(@RequestBody TbBrowseRecord param, HttpServletRequest request) {
-        if (StrUtil.isEmpty(param.getWatchStatus())) {
-            return R.error("观看状态为空");
-        }
-
+    @GetMapping("/save")
+    //@ResourceAuth(value = "新增浏览记录数据", module = "浏览记录")
+    public R save(HttpServletRequest request) {
+        TbBrowseRecord param = new TbBrowseRecord();
         param.setCreateTime(new Date());
         String ipAddr = IPUtils.getIpAddr(request);
         param.setRequestIp(ipAddr);
