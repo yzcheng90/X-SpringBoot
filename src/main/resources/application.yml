@@ -36,14 +36,6 @@ springdoc:
     path: /swagger-ui/index.html # 自定义路径，默认为"/swagger-ui/index.html"
 
 
-# autofull 配置
-autofull:
-  showLog: false
-  maxLevel: 1
-  currLevel: 0
-  encryptFlag: "@autofull@"
-  encryptKeys: "abcdefg123456789"
-
 #七牛 AK  和  SK可以去密钥管理中查询
 qiniu:
   accessKey: 2222
@@ -59,6 +51,7 @@ mybatis-plus:
   global-config:
     # 关闭MP3.0自带的banner
     banner: false
+    enable-sql-runner: true
     db-config:
       # 主键类型 0:数据库ID自增 1.未定义 2.用户输入 3 id_worker 4.uuid 5.id_worker字符串表示
       id-type: 0
@@ -66,3 +59,11 @@ mybatis-plus:
       field-strategy: 1
       # 默认数据库表下划线命名
       table-underline: true
+
+sharding-table:
+  - table:
+      name: tb_browse_record
+      sharding-column: create_time
+  - table:
+      name: tb_sign_record
+      sharding-column: create_time

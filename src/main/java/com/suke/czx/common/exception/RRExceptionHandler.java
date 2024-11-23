@@ -1,9 +1,11 @@
 package com.suke.czx.common.exception;
 
+import com.suke.czx.common.utils.HttpContextUtils;
 import com.suke.czx.common.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -49,6 +51,13 @@ public class RRExceptionHandler extends R {
     public R handleHttpMessageNotReadableException(NoResourceFoundException e) {
         log.error("无该资源:", e);
         return R.error("无该资源");
+    }
+
+    @ExceptionHandler(BadSqlGrammarException.class)
+    public R handleBadSqlGrammarException(BadSqlGrammarException e) {
+        String contextPath = HttpContextUtils.getHttpServletRequest().getRequestURI();
+        log.error("contextPath:{},SQL语法错误:{}", contextPath, e.getMessage());
+        return R.error("SQL语法错误");
     }
 
     @ExceptionHandler(Exception.class)
