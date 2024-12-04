@@ -19,6 +19,7 @@
 - 引入[autoFull](https://github.com/yzcheng90/zhjg-common-autofull) 自动填充绑定框架,多表关联不用写sql
 - 前后端完全脱离，前端代码可单独部署
 - 自定义Spring Security 支持获取token
+- 新增RBAC接口级权限控制
 - 账号密码：admin/admin
 
  
